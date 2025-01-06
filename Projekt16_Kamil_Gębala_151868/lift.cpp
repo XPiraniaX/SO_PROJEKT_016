@@ -1,6 +1,8 @@
 #include "lift.h"
 #include <iostream>
 
+mutex cout_mutex;
+
 Lift::Lift(int max_chairs, int max_occupied_chairs)
     : max_chairs(max_chairs), max_occupied_chairs(max_occupied_chairs), occupied_chairs(0) {
     chairs.resize(max_chairs); 
@@ -9,17 +11,20 @@ Lift::Lift(int max_chairs, int max_occupied_chairs)
 bool Lift::loadChair(Skier& skier) {
     lock_guard<mutex> lock(lift_mutex);  
 
-    if (occupied_chairs < max_occupied_chairs) {
-        for (int i = 0; i < max_chairs; ++i) {
-            if (chairs[i].size() < 3) { 
-                chairs[i].push_back(skier);
-                occupied_chairs++;
+    for (int i = 0; i < max_chairs; ++i) {
+        if (chairs[i].size() < 3) {  
+            chairs[i].push_back(skier);
+            {
+                lock_guard<mutex> cout_lock(cout_mutex); 
                 cout << "Narciarz " << skier.getId() << " wsiadl na krzeselko " << i << "." << endl;
-                return true;
             }
+            return true;
         }
     }
-    cout << "Brak miejsca na kolejce!" << endl;
+    {
+        lock_guard<mutex> cout_lock(cout_mutex);
+        cout << "Brak miejsca na kolejce dla narciarza " << skier.getId() << "." << endl;
+    }
     return false;
 }
 
