@@ -1,12 +1,12 @@
-#I.Ogólne za³o¿enia projektu
+# I.Ogólne za³o¿enia projektu
 
 Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w jêzyku C++
 
 
 
-##II.Komponenty
+# II.Komponenty
 
-1.Podmioty
+### 1.Podmioty
 
 -Kasjer : Obs³uguje sprzeda¿ biletów i weryfikuje karnety	-TODO
 
@@ -14,7 +14,7 @@ Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w 
 
 -Narciarz : Kupuje karnety, korzysta z bramek i zje¿d¿a trasami - TODO - rozwiniecie o ew mozliwosc wypozyczenia nart
 
-2.Funkcjonalnoœæ
+### 2.Funkcjonalnoœæ
 
 -Kolej linowa : Symulacja dzia³ania 80 krzese³ek z maksymalnie 40 w ruchu jednoczeœnie (120 osób) 
 
@@ -26,11 +26,11 @@ Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w 
 
 -Wejœcie VIP : Priorytetowy dostêp do kolejki linowej (z wa¿nym karnetem) -TODO
 
-3.B³êdy
+### 3.B³êdy
 
 -Korzystanie z funkcji perror() i zmiennej errno w przypadku b³êdów systemowych (np. alokacja pamiêci, tworzenie semaforów) -TODO
 
-4.Komunikacja
+### 4.Komunikacja
 
 -Wykorzystanie pamiêci wspó³dzielonej, semaforów lub kolejek komunikatów do komunikacji miêdzy procesami
 
@@ -38,11 +38,11 @@ Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w 
 
 
 
-###III.Struktura projektu
+# III.Struktura projektu
 
-1.README.md: Dokumentacja projektu
+##### 1.README.md: Dokumentacja projektu
 
-2.Pliki zród³owe oraz deklaracje:
+##### 2.Pliki zród³owe oraz deklaracje:
 
 -main.cpp : plik g³ówny
 
