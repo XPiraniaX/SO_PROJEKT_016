@@ -1,10 +1,10 @@
-Ogólne za³o¿enia projektu
+I.Ogólne za³o¿enia projektu
 
 Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w jêzyku C++
 
 
 
-Komponenty
+II.Komponenty
 
 1.Podmioty
 
@@ -38,18 +38,18 @@ Komponenty
 
 
 
-Struktura projektu
+III.Struktura projektu
 
--README.md: Dokumentacja projektu
+1.README.md: Dokumentacja projektu
 
--Pliki zród³owe oraz deklaracje:
+2.Pliki zród³owe oraz deklaracje:
 
-	-main.cpp : plik g³ówny
+-main.cpp : plik g³ówny
 
-	-narciarz.cpp i narciarz.h : obs³uga narciarza oraz deklaracje
+-narciarz.cpp i narciarz.h : obs³uga narciarza oraz deklaracje
 	
-	-pracownik.cpp i pracownik.h : obs³uga pracownika oraz deklaracje	
+-pracownik.cpp i pracownik.h : obs³uga pracownika oraz deklaracje	
 
-	-kasjer.cpp i kasjer.h : obs³uga kasjera oraz deklaracje	
+-kasjer.cpp i kasjer.h : obs³uga kasjera oraz deklaracje	
 
-	-kolejka.cpp i kolejka.h : obs³uga kolejki oraz deklaracje	
+-kolejka.cpp i kolejka.h : obs³uga kolejki oraz deklaracje	
