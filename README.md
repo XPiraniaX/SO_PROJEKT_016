@@ -40,9 +40,9 @@ Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w 
 
 # III.Struktura projektu
 
-##### 1.README.md: Dokumentacja projektu
+#### 1.README.md : Dokumentacja projektu
 
-##### 2.Pliki zród³owe oraz deklaracje:
+#### 2.Pliki zród³owe oraz deklaracje:
 
 -main.cpp : plik g³ówny
 
