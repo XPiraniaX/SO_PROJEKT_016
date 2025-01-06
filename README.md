@@ -1,10 +1,10 @@
-I.Ogólne za³o¿enia projektu
+#I.Ogólne za³o¿enia projektu
 
 Projekt realizuje zdecentralizowan¹ i modularn¹ symulacje stacji narciarskiej w jêzyku C++
 
 
 
-II.Komponenty
+##II.Komponenty
 
 1.Podmioty
 
@@ -38,7 +38,7 @@ II.Komponenty
 
 
 
-III.Struktura projektu
+###III.Struktura projektu
 
 1.README.md: Dokumentacja projektu
 
