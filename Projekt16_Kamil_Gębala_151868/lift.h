@@ -2,26 +2,22 @@
 #define LIFT_H
 
 #include <vector>
-#include <mutex>
-#include "skier.h"
+#include <thread>
+#include "Chair.h"
 
 using namespace std;
 
 class Lift {
 private:
-    int max_chairs;       
-    int max_occupied_chairs; 
-    int occupied_chairs; 
-    vector<vector<Skier>> chairs;
-    mutex lift_mutex; 
+    vector<shared_ptr<Chair>> chairs;
+    int current_chair_index;
+    mutable mutex lift_mutex;
 
 public:
-    Lift(int max_chairs, int max_occupied_chairs); 
-    bool loadChair(Skier& skier); 
-    void unloadChair(int chairIndex); 
-    int getOccupiedChairs() const; 
-    bool canLoadMore() const;
-    void showLiftStatus();
+    Lift(int chair_count);
+    void startLift();
+    shared_ptr<Chair> getNextAvailableChair();
+
 };
 
-#endif
+#endif 

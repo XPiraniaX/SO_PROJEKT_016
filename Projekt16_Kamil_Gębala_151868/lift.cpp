@@ -1,54 +1,30 @@
-#include "lift.h"
+#include "Lift.h"
 #include <iostream>
+#include <thread>
+#include <chrono>
 
-mutex cout_mutex;
-
-Lift::Lift(int max_chairs, int max_occupied_chairs)
-    : max_chairs(max_chairs), max_occupied_chairs(max_occupied_chairs), occupied_chairs(0) {
-    chairs.resize(max_chairs); 
+Lift::Lift(int chair_count) : current_chair_index(0) {
+    for (int i = 0; i < chair_count; ++i) {
+        chairs.push_back(make_shared<Chair>(i));
+    }
 }
 
-bool Lift::loadChair(Skier& skier) {
-    lock_guard<mutex> lock(lift_mutex);  
+void Lift::startLift() {
+    for (auto& chair : chairs) {
+        thread(&Chair::startRide, chair).detach();
+        this_thread::sleep_for(chrono::seconds(1)); 
+    }
+}
 
-    for (int i = 0; i < max_chairs; ++i) {
-        if (chairs[i].size() < 3) {  
-            chairs[i].push_back(skier);
-            {
-                lock_guard<mutex> cout_lock(cout_mutex); 
-                cout << "Narciarz " << skier.getId() << " wsiadl na krzeselko " << i << "." << endl;
-            }
-            return true;
+shared_ptr<Chair> Lift::getNextAvailableChair() {
+    lock_guard<mutex> lock(lift_mutex);
+
+
+    for (size_t i = 0; i < chairs.size(); ++i) {
+        current_chair_index = (current_chair_index + 1) % chairs.size();
+        if (!chairs[current_chair_index]->isFull()) {
+            return chairs[current_chair_index];
         }
     }
-    {
-        lock_guard<mutex> cout_lock(cout_mutex);
-        cout << "Brak miejsca na kolejce dla narciarza " << skier.getId() << "." << endl;
-    }
-    return false;
-}
-
-void Lift::unloadChair(int chairIndex) {
-    lock_guard<mutex> lock(lift_mutex);
-
-    if (!chairs[chairIndex].empty()) {
-        cout << "Wysadzono narciarzy z krzeselka " << chairIndex << "." << endl;
-        occupied_chairs -= chairs[chairIndex].size();
-        chairs[chairIndex].clear(); 
-    }
-}
-
-int Lift::getOccupiedChairs() const {
-    return occupied_chairs;
-}
-
-bool Lift::canLoadMore() const {
-    return (occupied_chairs < max_occupied_chairs);
-}
-
-void Lift::showLiftStatus() {
-    lock_guard<mutex> lock(lift_mutex);
-    for (int i = 0; i < max_chairs; ++i) {
-        cout << "Krzeselko " << i << ": " << chairs[i].size() << " narciarzy" << endl;
-    }
+    return nullptr; 
 }

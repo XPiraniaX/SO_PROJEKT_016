@@ -5,11 +5,13 @@ using namespace std;
 
 class Skier {
 private:
-    int id;   
+    int id; 
+    int num_children;
 
 public:
-    Skier(int id);  
+    Skier(int id,int num_children = 0);  
     int getId() const;  
+    int getChildren() const;
 };
 
 #endif
