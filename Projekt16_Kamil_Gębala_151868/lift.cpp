@@ -2,9 +2,10 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#define CHAIR_COUNT 80
 
-Lift::Lift(int chair_count) : current_chair_index(0) {
-    for (int i = 0; i < chair_count; ++i) {
+Lift::Lift() : current_chair_index(0) {
+    for (int i = 0; i < CHAIR_COUNT; ++i) {
         chairs.push_back(make_shared<Chair>(i));
     }
 }

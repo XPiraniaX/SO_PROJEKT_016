@@ -9,7 +9,7 @@ private:
     int num_children;
 
 public:
-    Skier(int id,int num_children = 0);  
+    Skier(int id);  
     int getId() const;  
     int getChildren() const;
 };

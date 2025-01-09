@@ -8,13 +8,13 @@
 using namespace std;
 
 class SkiStation {
-public:
-    SkiStation(int skier_count, int chair_count);
-    void startSimulation();
-
 private:
-    std::vector<Skier> skiers;
-    std::shared_ptr<Lift> lift;
+    vector<Skier> skiers;
+    shared_ptr<Lift> lift;
+
+public:
+    SkiStation(int skier_count);
+    void startSimulation();
 };
 
 #endif 

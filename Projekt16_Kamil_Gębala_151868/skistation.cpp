@@ -2,8 +2,8 @@
 #include <iostream>
 #include <thread>
 
-SkiStation::SkiStation(int skier_count, int chair_count)
-    : lift(make_shared<Lift>(chair_count)) {
+SkiStation::SkiStation(int skier_count)
+    : lift(make_shared<Lift>()) {
     for (int i = 0; i < skier_count; ++i) {
         skiers.emplace_back(i);
     }
@@ -26,7 +26,7 @@ void SkiStation::startSimulation() {
                         break;
                     }
                     cout << "Narciarz " << skiers[skier_index].getId()
-                        << " wsiadl na krzeselko " << chair->getId() << "." << endl;
+                        << " wsiadl na krzeselko " << chair->getId() << ". " << skiers[skier_index].getChildren() <<endl;
                     ++skier_index;
                 }
                 else {

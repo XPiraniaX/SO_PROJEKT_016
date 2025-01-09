@@ -32,10 +32,10 @@ void Chair::startRide() {
     while (true) {
         this_thread::sleep_for(chrono::seconds(40)); 
         unloadSkier();
-        cout << "Krzeselko " << id << " dojechalo na gore i oprozniono narciarzy." << endl;
+        //cout << "Krzeselko " << id << " dojechalo na gore i oprozniono narciarzy." << endl;
 
         this_thread::sleep_for(chrono::seconds(40)); 
-        cout << "Krzeselko " << id << " wrocilo na dol i jest gotowe na now¹ runde." << endl;
+        //cout << "Krzeselko " << id << " wrocilo na dol i jest gotowe na nowa runde." << endl;
     }
 }
 

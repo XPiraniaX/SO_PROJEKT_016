@@ -14,7 +14,7 @@ private:
     mutable mutex lift_mutex;
 
 public:
-    Lift(int chair_count);
+    Lift();
     void startLift();
     shared_ptr<Chair> getNextAvailableChair();
 
