@@ -4,15 +4,19 @@
 #define CHILD_PROBABILITYPROC2 5
 
 int childNumber() {
-    int random = rand() % 100;
-    if (random < 100-CHILD_PROBABILITYPROC+CHILD_PROBABILITYPROC2) {
-        return 0;
+    if (CHILD_PROBABILITYPROC + CHILD_PROBABILITYPROC2 > 100) {
+        exit(1);                                                       //TODO ERROR
     }
-    else if (random < 100 - CHILD_PROBABILITYPROC2) {
+
+    int random = rand() % 100;
+    if (random < CHILD_PROBABILITYPROC) {
         return 1;
     }
-    else {
+    else if (random < CHILD_PROBABILITYPROC+CHILD_PROBABILITYPROC2) {
         return 2;
+    }
+    else {
+        return 0;
     }
 }
 
