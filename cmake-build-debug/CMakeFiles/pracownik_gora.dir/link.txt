@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/pracownik_gora.dir/link.d CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o -o pracownik_gora

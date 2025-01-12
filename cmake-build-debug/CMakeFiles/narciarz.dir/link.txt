@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/narciarz.dir/link.d CMakeFiles/narciarz.dir/narciarz.cpp.o -o narciarz

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/init.dir/link.d CMakeFiles/init.dir/init.cpp.o -o init

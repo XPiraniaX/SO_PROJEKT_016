@@ -1,0 +1,96 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Kamil_Gebala_SO_Projekt_16",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "init::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-init-Debug-b189ce3e12faa966c652.json",
+					"name" : "init",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "krzeslo::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-krzeslo-Debug-4507a6f8f325255f4cf7.json",
+					"name" : "krzeslo",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "narciarz::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-narciarz-Debug-3afa88d5cfc8a01461d7.json",
+					"name" : "narciarz",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pracownik_dol::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pracownik_dol-Debug-5f0d940b93a8df187dac.json",
+					"name" : "pracownik_dol",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pracownik_gora::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pracownik_gora-Debug-b6c92ea710b592bad25c.json",
+					"name" : "pracownik_gora",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug",
+		"source" : "/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

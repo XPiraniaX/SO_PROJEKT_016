@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/krzeslo.dir/link.d CMakeFiles/krzeslo.dir/krzeslo.cpp.o -o krzeslo
