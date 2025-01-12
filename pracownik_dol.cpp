@@ -22,6 +22,12 @@ int main()
         sleep(1);
         sem_P(semId);
 
+        if (info->liczbaNarciarzyWKolejce == 0 && info->liczbaNarciarzyWTrasie == 0) {
+            sem_V(semId);
+            sleep(1);
+            continue;
+        }
+
         if (info->krzeslaWTrasie < 40) {
             int wolneIdx = -1;
             for (int i=0; i<80; i++){
@@ -35,8 +41,9 @@ int main()
                 info->stanKrzesla[wolneIdx] = 1;
                 info->ileOsobNaKrzesle[wolneIdx] = ileDoZabrania;
                 info->liczbaNarciarzyWKolejce -= ileDoZabrania;
+                info->liczbaNarciarzyWTrasie += ileDoZabrania;
                 info->krzeslaWTrasie++;
-
+                cout << info->liczbaNarciarzyWTrasie << endl;
                 cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1)
                           << " z " << ileDoZabrania << " osobami. wTrasie="
                           << info->krzeslaWTrasie << "\n";

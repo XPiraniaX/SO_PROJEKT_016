@@ -28,9 +28,9 @@ struct StacjaInfo {
 
     int krzeslaWTrasie;
 
-
     int liczbaNarciarzyWKolejce;
 
+    int liczbaNarciarzyWTrasie;
 
     int stanKrzesla[80];
 

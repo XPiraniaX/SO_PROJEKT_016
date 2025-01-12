@@ -33,6 +33,7 @@ int main()
 
             sem_P(semId);
             info->krzeslaWTrasie--;
+            info->liczbaNarciarzyWTrasie -= msg.liczbaOsob;
             cout << "[Pracownik Gorna Stacja] Krzeslo #" << (kIdx+1)
                       << " dotarło z " << ile << " osobami. wTrasie="
                       << info->krzeslaWTrasie << "\n";

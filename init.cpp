@@ -12,6 +12,7 @@ int main()
     if (info == (void*)-1) blad("init shmat");
     info->krzeslaWTrasie = 0;
     info->liczbaNarciarzyWKolejce = 0;
+    info->liczbaNarciarzyWTrasie = 0;
     for(int i=0; i<80; i++){
         info->stanKrzesla[i] = 0; // wolne
         info->ileOsobNaKrzesle[i] = 0;
