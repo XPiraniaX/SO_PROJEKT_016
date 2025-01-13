@@ -2,6 +2,7 @@
 
 int main()
 {
+    //klucz ipc
     key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
     if (key == -1) blad("pracownik_gora ftok");
 
@@ -16,9 +17,19 @@ int main()
     int msgId = msgget(key, 0);
     if (msgId == -1) blad("pracownik_gora msgget");
 
-    cout << "[Pracownik Gorna Stacja] START\n";
+    cout << "[Pracownik Gorna Stacja] START" << endl;
 
     while(true) {
+
+        sem_P(semId);
+        bool endSim = info->koniecSymulacji;
+        sem_V(semId);
+
+        if (endSim){
+            cout << "[Pracownik Gorna Stacja] Koniec" << endl;
+            break;
+        }
+        //oczekiwanie na komunikat krzesla
         Komunikat msg;
         if (msgrcv(msgId, &msg, sizeof(Komunikat)-sizeof(long), 0, 0) == -1) {
             perror("[Pracownik Gorna Stacja] msgrcv");
@@ -34,11 +45,9 @@ int main()
             sem_P(semId);
             info->krzeslaWTrasie--;
             info->liczbaNarciarzyWTrasie -= msg.liczbaOsob;
-            cout << "[Pracownik Gorna Stacja] Krzeslo #" << (kIdx+1)
-                      << " dotarło z " << ile << " osobami. wTrasie="
-                      << info->krzeslaWTrasie << "\n";
+            cout << "[Pracownik Gorna Stacja] Krzeslo #" << (kIdx+1) << " dotarło z " << ile << " osobami. wTrasie=" << info->krzeslaWTrasie << endl;
             sem_V(semId);
-
+            //odeslanie krzesla
             Komunikat msg2;
             msg2.mtype = 300 + kIdx;
             msg2.nrKrzesla = kIdx;
@@ -47,5 +56,6 @@ int main()
         }
     }
 
+    shmdt(info);
     return 0;
 }

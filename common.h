@@ -15,6 +15,8 @@
 #include <ctime>
 #include <errno.h>
 #include <algorithm>
+#include <signal.h>
+
 
 using namespace std;
 
@@ -27,13 +29,12 @@ static const int LICZBA_NARCIARZY   = 20;
 struct StacjaInfo {
 
     int krzeslaWTrasie;
-
     int liczbaNarciarzyWKolejce;
-
     int liczbaNarciarzyWTrasie;
 
-    int stanKrzesla[80];
+    bool koniecSymulacji;
 
+    int stanKrzesla[80];
     int ileOsobNaKrzesle[80];
 };
 

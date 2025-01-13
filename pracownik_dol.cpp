@@ -2,6 +2,7 @@
 
 int main()
 {
+    //klucz ipc
     key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
     if (key == -1) blad("pracownik_dol ftok");
 
@@ -16,11 +17,19 @@ int main()
     int msgId = msgget(key, 0);
     if (msgId == -1) blad("pracownik_dol msgget");
 
-    cout << "[Pracownik Dolna Stacja] START\n";
+    cout << "[Pracownik Dolna Stacja] START" << endl;
 
     while(true) {
         sleep(1);
+
         sem_P(semId);
+
+        if (info->koniecSymulacji)
+        {
+            sem_V(semId);
+            break;
+        }
+
 
         if (info->liczbaNarciarzyWKolejce == 0 && info->liczbaNarciarzyWTrasie == 0) {
             sem_V(semId);
@@ -43,11 +52,8 @@ int main()
                 info->liczbaNarciarzyWKolejce -= ileDoZabrania;
                 info->liczbaNarciarzyWTrasie += ileDoZabrania;
                 info->krzeslaWTrasie++;
-                cout << info->liczbaNarciarzyWTrasie << endl;
-                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1)
-                          << " z " << ileDoZabrania << " osobami. wTrasie="
-                          << info->krzeslaWTrasie << "\n";
-
+                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1) << " z " << ileDoZabrania << " osobami. wTrasie=" << info->krzeslaWTrasie << endl;
+                //wyslanie start do krzesla
                 Komunikat msg;
                 msg.mtype = 100 + wolneIdx;
                 msg.nrKrzesla = wolneIdx;
@@ -60,5 +66,7 @@ int main()
         sem_V(semId);
     }
 
+    shmdt(info);
+    cout << "[Pracownik Dolna Stacja] Koniec" << endl;
     return 0;
 }
