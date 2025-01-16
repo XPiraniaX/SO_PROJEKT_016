@@ -1,24 +1,33 @@
 #include "common.h"
 
-static StacjaInfo* g_info = nullptr;
-static int g_semId=-1;
+static StacjaInfo* g_infoStacja = nullptr;
+static int g_semIdStacja=-1;
+static WyciagInfo* g_infoWyciag = nullptr;
+static int g_semIdWyciag=-1;
 static vector<pid_t> g_pidKrzesel;
 static pid_t g_pidPracownikGora;
+static bool koniecZegara = false;
 
 void sigintObsluga(int) {
-    if (g_info) {
-        sem_P(g_semId);
-        g_info->koniecSymulacji = true;
-        sem_V(g_semId);
+    if (g_infoStacja) {
+        sem_P(g_semIdStacja);
+        g_infoStacja->koniecSymulacji = true;
+        sem_V(g_semIdStacja);
     }
+    koniecZegara = true;
 }
 
 void Zegar() {
-    this_thread::sleep_for(chrono::seconds(DLUGOSC_SYMULACJI));
+    int czasZegara=0;
+    while (czasZegara < DLUGOSC_SYMULACJI){
+        if(koniecZegara) return;
+        this_thread::sleep_for(chrono::seconds(1));
+        czasZegara++;
+    }
 
-    sem_P(g_semId);
-    g_info->koniecSymulacji = true;
-    sem_V(g_semId);
+    sem_P(g_semIdStacja, 0);
+    g_infoStacja->koniecSymulacji = true;
+    sem_V(g_semIdStacja);
 
     cout << "[Zegar] Upłynęło " << DLUGOSC_SYMULACJI << "s, zamykamy stacje"<<endl;
 
@@ -26,53 +35,86 @@ void Zegar() {
 
     int i=0;
     for (pid_t pid : g_pidKrzesel) {
-        sem_P(g_semId);
-        if (g_info->stanKrzesla[i] != 1 ){
+        sem_P(g_semIdWyciag);
+        if (g_infoWyciag->stanKrzesla[i] != 1 ){
             kill(pid, SIGUSR1);
         }
-        sem_V(g_semId);
+        sem_V(g_semIdWyciag);
         i++;
     }
 }
 
 int main()
 {
-    //klucz ipc
-    key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
-    if(key == -1) blad("init ftok");
+    //klucze ipc
+    key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
+    if(keyStacja == -1) blad("init ftok stacji");
+
+    key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
+    if(keyWyciag == -1) blad("init ftok wyciagu");
+
+    key_t keyBramki = ftok(SCIEZKA_KLUCZA_BRAMKI, KLUCZ_PROJ_BRAMKI);
+    if(keyBramki == -1) blad("init ftok bramek");
 
     //tworzenie pamieci dzielonej
-    int shmId = shmget(key, sizeof(StacjaInfo), IPC_CREAT | 0600);
-    if(shmId == -1) blad("init shmget");
+    int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), IPC_CREAT | 0600);
+    if(shmIdStacja == -1) blad("init shmget stacji");
+
+    int shmIdWyciag = shmget(keyWyciag, sizeof(WyciagInfo), IPC_CREAT | 0600);
+    if(shmIdWyciag == -1) blad("init shmget wyciagu");
+
+    int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), IPC_CREAT | 0600);
+    if(shmIdBramki == -1) blad("init shmget bramek");
 
     //dolaczanie do pamieci
-    StacjaInfo* info = (StacjaInfo*)shmat(shmId, nullptr, 0);
-    if (info == (void*)-1) blad("init shmat");
+    StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
+    if (infoStacja == (void*)-1) blad("init shmat stacji");
+
+    WyciagInfo* infoWyciag = (WyciagInfo*)shmat(shmIdWyciag, nullptr, 0);
+    if (infoWyciag == (void*)-1) blad("init shmat wyciagu");
+
+    BramkiInfo* infoBramki = (BramkiInfo*)shmat(shmIdBramki, nullptr, 0);
+    if (infoBramki == (void*)-1) blad("init shmat bramek");
 
     //inicjalizacja pamieci
-    info->krzeslaWTrasie = 0;
-    info->liczbaNarciarzyWKolejce = 0;
-    info->liczbaNarciarzyWTrasie = 0;
-    info->koniecSymulacji = false;
-    for(int i=0; i<80; i++){
-        info->stanKrzesla[i] = 0;
-        info->ileOsobNaKrzesle[i] = 0;
-    }
+    infoStacja->koniecSymulacji = false;
 
-    //tworzenie i podlaczenie semafora
-    int semId = semget(key, 1, IPC_CREAT | 0600);
-    if (semId == -1) blad("init semget");
-    semun arg;
-    arg.val = 1;
-    if (semctl(semId, 0, SETVAL, arg) == -1) blad("init semctl SETVAL");
+    infoWyciag->krzeslaWTrasie = 0;
+    infoWyciag->liczbaNarciarzyWTrasie = 0;
+    for(int i=0; i<80; i++){
+        infoWyciag->stanKrzesla[i] = 0;
+        infoWyciag->ileOsobNaKrzesle[i] = 0;
+    }
+    infoBramki->liczbaNarciarzyWKolejce = 0;
+
+    //tworzenie i podlaczenie semaforów
+    int semIdStacja = semget(keyStacja, 1, IPC_CREAT | 0600);
+    if (semIdStacja == -1) blad("init semget stacji");
+    semun argStacja;
+    argStacja.val = 1;
+    if (semctl(semIdStacja, 0, SETVAL, argStacja) == -1) blad("init semctl SETVAL stacji");
+
+    int semIdWyciag = semget(keyWyciag, 1, IPC_CREAT | 0600);
+    if (semIdWyciag == -1) blad("init semget wyciagu");
+    semun argWyciag;
+    argWyciag.val = 1;
+    if (semctl(semIdWyciag, 0, SETVAL, argWyciag) == -1) blad("init semctl SETVAL wycaigu");
+
+    int semIdBramki = semget(keyBramki, 1, IPC_CREAT | 0600);
+    if (semIdBramki == -1) blad("init bramek");
+    semun argBramki;
+    argBramki.val = 1;
+    if (semctl(semIdBramki, 0, SETVAL, argBramki) == -1) blad("init semctl bramek");
 
     //tworzenie i dolaczanie do kolejki komunikatow
-    int msgId = msgget(key, IPC_CREAT | 0600);
-    if (msgId == -1) blad("init msgget");
+    int msgIdWyciag = msgget(keyWyciag, IPC_CREAT | 0600);
+    if (msgIdWyciag == -1) blad("init msgget wyciag");
 
     //rejestracja handlera
-    g_info = info;
-    g_semId = semId;
+    g_infoStacja = infoStacja;
+    g_semIdStacja = semIdStacja;
+    g_infoWyciag = infoWyciag;
+    g_semIdWyciag = semIdWyciag;
     signal(SIGINT, sigintObsluga);
 
     thread timerThread(Zegar);
@@ -120,13 +162,21 @@ int main()
 
     //zwolnienie ipc
     cout << "[INIT] Usuwam zasoby IPC" << endl;
-    shmctl(shmId, IPC_RMID, nullptr);
-    semctl(semId, 0, IPC_RMID);
-    msgctl(msgId, IPC_RMID, nullptr);
+    shmctl(shmIdStacja, IPC_RMID, nullptr);
+    shmctl(shmIdWyciag, IPC_RMID, nullptr);
+    shmctl(shmIdBramki, IPC_RMID, nullptr);
+
+    semctl(semIdStacja, 0, IPC_RMID);
+    semctl(semIdWyciag, 0, IPC_RMID);
+    semctl(semIdBramki, 0, IPC_RMID);
+
+    msgctl(msgIdWyciag, IPC_RMID, nullptr);
 
 
     //odlaczenie pamieci
-    shmdt(info);
+    shmdt(infoStacja);
+    shmdt(infoWyciag);
+    shmdt(infoBramki);
 
     if (timerThread.joinable()) {
         timerThread.join();

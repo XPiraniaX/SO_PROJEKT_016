@@ -12,52 +12,82 @@ int main(int argc, char* argv[])
 
     signal(SIGUSR1,sigusrObsluga);
 
-    //klucz ipc
-    key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
-    if (key == -1) blad("krzeslo ftok");
+    //klucze ipc
+    key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
+    if (keyStacja == -1) blad("pracownik_dol ftok stacja");
+
+    key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
+    if (keyWyciag == -1) blad("pracownik_dol ftok wyciag");
+
+    key_t keyBramki = ftok(SCIEZKA_KLUCZA_BRAMKI, KLUCZ_PROJ_BRAMKI);
+    if (keyBramki == -1) blad("pracownik_dol ftok bramki");
 
     //dolaczanie do pamieci dzielonej
-    int shmId = shmget(key, sizeof(StacjaInfo), 0);
-    if (shmId == -1) blad("krzeslo shmget");
-    StacjaInfo* info = (StacjaInfo*)shmat(shmId, nullptr, 0);
-    if (info == (void*)-1) blad("krzeslo shmat");
+    int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
+    if (shmIdStacja == -1) blad("krzeslo shmget stacja");
+    StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
+    if (infoStacja == (void*)-1) blad("krzeslo shmat stacja");
+
+    int shmIdWyciag = shmget(keyWyciag, sizeof(WyciagInfo), 0);
+    if (shmIdWyciag == -1) blad("krzeslo shmget wyciag");
+    WyciagInfo* infoWyciag = (WyciagInfo*)shmat(shmIdWyciag, nullptr, 0);
+    if (infoWyciag == (void*)-1) blad("krzeslo shmat wyciag");
+
+    int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), 0);
+    if (shmIdBramki == -1) blad("krzeslo shmget bramki");
+    BramkiInfo* infoBramki = (BramkiInfo*)shmat(shmIdBramki, nullptr, 0);
+    if (infoBramki == (void*)-1) blad("krzeslo shmat bramki");
 
     //podlaczanie do semafora
-    int semId = semget(key, 1, 0);
-    if (semId == -1) blad("krzeslo semget");
+    int semIdStacja = semget(keyStacja, 1, 0);
+    if (semIdStacja == -1) blad("krzeslo semget stacja");
+
+    int semIdWyciag = semget(keyWyciag, 1, 0);
+    if (semIdWyciag == -1) blad("krzeslo semget wyciag");
+
+    int semIdBramki = semget(keyBramki, 1, 0);
+    if (semIdBramki == -1) blad("krzeslo semget bramki");
 
     //dolaczanie do kolejki komunikatow
-    int msgId = msgget(key, 0);
-    if (msgId == -1) blad("krzeslo msgget");
+    int msgIdWyciag = msgget(keyWyciag, 0);
+    if (msgIdWyciag == -1) blad("krzeslo msgget wyciag");
 
     //cout << "[Krzeslo #" << (kIdx+1) << "] START" << endl;
 
     while(true){
 
-        sem_P(semId);
-        bool endSim = info->koniecSymulacji && info->liczbaNarciarzyWKolejce==0;
-        sem_V(semId);
+        sem_P(semIdStacja);
+        sem_P(semIdBramki);
+        bool endSim = infoStacja->koniecSymulacji && infoBramki->liczbaNarciarzyWKolejce==0;
+        sem_V(semIdStacja);
+        sem_V(semIdBramki);
 
         if (endSim){
             cout << "[Krzeslo #" << (kIdx + 1) << "] Koniec" << endl;
-            break;
+            shmdt(infoStacja);
+            shmdt(infoWyciag);
+            shmdt(infoBramki);
+            return 0;
         }
 
         //oczekiwanie na start jazdy
         Komunikat msg;
-        if (msgrcv(msgId, &msg, sizeof(Komunikat)-sizeof(long), 100 + kIdx, 0) == -1) {
+        if (msgrcv(msgIdWyciag, &msg, sizeof(Komunikat)-sizeof(long), 100 + kIdx, 0) == -1) {
             if (errno == EINTR) {
-                sem_P(semId);
-                endSim = info->koniecSymulacji;
-                sem_V(semId);
+                sem_P(semIdStacja);
+                endSim = infoStacja->koniecSymulacji;
+                sem_V(semIdStacja);
 
                 if (endSim) {
                     cout << "[Krzeslo #" << (kIdx + 1) << "] Koniec (sygnal)" <<endl;
-                    break;
+                    shmdt(infoStacja);
+                    shmdt(infoWyciag);
+                    shmdt(infoBramki);
+                    return 0;
                 }
                 continue;
             } else {
-                perror("[krzeslo] msgrcv start error");
+                blad("[krzeslo] msgrcv start error");
                 sleep(1);
                 continue;
             }
@@ -74,32 +104,28 @@ int main(int argc, char* argv[])
         msg2.mtype = 200 + kIdx;
         msg2.nrKrzesla = kIdx;
         msg2.liczbaOsob= ileOsob;
-        msgsnd(msgId, &msg2, sizeof(Komunikat)-sizeof(long), 0);
+        msgsnd(msgIdWyciag, &msg2, sizeof(Komunikat)-sizeof(long), 0);
 
         //oczekiwanie na wracaj
         Komunikat msg3;
-        if(msgrcv(msgId, &msg3, sizeof(Komunikat)-sizeof(long), 300+kIdx, 0) == -1){
-            perror("[krzeslo] msgrcv return");
+        if(msgrcv(msgIdWyciag, &msg3, sizeof(Komunikat)-sizeof(long), 300+kIdx, 0) == -1){
+            blad("[krzeslo] msgrcv return");
             sleep(1);
             continue;
         }
         cout << "[Krzeslo #" << (kIdx+1) << "] Wracam na dol" << endl;
 
-        sem_P(semId);
-        info->stanKrzesla[kIdx] = 2;
-        info->ileOsobNaKrzesle[kIdx] = 0;
-        sem_V(semId);
+        sem_P(semIdWyciag);
+        infoWyciag->stanKrzesla[kIdx] = 2;
+        infoWyciag->ileOsobNaKrzesle[kIdx] = 0;
+        sem_V(semIdWyciag);
 
         sleep(40);
 
-        sem_P(semId);
-        info->stanKrzesla[kIdx] = 0;
-        sem_V(semId);
+        sem_P(semIdWyciag);
+        infoWyciag->stanKrzesla[kIdx] = 0;
+        sem_V(semIdWyciag);
 
         cout << "[Krzeslo #" << (kIdx+1) << "] Jestem wolne na dole" << endl;
     }
-
-    //odlaczenie pamieci
-    shmdt(info);
-    return 0;
 }

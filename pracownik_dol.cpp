@@ -1,77 +1,108 @@
 #include "common.h"
 
+
+
 int main()
 {
-    //klucz ipc
-    key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
-    if (key == -1) blad("pracownik_dol ftok");
+    //klucze ipc
+    key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
+    if (keyStacja == -1) blad("pracownik_dol ftok stacja");
+
+    key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
+    if (keyWyciag == -1) blad("pracownik_dol ftok wyciag");
+
+    key_t keyBramki = ftok(SCIEZKA_KLUCZA_BRAMKI, KLUCZ_PROJ_BRAMKI);
+    if (keyBramki == -1) blad("pracownik_dol ftok bramki");
 
     //dolaczanie do pamieci dzielonej
-    int shmId = shmget(key, sizeof(StacjaInfo), 0);
-    if (shmId == -1) blad("pracownik_dol shmget");
-    StacjaInfo* info = (StacjaInfo*)shmat(shmId, nullptr, 0);
-    if (info == (void*)-1) blad("pracownik_dol shmat");
+    int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
+    if (shmIdStacja == -1) blad("pracownik_dol shmget stacja");
+    StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
+    if (infoStacja == (void*)-1) blad("pracownik_dol shmat stacja");
+
+    int shmIdWyciag = shmget(keyWyciag, sizeof(WyciagInfo), 0);
+    if (shmIdWyciag == -1) blad("pracownik_dol shmget wyciag");
+    WyciagInfo* infoWyciag = (WyciagInfo*)shmat(shmIdWyciag, nullptr, 0);
+    if (infoWyciag == (void*)-1) blad("pracownik_dol shmat wyciag");
+
+    int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), 0);
+    if (shmIdBramki == -1) blad("pracownik_dol shmget bramki");
+    BramkiInfo* infoBramki = (BramkiInfo*)shmat(shmIdBramki, nullptr, 0);
+    if (infoBramki == (void*)-1) blad("pracownik_dol shmat bramki");
 
     //podlaczanie do semafora
-    int semId = semget(key, 1, 0);
-    if (semId == -1) blad("pracownik_dol semget");
+    int semIdStacja = semget(keyStacja, 1, 0);
+    if (semIdStacja == -1) blad("pracownik_dol semget stacja");
+
+    int semIdWyciag = semget(keyWyciag, 1, 0);
+    if (semIdWyciag == -1) blad("pracownik_dol semget wyciag");
+
+    int semIdBramki = semget(keyBramki, 1, 0);
+    if (semIdBramki == -1) blad("pracownik_dol semget bramki");
 
     //dolaczanie do kolejki komunikatow
-    int msgId = msgget(key, 0);
-    if (msgId == -1) blad("pracownik_dol msgget");
+    int msgIdWyciag = msgget(keyWyciag, 0);
+    if (msgIdWyciag == -1) blad("pracownik_dol msgget wyciag");
 
     cout << "[Pracownik Dolna Stacja] START" << endl;
 
     while(true) {
         sleep(1);
 
-        sem_P(semId);
-
-        if (info->koniecSymulacji && info->liczbaNarciarzyWKolejce == 0)
+        sem_P(semIdStacja);
+        sem_P(semIdBramki);
+        if (infoStacja->koniecSymulacji && infoBramki->liczbaNarciarzyWKolejce == 0)
         {
-            sem_V(semId);
+            sem_V(semIdStacja);
+            sem_V(semIdBramki);
             cout << "[Pracownik Dolna Stacja] Koniec" << endl;
             break;
         }
-
-
-        if (info->liczbaNarciarzyWKolejce == 0 && info->liczbaNarciarzyWTrasie == 0) {
-            sem_V(semId);
+        sem_V(semIdStacja);
+        sem_V(semIdWyciag);
+        if (infoBramki->liczbaNarciarzyWKolejce == 0 && infoWyciag->liczbaNarciarzyWTrasie == 0) {
+            sem_V(semIdWyciag);
+            sem_V(semIdBramki);
             sleep(1);
             continue;
         }
 
-        if (info->krzeslaWTrasie < 40) {
+        if (infoWyciag->krzeslaWTrasie < 40) {
             int wolneIdx = -1;
             for (int i=0; i<80; i++){
-                if (info->stanKrzesla[i] == 0) {
+                if (infoWyciag->stanKrzesla[i] == 0) {
                     wolneIdx = i;
                     break;
                 }
             }
             if (wolneIdx != -1) {
-                int ileDoZabrania = min(3, info->liczbaNarciarzyWKolejce);
-                info->stanKrzesla[wolneIdx] = 1;
-                info->ileOsobNaKrzesle[wolneIdx] = ileDoZabrania;
-                info->liczbaNarciarzyWKolejce -= ileDoZabrania;
-                info->liczbaNarciarzyWTrasie += ileDoZabrania;
-                info->krzeslaWTrasie++;
-                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1) << " z " << ileDoZabrania << " osobami. wTrasie=" << info->krzeslaWTrasie << endl;
-
+                int ileDoZabrania = min(3, infoBramki->liczbaNarciarzyWKolejce);
+                infoWyciag->stanKrzesla[wolneIdx] = 1;
+                infoWyciag->ileOsobNaKrzesle[wolneIdx] = ileDoZabrania;
+                infoBramki->liczbaNarciarzyWKolejce -= ileDoZabrania;
+                infoWyciag->liczbaNarciarzyWTrasie += ileDoZabrania;
+                infoWyciag->krzeslaWTrasie++;
+                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1) << " z " << ileDoZabrania << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
+                sem_V(semIdWyciag);
+                sem_V(semIdBramki);
                 //wyslanie start do krzesla
                 Komunikat msg;
                 msg.mtype = 100 + wolneIdx;
                 msg.nrKrzesla = wolneIdx;
                 msg.liczbaOsob= ileDoZabrania;
-                if (msgsnd(msgId, &msg, sizeof(Komunikat)-sizeof(long), 0) == -1) {
-                    perror("[Pracownik Dolna Stacja] msgsnd krzeslo error");
+                if (msgsnd(msgIdWyciag, &msg, sizeof(Komunikat)-sizeof(long), 0) == -1) {
+                    blad("[Pracownik Dolna Stacja] msgsnd krzeslo error");
                 }
+                continue;
             }
         }
-        sem_V(semId);
+        sem_V(semIdWyciag);
+        sem_V(semIdBramki);
     }
 
     //odlaczenie pamieci
-    shmdt(info);
+    shmdt(infoStacja);
+    shmdt(infoWyciag);
+    shmdt(infoBramki);
     return 0;
 }
