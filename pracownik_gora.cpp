@@ -46,9 +46,9 @@ int main()
             break;
         }
         //oczekiwanie na komunikat krzesla
-        Komunikat msg;
-        if (msgrcv(msgIdWyciag, &msg, sizeof(Komunikat)-sizeof(long), 0, 0) == -1) {
-            blad("[Pracownik Gorna Stacja] msgrcv");
+        msgWyciag msg;
+        if (msgrcv(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 0, 0) == -1) {
+            blad("[Pracownik Gorna Stacja] msgrcv krzeslo error");
             sleep(1);
             continue;
         }
@@ -65,11 +65,14 @@ int main()
             sem_V(semIdWyciag);
 
             //odeslanie krzesla
-            Komunikat msg2;
+            msgWyciag msg2;
             msg2.mtype = 300 + kIdx;
             msg2.nrKrzesla = kIdx;
             msg2.liczbaOsob= 0;
-            msgsnd(msgIdWyciag, &msg2, sizeof(Komunikat)-sizeof(long), 0);
+            if (msgsnd(msgIdWyciag, &msg2, sizeof(msgWyciag)-sizeof(long), 0)==-1){
+                blad("[Pracownik Gorna Stacja] msgsnd krzeslo error");
+                return 1;
+            }
 
         }
     }

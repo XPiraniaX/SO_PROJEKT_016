@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "narciarz"
+			"path" : "pracownik_dol"
 		}
 	],
 	"backtrace" : 1,
@@ -24,7 +24,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 20,
+				"line" : 19,
 				"parent" : 0
 			}
 		]
@@ -53,7 +53,7 @@
 			]
 		}
 	],
-	"id" : "narciarz::@6890427a1f51a3e7e1df",
+	"id" : "pracownik_dol::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -69,8 +69,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "narciarz",
-	"nameOnDisk" : "narciarz",
+	"name" : "pracownik_dol",
+	"nameOnDisk" : "pracownik_dol",
 	"paths" : 
 	{
 		"build" : ".",
@@ -98,7 +98,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "narciarz.cpp",
+			"path" : "pracownik_dol.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

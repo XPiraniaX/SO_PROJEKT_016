@@ -2,7 +2,12 @@
 
 int main(int argc, char* argv[])
 {
-    srand(time(nullptr) ^ getpid());
+    if (argc < 2) {
+        blad("[narciarz] Brak argumentu: liczba zjazdow!\n");
+        return 1;
+    }
+
+    int zjazdy = atoi(argv[1]);
 
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
@@ -40,30 +45,46 @@ int main(int argc, char* argv[])
     int semIdBramki = semget(keyBramki, 1, 0);
     if (semIdBramki == -1) blad("narciarz semget bramki");
 
-    while (true){
-        sem_P(semIdStacja);
-        bool endSim = infoStacja->koniecSymulacji;
-        sem_V(semIdStacja);
 
-        if (endSim) {
-            cout << "[Narciarz PID=" << getpid() << "] Koniec" << endl;;
-            shmdt(infoStacja);
-            shmdt(infoWyciag);
-            shmdt(infoBramki);
-            return 0;
+    cout << "[Narciarz] START z " << zjazdy << " zjazdami" << endl;
+    while(zjazdy > 0) {
+
+        sem_P(semIdBramki);
+        if (infoBramki->liczbaNarciarzyWKolejce < 100) {
+            infoBramki->liczbaNarciarzyWKolejce++;
+            sem_V(semIdBramki);
+
+            cout << "[Narciarz] Wchodze przez bramki. Zostalo zjazdow=" << zjazdy << endl;
+            zjazdy--;
+        } else {
+            sem_V(semIdBramki);
+            cout << "[Narciarz] Za duza kolejka (>=100), czekam..." << endl;
+            sleep(3);
+            continue;
         }
 
-        int randomTime = rand() % 5 + 1;
-        sleep(randomTime);
-        break;
+        // 2. Ustawiamy się w kolejce do wyciagu (Twoja dotychczasowa logika - np.
+        // sem / kolejka ?). Dla uproszczenia sleep(1).
+        sleep(1);
+
+        // 3. czekamy na krzeslo -> 40s jazdy w gore
+        std::cout << "[Narciarz] Jade w gore (40s)...\n";
+        sleep(40);
+        std::cout << "[Narciarz] Jestem na gorze.\n";
+
+        // 4. zjezdzam w dol 20s
+        std::cout << "[Narciarz] Zjezdzam w dol (20s)...\n";
+        sleep(20);
+
+        // 5. Wychodze z bramek (jak wracam na dol, moge zmniejszyc infoBramki->liczbaNarciarzyWKolejce)
+        sem_P(semIdBramki);
+        if (infoBramki->liczbaNarciarzyWKolejce > 0)
+            infoBramki->liczbaNarciarzyWKolejce--;
+        sem_V(semIdBramki);
     }
 
-    sem_P(semIdBramki);
-    infoBramki->liczbaNarciarzyWKolejce++;
-    int n = infoBramki->liczbaNarciarzyWKolejce;
-    sem_V(semIdBramki);
-
-    cout << "[Narciarz PID=" << getpid() << "] Ustawiam sie w kolejce. (razem=" << n << ")" << endl;
+    // Gdy zjazdy=0, koniec
+    std::cout << "[Narciarz] Skończyłem wszystkie zjazdy -> KONIEC.\n";
 
     //odlaczenie pamieci
     shmdt(infoStacja);

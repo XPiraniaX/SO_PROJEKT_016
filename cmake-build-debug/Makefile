@@ -205,6 +205,30 @@ init.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/init.cpp.s
 .PHONY : init.cpp.s
 
+kasjer.o: kasjer.cpp.o
+.PHONY : kasjer.o
+
+# target to build an object file
+kasjer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/kasjer.cpp.o
+.PHONY : kasjer.cpp.o
+
+kasjer.i: kasjer.cpp.i
+.PHONY : kasjer.i
+
+# target to preprocess a source file
+kasjer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/kasjer.cpp.i
+.PHONY : kasjer.cpp.i
+
+kasjer.s: kasjer.cpp.s
+.PHONY : kasjer.s
+
+# target to generate assembly for a file
+kasjer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/kasjer.cpp.s
+.PHONY : kasjer.cpp.s
+
 krzeslo.o: krzeslo.cpp.o
 .PHONY : krzeslo.o
 
@@ -301,6 +325,30 @@ pracownik_gora.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_gora.dir/build.make CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.s
 .PHONY : pracownik_gora.cpp.s
 
+turysta.o: turysta.cpp.o
+.PHONY : turysta.o
+
+# target to build an object file
+turysta.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/turysta.cpp.o
+.PHONY : turysta.cpp.o
+
+turysta.i: turysta.cpp.i
+.PHONY : turysta.i
+
+# target to preprocess a source file
+turysta.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/turysta.cpp.i
+.PHONY : turysta.cpp.i
+
+turysta.s: turysta.cpp.s
+.PHONY : turysta.s
+
+# target to generate assembly for a file
+turysta.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/turysta.cpp.s
+.PHONY : turysta.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -317,6 +365,9 @@ help:
 	@echo "... init.o"
 	@echo "... init.i"
 	@echo "... init.s"
+	@echo "... kasjer.o"
+	@echo "... kasjer.i"
+	@echo "... kasjer.s"
 	@echo "... krzeslo.o"
 	@echo "... krzeslo.i"
 	@echo "... krzeslo.s"
@@ -329,6 +380,9 @@ help:
 	@echo "... pracownik_gora.o"
 	@echo "... pracownik_gora.i"
 	@echo "... pracownik_gora.s"
+	@echo "... turysta.o"
+	@echo "... turysta.i"
+	@echo "... turysta.s"
 .PHONY : help
 
 

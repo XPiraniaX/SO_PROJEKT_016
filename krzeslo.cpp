@@ -5,7 +5,7 @@ void sigusrObsluga(int){}
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
-        cerr << "[krzeslo] Podaj id krzesla w argumencie!\n";
+        blad("[krzeslo] Podaj id krzesla w argumencie!");
         return 1;
     }
     int kIdx = atoi(argv[1]);
@@ -71,8 +71,8 @@ int main(int argc, char* argv[])
         }
 
         //oczekiwanie na start jazdy
-        Komunikat msg;
-        if (msgrcv(msgIdWyciag, &msg, sizeof(Komunikat)-sizeof(long), 100 + kIdx, 0) == -1) {
+        msgWyciag msg;
+        if (msgrcv(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 100 + kIdx, 0) == -1) {
             if (errno == EINTR) {
                 sem_P(semIdStacja);
                 endSim = infoStacja->koniecSymulacji;
@@ -100,16 +100,19 @@ int main(int argc, char* argv[])
         sleep(40);
 
         //komunikat na górze
-        Komunikat msg2;
+        msgWyciag msg2;
         msg2.mtype = 200 + kIdx;
         msg2.nrKrzesla = kIdx;
         msg2.liczbaOsob= ileOsob;
-        msgsnd(msgIdWyciag, &msg2, sizeof(Komunikat)-sizeof(long), 0);
+        if (msgsnd(msgIdWyciag, &msg2, sizeof(msgWyciag)-sizeof(long), 0)==-1){
+            blad("[Krzeslo] msgsnd pracownik gorna stacja error");
+            return 1;
+        }
 
         //oczekiwanie na wracaj
-        Komunikat msg3;
-        if(msgrcv(msgIdWyciag, &msg3, sizeof(Komunikat)-sizeof(long), 300+kIdx, 0) == -1){
-            blad("[krzeslo] msgrcv return");
+        msgWyciag msg3;
+        if(msgrcv(msgIdWyciag, &msg3, sizeof(msgWyciag)-sizeof(long), 300+kIdx, 0) == -1){
+            blad("[krzeslo] msgrcv gorna stacja  return");
             sleep(1);
             continue;
         }

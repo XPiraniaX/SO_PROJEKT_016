@@ -28,8 +28,12 @@ static const char* SCIEZKA_KLUCZA_WYCIAG = "./tmp/wyciag";
 static const int   KLUCZ_PROJ_WYCIAG     = 23;
 static const char* SCIEZKA_KLUCZA_BRAMKI = "./tmp/bramki";
 static const int   KLUCZ_PROJ_BRAMKI     = 19;
+static const char* SCIEZKA_KLUCZA_KASJER = "./tmp/kasjer";
+static const int   KLUCZ_PROJ_KASJER     = 48;
 
-static const int LICZBA_NARCIARZY   = 20;
+
+static const int ILOSC_TURYSTOW_NA_OTWARCIU = 100;
+static const int CZESTOTLIWOSC_TURYSTOW = 5; // w sekunach
 static const int DLUGOSC_SYMULACJI = 20;
 
 inline void blad(const char* txt) {
@@ -56,12 +60,16 @@ struct BramkiInfo{
     int liczbaNarciarzyWKolejce;
 };
 
-struct Komunikat {
+struct msgWyciag {
     long mtype;
     int nrKrzesla;
     int liczbaOsob;
 };
 
+struct msgKasjer {
+    long mtype;
+    int liczbaZjazdow;
+};
 
 union semun {
     int val;

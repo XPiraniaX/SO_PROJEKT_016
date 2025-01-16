@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "pracownik_gora"
+			"path" : "narciarz"
 		}
 	],
 	"backtrace" : 1,
@@ -24,7 +24,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 18,
+				"line" : 22,
 				"parent" : 0
 			}
 		]
@@ -53,7 +53,7 @@
 			]
 		}
 	],
-	"id" : "pracownik_gora::@6890427a1f51a3e7e1df",
+	"id" : "narciarz::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -69,8 +69,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "pracownik_gora",
-	"nameOnDisk" : "pracownik_gora",
+	"name" : "narciarz",
+	"nameOnDisk" : "narciarz",
 	"paths" : 
 	{
 		"build" : ".",
@@ -98,7 +98,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "pracownik_gora.cpp",
+			"path" : "narciarz.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

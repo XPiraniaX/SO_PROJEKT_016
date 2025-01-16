@@ -1,7 +1,5 @@
 #include "common.h"
 
-
-
 int main()
 {
     //klucze ipc
@@ -85,12 +83,13 @@ int main()
                 cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1) << " z " << ileDoZabrania << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
                 sem_V(semIdWyciag);
                 sem_V(semIdBramki);
+
                 //wyslanie start do krzesla
-                Komunikat msg;
+                msgWyciag msg;
                 msg.mtype = 100 + wolneIdx;
                 msg.nrKrzesla = wolneIdx;
                 msg.liczbaOsob= ileDoZabrania;
-                if (msgsnd(msgIdWyciag, &msg, sizeof(Komunikat)-sizeof(long), 0) == -1) {
+                if (msgsnd(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 0) == -1) {
                     blad("[Pracownik Dolna Stacja] msgsnd krzeslo error");
                 }
                 continue;

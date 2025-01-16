@@ -47,35 +47,35 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "init::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-init-Debug-b189ce3e12faa966c652.json",
+					"jsonFile" : "target-init-Debug-cf30642d30e228768fcd.json",
 					"name" : "init",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "krzeslo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-krzeslo-Debug-4507a6f8f325255f4cf7.json",
+					"jsonFile" : "target-krzeslo-Debug-ca083295ada8ab03ff68.json",
 					"name" : "krzeslo",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "narciarz::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-narciarz-Debug-3afa88d5cfc8a01461d7.json",
+					"jsonFile" : "target-narciarz-Debug-71aeb46fad294b909877.json",
 					"name" : "narciarz",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "pracownik_dol::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-pracownik_dol-Debug-5f0d940b93a8df187dac.json",
+					"jsonFile" : "target-pracownik_dol-Debug-76c6eabd3aa21db92565.json",
 					"name" : "pracownik_dol",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "pracownik_gora::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-pracownik_gora-Debug-b6c92ea710b592bad25c.json",
+					"jsonFile" : "target-pracownik_gora-Debug-003d41824edb5bab92d7.json",
 					"name" : "pracownik_gora",
 					"projectIndex" : 0
 				}

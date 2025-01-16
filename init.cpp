@@ -18,6 +18,9 @@ void sigintObsluga(int) {
 }
 
 void Zegar() {
+
+    cout << "[Zegar] Otwieramy Stacje"<<endl;
+
     int czasZegara=0;
     while (czasZegara < DLUGOSC_SYMULACJI){
         if(koniecZegara) return;
@@ -29,7 +32,7 @@ void Zegar() {
     g_infoStacja->koniecSymulacji = true;
     sem_V(g_semIdStacja);
 
-    cout << "[Zegar] Upłynęło " << DLUGOSC_SYMULACJI << "s, zamykamy stacje"<<endl;
+    cout << "[Zegar] Zamykamy stacje"<<endl;
 
     waitpid(g_pidPracownikGora,nullptr,0);
 
@@ -55,6 +58,9 @@ int main()
 
     key_t keyBramki = ftok(SCIEZKA_KLUCZA_BRAMKI, KLUCZ_PROJ_BRAMKI);
     if(keyBramki == -1) blad("init ftok bramek");
+
+    key_t keyKasjer = ftok(SCIEZKA_KLUCZA_KASJER, KLUCZ_PROJ_KASJER);
+    if (keyKasjer == -1) blad("init ftok kasjer");
 
     //tworzenie pamieci dzielonej
     int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), IPC_CREAT | 0600);
@@ -106,9 +112,18 @@ int main()
     argBramki.val = 1;
     if (semctl(semIdBramki, 0, SETVAL, argBramki) == -1) blad("init semctl bramek");
 
+    int semIdKasjer = semget(keyKasjer, 1, IPC_CREAT | 0600);
+    if (semIdKasjer == -1) blad("init semget kasjera");
+    semun argKasjer;
+    argKasjer.val = 1;
+    if (semctl(semIdKasjer, 0, SETVAL, argKasjer) == -1) blad("init semctl SETVAL kasjera");
+
     //tworzenie i dolaczanie do kolejki komunikatow
     int msgIdWyciag = msgget(keyWyciag, IPC_CREAT | 0600);
     if (msgIdWyciag == -1) blad("init msgget wyciag");
+
+    int msgIdKasjer = msgget(keyKasjer, IPC_CREAT | 0600);
+    if (msgIdKasjer == -1) blad("init msgget kasjer");
 
     //rejestracja handlera
     g_infoStacja = infoStacja;
@@ -117,16 +132,22 @@ int main()
     g_semIdWyciag = semIdWyciag;
     signal(SIGINT, sigintObsluga);
 
+    srand(time(NULL));
+
     thread timerThread(Zegar);
 
     cout << "[INIT] Zasoby IPC utworzone" << endl;
 
     //uruchamianie procesow
+    int sumaProcesow = 0;
+
     pid_t pd = fork();
     if (pd == 0) {
         execlp("./pracownik_dol", "pracownik_dol", nullptr);
         blad("execlp pracownik_dol");
     }
+    sumaProcesow++;
+
     pid_t pg = fork();
     if (pg == 0) {
         execlp("./pracownik_gora", "pracownik_gora", nullptr);
@@ -134,6 +155,15 @@ int main()
     }else{
         g_pidPracownikGora=pg;
     }
+    sumaProcesow++;
+
+    pid_t pk = fork();
+    if (pk == 0) {
+        execlp("./kasjer", "kasjer", nullptr);
+        blad("execlp kasjer");
+    }
+    sumaProcesow++;
+
 
     for(int i=0; i<80; i++){
         pid_t pk = fork();
@@ -146,17 +176,31 @@ int main()
             g_pidKrzesel.push_back(pk);
         }
     }
+    sumaProcesow += 80;
 
-    for(int i=0; i<LICZBA_NARCIARZY; i++){
-        pid_t pn = fork();
-        if(pn == 0){
-            execlp("./narciarz", "narciarz", nullptr);
-            blad("execlp narciarz");
+    for(int i=0; i<ILOSC_TURYSTOW_NA_OTWARCIU; i++){
+        pid_t pt = fork();
+        if(pt == 0){
+            execlp("./turysta", "turysta", nullptr);
+            blad("execlp turysta");
         }
+    }
+    sumaProcesow += ILOSC_TURYSTOW_NA_OTWARCIU;
+
+    while(true){
+        if (infoStacja->koniecSymulacji == true) break;
+        sleep(CZESTOTLIWOSC_TURYSTOW);
+        pid_t pt = fork();
+        if(pt == 0){
+            execlp("./turysta", "turysta", nullptr);
+            blad("execlp turysta");
+        }
+        sumaProcesow++;
     }
 
     //oczekiwanie na zakonczenie procesow
-    for(int i = 0; i < 2 + 80 + LICZBA_NARCIARZY; i++){
+
+    for(int i = 0; i < sumaProcesow; i++){
         wait(nullptr);
     }
 
@@ -169,9 +213,10 @@ int main()
     semctl(semIdStacja, 0, IPC_RMID);
     semctl(semIdWyciag, 0, IPC_RMID);
     semctl(semIdBramki, 0, IPC_RMID);
+    semctl(semIdKasjer, 0, IPC_RMID);
 
     msgctl(msgIdWyciag, IPC_RMID, nullptr);
-
+    msgctl(msgIdKasjer, IPC_RMID, nullptr);
 
     //odlaczenie pamieci
     shmdt(infoStacja);
