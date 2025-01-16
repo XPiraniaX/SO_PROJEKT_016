@@ -2,6 +2,8 @@
 
 static StacjaInfo* g_info = nullptr;
 static int g_semId=-1;
+static vector<pid_t> g_pidKrzesel;
+static pid_t g_pidPracownikGora;
 
 void sigintObsluga(int) {
     if (g_info) {
@@ -11,6 +13,27 @@ void sigintObsluga(int) {
     }
 }
 
+void Zegar() {
+    this_thread::sleep_for(chrono::seconds(DLUGOSC_SYMULACJI));
+
+    sem_P(g_semId);
+    g_info->koniecSymulacji = true;
+    sem_V(g_semId);
+
+    cout << "[Zegar] Upłynęło " << DLUGOSC_SYMULACJI << "s, zamykamy stacje"<<endl;
+
+    waitpid(g_pidPracownikGora,nullptr,0);
+
+    int i=0;
+    for (pid_t pid : g_pidKrzesel) {
+        sem_P(g_semId);
+        if (g_info->stanKrzesla[i] != 1 ){
+            kill(pid, SIGUSR1);
+        }
+        sem_V(g_semId);
+        i++;
+    }
+}
 
 int main()
 {
@@ -36,14 +59,14 @@ int main()
         info->ileOsobNaKrzesle[i] = 0;
     }
 
-    //tworzenie semafora
+    //tworzenie i podlaczenie semafora
     int semId = semget(key, 1, IPC_CREAT | 0600);
     if (semId == -1) blad("init semget");
     semun arg;
     arg.val = 1;
     if (semctl(semId, 0, SETVAL, arg) == -1) blad("init semctl SETVAL");
 
-    //tworzenie kolejki komunikatow
+    //tworzenie i dolaczanie do kolejki komunikatow
     int msgId = msgget(key, IPC_CREAT | 0600);
     if (msgId == -1) blad("init msgget");
 
@@ -51,6 +74,8 @@ int main()
     g_info = info;
     g_semId = semId;
     signal(SIGINT, sigintObsluga);
+
+    thread timerThread(Zegar);
 
     cout << "[INIT] Zasoby IPC utworzone" << endl;
 
@@ -64,15 +89,19 @@ int main()
     if (pg == 0) {
         execlp("./pracownik_gora", "pracownik_gora", nullptr);
         blad("execlp pracownik_gora");
+    }else{
+        g_pidPracownikGora=pg;
     }
 
     for(int i=0; i<80; i++){
         pid_t pk = fork();
-        if(pk == 0) {
+        if(pk == 0){
             char buf[16];
             sprintf(buf, "%d", i);
             execlp("./krzeslo", "krzeslo", buf, nullptr);
             blad("execlp krzeslo");
+        }else{
+            g_pidKrzesel.push_back(pk);
         }
     }
 
@@ -95,8 +124,14 @@ int main()
     semctl(semId, 0, IPC_RMID);
     msgctl(msgId, IPC_RMID, nullptr);
 
+
     //odlaczenie pamieci
     shmdt(info);
+
+    if (timerThread.joinable()) {
+        timerThread.join();
+    }
+
     cout << "[INIT] Koniec" << endl;
     return 0;
 }

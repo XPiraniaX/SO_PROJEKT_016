@@ -6,14 +6,17 @@ int main()
     key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
     if (key == -1) blad("pracownik_dol ftok");
 
+    //dolaczanie do pamieci dzielonej
     int shmId = shmget(key, sizeof(StacjaInfo), 0);
     if (shmId == -1) blad("pracownik_dol shmget");
     StacjaInfo* info = (StacjaInfo*)shmat(shmId, nullptr, 0);
     if (info == (void*)-1) blad("pracownik_dol shmat");
 
+    //podlaczanie do semafora
     int semId = semget(key, 1, 0);
     if (semId == -1) blad("pracownik_dol semget");
 
+    //dolaczanie do kolejki komunikatow
     int msgId = msgget(key, 0);
     if (msgId == -1) blad("pracownik_dol msgget");
 
@@ -24,9 +27,10 @@ int main()
 
         sem_P(semId);
 
-        if (info->koniecSymulacji)
+        if (info->koniecSymulacji && info->liczbaNarciarzyWKolejce == 0)
         {
             sem_V(semId);
+            cout << "[Pracownik Dolna Stacja] Koniec" << endl;
             break;
         }
 
@@ -53,6 +57,7 @@ int main()
                 info->liczbaNarciarzyWTrasie += ileDoZabrania;
                 info->krzeslaWTrasie++;
                 cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1) << " z " << ileDoZabrania << " osobami. wTrasie=" << info->krzeslaWTrasie << endl;
+
                 //wyslanie start do krzesla
                 Komunikat msg;
                 msg.mtype = 100 + wolneIdx;
@@ -66,7 +71,7 @@ int main()
         sem_V(semId);
     }
 
+    //odlaczenie pamieci
     shmdt(info);
-    cout << "[Pracownik Dolna Stacja] Koniec" << endl;
     return 0;
 }

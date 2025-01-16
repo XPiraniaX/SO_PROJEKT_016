@@ -16,15 +16,17 @@
 #include <errno.h>
 #include <algorithm>
 #include <signal.h>
-
+#include <chrono>
+#include <thread>
+#include <vector>
 
 using namespace std;
 
 static const char* SCIEZKA_KLUCZA = "./tmp";
 static const int   KLUCZ_PROJ     = 65;
 
-static const int LICZBA_NARCIARZY   = 20;
-
+static const int LICZBA_NARCIARZY   = 300;
+static const int DLUGOSC_SYMULACJI = 20;
 
 struct StacjaInfo {
 

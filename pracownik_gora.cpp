@@ -6,14 +6,17 @@ int main()
     key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
     if (key == -1) blad("pracownik_gora ftok");
 
+    //dolaczanie do pamieci dzielonej
     int shmId = shmget(key, sizeof(StacjaInfo), 0);
     if (shmId == -1) blad("pracownik_gora shmget");
     StacjaInfo* info = (StacjaInfo*)shmat(shmId, nullptr, 0);
     if (info == (void*)-1) blad("pracownik_gora shmat");
 
+    //podlaczanie do semafora
     int semId = semget(key, 1, 0);
     if (semId == -1) blad("pracownik_gora semget");
 
+    //dolaczanie do kolejki komunikatow
     int msgId = msgget(key, 0);
     if (msgId == -1) blad("pracownik_gora msgget");
 
@@ -25,14 +28,14 @@ int main()
         bool endSim = info->koniecSymulacji;
         sem_V(semId);
 
-        if (endSim){
+        if (endSim && info->krzeslaWTrasie==0){
             cout << "[Pracownik Gorna Stacja] Koniec" << endl;
             break;
         }
         //oczekiwanie na komunikat krzesla
         Komunikat msg;
         if (msgrcv(msgId, &msg, sizeof(Komunikat)-sizeof(long), 0, 0) == -1) {
-            perror("[Pracownik Gorna Stacja] msgrcv");
+            blad("[Pracownik Gorna Stacja] msgrcv");
             sleep(1);
             continue;
         }
@@ -56,6 +59,7 @@ int main()
         }
     }
 
+    //odlaczenie pamieci
     shmdt(info);
     return 0;
 }

@@ -8,11 +8,13 @@ int main(int argc, char* argv[])
     key_t key = ftok(SCIEZKA_KLUCZA, KLUCZ_PROJ);
     if (key == -1) blad("narciarz ftok");
 
+    //dolaczanie do pamieci dzielonej
     int shmId = shmget(key, sizeof(StacjaInfo), 0);
     if (shmId == -1) blad("narciarz shmget");
     StacjaInfo* info = (StacjaInfo*)shmat(shmId, nullptr, 0);
     if (info == (void*)-1) blad("narciarz shmat");
 
+    //podlaczanie do semafora
     int semId = semget(key, 1, 0);
     if (semId == -1) blad("narciarz semget");
 
@@ -39,6 +41,7 @@ int main(int argc, char* argv[])
 
     //cout << "[Narciarz PID=" << getpid() << "] Ustawiam sie w kolejce. (razem=" << n << ")" << endl;
 
+    //odlaczenie pamieci
     shmdt(info);
     return 0;
 }
