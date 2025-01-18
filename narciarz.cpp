@@ -2,22 +2,22 @@
 
 int main(int argc, char* argv[])
 {
-    if (argc < 2) {
-        blad("[narciarz] Brak argumentu: liczba zjazdow!\n");
+    if (argc < 3) {
+        blad("[narciarz] Brak argumentow: liczba zjazdow/id narciarza!");
         return 1;
     }
 
     int zjazdy = atoi(argv[1]);
-
+    int nId = atoi(argv[2]);
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
-    if (keyStacja == -1) blad("pracownik_dol ftok stacja");
+    if (keyStacja == -1) blad("narciarz ftok stacja");
 
     key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
-    if (keyWyciag == -1) blad("pracownik_dol ftok wyciag");
+    if (keyWyciag == -1) blad("narciarz ftok wyciag");
 
     key_t keyBramki = ftok(SCIEZKA_KLUCZA_BRAMKI, KLUCZ_PROJ_BRAMKI);
-    if (keyBramki == -1) blad("pracownik_dol ftok bramki");
+    if (keyBramki == -1) blad("narciarz ftok bramki");
 
     //dolaczanie do pamieci dzielonej
     int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
@@ -39,52 +39,81 @@ int main(int argc, char* argv[])
     int semIdStacja = semget(keyStacja, 1, 0);
     if (semIdStacja == -1) blad("narciarz semget stacja");
 
-    int semIdWyciag = semget(keyWyciag, 1, 0);
-    if (semIdWyciag == -1) blad("narciarz semget wyciag");
-
     int semIdBramki = semget(keyBramki, 1, 0);
     if (semIdBramki == -1) blad("narciarz semget bramki");
 
+    int semIdBramkiWejscie = semget(keyBramki, 1, 0);
+    if (semIdBramkiWejscie == -1) blad("narciarz semget bramki");
 
-    cout << "[Narciarz] START z " << zjazdy << " zjazdami" << endl;
+    //dolaczanie do kolejki komunikatow
+    int msgIdNarciarz = msgget(keyWyciag, 0);
+    if (msgIdNarciarz == -1) blad("narciarz msgget narciarz");
+
+    cout << "[Narciarz #" << (nId+1) << "] START z " << zjazdy << " zjazdami" << endl;
+
     while(zjazdy > 0) {
 
-        sem_P(semIdBramki);
-        if (infoBramki->liczbaNarciarzyWKolejce < 100) {
-            infoBramki->liczbaNarciarzyWKolejce++;
-            sem_V(semIdBramki);
+        sem_P(semIdStacja);
+        bool endSim = infoStacja->koniecSymulacji;
+        sem_V(semIdStacja);
 
-            cout << "[Narciarz] Wchodze przez bramki. Zostalo zjazdow=" << zjazdy << endl;
-            zjazdy--;
-        } else {
+        if (endSim){
+            cout << "[Narciarz #" << (nId+1) << "] KONIEC" << endl;
+            shmdt(infoStacja);
+            shmdt(infoWyciag);
+            shmdt(infoBramki);
+            return 0;
+        }
+
+        sem_P(semIdBramkiWejscie);
+        sem_P(semIdBramki);
+        if (czyKolejkaPelna(infoBramki)){
             sem_V(semIdBramki);
-            cout << "[Narciarz] Za duza kolejka (>=100), czekam..." << endl;
-            sleep(3);
+            cout << "[Narciarz #" << (nId+1) << "] Kolejka pelna, próbuje znowu za 0.1s" << endl;
+            sleep(0.1);
             continue;
         }
 
-        // 2. Ustawiamy się w kolejce do wyciagu (Twoja dotychczasowa logika - np.
-        // sem / kolejka ?). Dla uproszczenia sleep(1).
-        sleep(1);
-
-        // 3. czekamy na krzeslo -> 40s jazdy w gore
-        std::cout << "[Narciarz] Jade w gore (40s)...\n";
-        sleep(40);
-        std::cout << "[Narciarz] Jestem na gorze.\n";
-
-        // 4. zjezdzam w dol 20s
-        std::cout << "[Narciarz] Zjezdzam w dol (20s)...\n";
-        sleep(20);
-
-        // 5. Wychodze z bramek (jak wracam na dol, moge zmniejszyc infoBramki->liczbaNarciarzyWKolejce)
-        sem_P(semIdBramki);
-        if (infoBramki->liczbaNarciarzyWKolejce > 0)
-            infoBramki->liczbaNarciarzyWKolejce--;
+        pushNarciarz(infoBramki,nId);
+        zjazdy--;
+        cout << "[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki" << endl;
         sem_V(semIdBramki);
+        sem_V(semIdBramkiWejscie);
+
+        //oczekiwanie na wysiadaj
+        msgNarciarz msg1;
+        if (msgrcv(msgIdNarciarz, &msg1, sizeof(msgNarciarz)-sizeof(long), 1000+nId,0)==-1){
+            blad("[Narciarz] msgrcv wysiadaj error");
+            break;
+        }
+        cout << "[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam" << endl;
+
+        sem_P(semIdStacja);
+        endSim = infoStacja->koniecSymulacji;
+        sem_V(semIdStacja);
+
+        if (endSim){
+            //symulacja ostatniego zjazdu
+            sleep(5);
+
+            cout << "[Narciarz #" << (nId+1) << "] Zjechałem, idę do domu" << endl;
+            cout << "[Narciarz #" << (nId+1) << "] KONIEC" << endl;
+            shmdt(infoStacja);
+            shmdt(infoWyciag);
+            shmdt(infoBramki);
+            return 0;
+        }
+        else{
+            //symulacja zjazdu
+            sleep(5);
+
+            cout << "[Narciarz #" << (nId+1) << "] Zjechałem, wracam na stacje" << endl;
+
+            sleep(5);
+        }
     }
 
-    // Gdy zjazdy=0, koniec
-    std::cout << "[Narciarz] Skończyłem wszystkie zjazdy -> KONIEC.\n";
+    cout << "[Narciarz #"<< (nId+1) << "] Skończyłem wszystkie zjazdy KONIEC" << endl;
 
     //odlaczenie pamieci
     shmdt(infoStacja);

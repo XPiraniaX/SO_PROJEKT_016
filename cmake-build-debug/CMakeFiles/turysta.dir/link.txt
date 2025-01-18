@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/turysta.dir/link.d CMakeFiles/turysta.dir/turysta.cpp.o -o turysta

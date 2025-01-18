@@ -44,6 +44,13 @@ int main()
 
     cout << "[Pracownik Dolna Stacja] START" << endl;
 
+    while (true)
+    {
+        sem_P(semIdBramki);
+        if (infoBramki->liczbaNarciarzyWKolejce>0) break;
+        sem_V(semIdBramki);
+    }
+
     while(true) {
         sleep(1);
 
@@ -53,43 +60,48 @@ int main()
         {
             sem_V(semIdStacja);
             sem_V(semIdBramki);
-            cout << "[Pracownik Dolna Stacja] Koniec" << endl;
+            cout << "[Pracownik Dolna Stacja] KONIEC" << endl;
             break;
         }
         sem_V(semIdStacja);
-        sem_V(semIdWyciag);
-        if (infoBramki->liczbaNarciarzyWKolejce == 0 && infoWyciag->liczbaNarciarzyWTrasie == 0) {
-            sem_V(semIdWyciag);
-            sem_V(semIdBramki);
-            sleep(1);
-            continue;
-        }
+        sem_P(semIdWyciag);
 
         if (infoWyciag->krzeslaWTrasie < 40) {
-            int wolneIdx = -1;
+            int wolnekId = -1;
             for (int i=0; i<80; i++){
                 if (infoWyciag->stanKrzesla[i] == 0) {
-                    wolneIdx = i;
+                    wolnekId = i;
                     break;
                 }
             }
-            if (wolneIdx != -1) {
+            if (wolnekId != -1) {
+
                 int ileDoZabrania = min(3, infoBramki->liczbaNarciarzyWKolejce);
-                infoWyciag->stanKrzesla[wolneIdx] = 1;
-                infoWyciag->ileOsobNaKrzesle[wolneIdx] = ileDoZabrania;
-                infoBramki->liczbaNarciarzyWKolejce -= ileDoZabrania;
-                infoWyciag->liczbaNarciarzyWTrasie += ileDoZabrania;
-                infoWyciag->krzeslaWTrasie++;
-                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolneIdx+1) << " z " << ileDoZabrania << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
-                sem_V(semIdWyciag);
+                vector<int> IdNarciarzy;
+                for (int i=0; i<ileDoZabrania; i++){
+                    int nId = popNarciarz(infoBramki);
+                    if (nId == -1) break;
+                    IdNarciarzy.push_back(nId);
+                }
                 sem_V(semIdBramki);
 
+                infoWyciag->stanKrzesla[wolnekId] = 1;
+                infoWyciag->ileOsobNaKrzesle[wolnekId] = IdNarciarzy.size();
+                infoWyciag->liczbaNarciarzyWTrasie += IdNarciarzy.size();
+                infoWyciag->krzeslaWTrasie++;
+                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolnekId+1) << " z " << IdNarciarzy.size() << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
+                sem_V(semIdWyciag);
+
+
                 //wyslanie start do krzesla
-                msgWyciag msg;
-                msg.mtype = 100 + wolneIdx;
-                msg.nrKrzesla = wolneIdx;
-                msg.liczbaOsob= ileDoZabrania;
-                if (msgsnd(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 0) == -1) {
+                msgWyciag msg2;
+                msg2.mtype = 100 + wolnekId;
+                msg2.nrKrzesla = wolnekId;
+                msg2.liczbaOsob= IdNarciarzy.size();
+                for (int i=0; i<IdNarciarzy.size(); i++){
+                    msg2.idNarciarzyNaKrzesle[i] = IdNarciarzy[i];
+                }
+                if (msgsnd(msgIdWyciag, &msg2, sizeof(msgWyciag)-sizeof(long), 0) == -1) {
                     blad("[Pracownik Dolna Stacja] msgsnd krzeslo error");
                 }
                 continue;

@@ -1,6 +1,6 @@
 #include "common.h"
 
-void sigusrObsluga(int){}
+//void sigusrObsluga(int){}
 
 int main(int argc, char* argv[])
 {
@@ -8,9 +8,9 @@ int main(int argc, char* argv[])
         blad("[krzeslo] Podaj id krzesla w argumencie!");
         return 1;
     }
-    int kIdx = atoi(argv[1]);
+    int kId = atoi(argv[1]);
 
-    signal(SIGUSR1,sigusrObsluga);
+    //signal(SIGUSR1,sigusrObsluga);
 
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     int msgIdWyciag = msgget(keyWyciag, 0);
     if (msgIdWyciag == -1) blad("krzeslo msgget wyciag");
 
-    //cout << "[Krzeslo #" << (kIdx+1) << "] START" << endl;
+    //cout << "[Krzeslo #" << (kId+1) << "] START" << endl;
 
     while(true){
 
@@ -63,23 +63,19 @@ int main(int argc, char* argv[])
         sem_V(semIdBramki);
 
         if (endSim){
-            cout << "[Krzeslo #" << (kIdx + 1) << "] Koniec" << endl;
-            shmdt(infoStacja);
-            shmdt(infoWyciag);
-            shmdt(infoBramki);
-            return 0;
+            break;
         }
 
         //oczekiwanie na start jazdy
-        msgWyciag msg;
-        if (msgrcv(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 100 + kIdx, 0) == -1) {
-            if (errno == EINTR) {
+        msgWyciag msg1;
+        if (msgrcv(msgIdWyciag, &msg1, sizeof(msgWyciag)-sizeof(long), 100 + kId, IPC_NOWAIT) == -1) {
+            if (errno == ENOMSG) {
                 sem_P(semIdStacja);
                 endSim = infoStacja->koniecSymulacji;
                 sem_V(semIdStacja);
 
                 if (endSim) {
-                    cout << "[Krzeslo #" << (kIdx + 1) << "] Koniec (sygnal)" <<endl;
+                    cout << "[Krzeslo #" << (kId + 1) << "] KONIEC" <<endl;
                     shmdt(infoStacja);
                     shmdt(infoWyciag);
                     shmdt(infoBramki);
@@ -93,17 +89,18 @@ int main(int argc, char* argv[])
             }
         }
 
-        int ileOsob = msg.liczbaOsob;
-        cout << "[Krzeslo #" << (kIdx+1) << "] Ruszam w gore z " << ileOsob << " osobami" << endl;
+        int ileOsob = msg1.liczbaOsob;
+        cout << "[Krzeslo #" << (kId+1) << "] Ruszam w gore z " << ileOsob << " osobami" << endl;
 
 
         sleep(40);
 
         //komunikat na górze
         msgWyciag msg2;
-        msg2.mtype = 200 + kIdx;
-        msg2.nrKrzesla = kIdx;
+        msg2.mtype = 200 + kId;
+        msg2.nrKrzesla = kId;
         msg2.liczbaOsob= ileOsob;
+        copy(begin(msg1.idNarciarzyNaKrzesle), end(msg1.idNarciarzyNaKrzesle), begin(msg2.idNarciarzyNaKrzesle));
         if (msgsnd(msgIdWyciag, &msg2, sizeof(msgWyciag)-sizeof(long), 0)==-1){
             blad("[Krzeslo] msgsnd pracownik gorna stacja error");
             return 1;
@@ -111,24 +108,29 @@ int main(int argc, char* argv[])
 
         //oczekiwanie na wracaj
         msgWyciag msg3;
-        if(msgrcv(msgIdWyciag, &msg3, sizeof(msgWyciag)-sizeof(long), 300+kIdx, 0) == -1){
-            blad("[krzeslo] msgrcv gorna stacja  return");
+        if(msgrcv(msgIdWyciag, &msg3, sizeof(msgWyciag)-sizeof(long), 300+kId, 0) == -1){
+            blad("[krzeslo] msgrcv gorna stacja error");
             sleep(1);
             continue;
         }
-        cout << "[Krzeslo #" << (kIdx+1) << "] Wracam na dol" << endl;
+        //cout << "[Krzeslo #" << (kId+1) << "] Wracam na dol" << endl;
 
         sem_P(semIdWyciag);
-        infoWyciag->stanKrzesla[kIdx] = 2;
-        infoWyciag->ileOsobNaKrzesle[kIdx] = 0;
+        infoWyciag->stanKrzesla[kId] = 2;
+        infoWyciag->ileOsobNaKrzesle[kId] = 0;
         sem_V(semIdWyciag);
 
         sleep(40);
 
         sem_P(semIdWyciag);
-        infoWyciag->stanKrzesla[kIdx] = 0;
+        infoWyciag->stanKrzesla[kId] = 0;
         sem_V(semIdWyciag);
 
-        cout << "[Krzeslo #" << (kIdx+1) << "] Jestem wolne na dole" << endl;
+        //cout << "[Krzeslo #" << (kId+1) << "] Jestem wolne na dole" << endl;
     }
+    cout << "[Krzeslo #" << (kId + 1) << "] KONIEC" << endl;
+    shmdt(infoStacja);
+    shmdt(infoWyciag);
+    shmdt(infoBramki);
+    return 0;
 }

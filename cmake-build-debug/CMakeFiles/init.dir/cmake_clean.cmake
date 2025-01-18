@@ -2,10 +2,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/init.dir/link.d"
   "CMakeFiles/init.dir/init.cpp.o"
   "CMakeFiles/init.dir/init.cpp.o.d"
-  "CMakeFiles/init.dir/kasjer.cpp.o"
-  "CMakeFiles/init.dir/kasjer.cpp.o.d"
-  "CMakeFiles/init.dir/turysta.cpp.o"
-  "CMakeFiles/init.dir/turysta.cpp.o.d"
   "init"
   "init.pdb"
 )

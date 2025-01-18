@@ -31,6 +31,9 @@ int main()
     int msgIdWyciag = msgget(keyWyciag, 0);
     if (msgIdWyciag == -1) blad("pracownik_gora msgget wyciag");
 
+    int msgIdNarciarz = msgget(keyWyciag, 0);
+    if (msgIdNarciarz == -1) blad("pracownik_gora msgget narciarz");
+
     cout << "[Pracownik Gorna Stacja] START" << endl;
 
     while(true) {
@@ -42,34 +45,47 @@ int main()
         sem_V(semIdWyciag);
 
         if (endSim){
-            cout << "[Pracownik Gorna Stacja] Koniec" << endl;
+            cout << "[Pracownik Gorna Stacja] KONIEC" << endl;
             break;
         }
         //oczekiwanie na komunikat krzesla
-        msgWyciag msg;
-        if (msgrcv(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 0, 0) == -1) {
+        msgWyciag msg1;
+        if (msgrcv(msgIdWyciag, &msg1, sizeof(msgWyciag)-sizeof(long), 0, 0) == -1) {
             blad("[Pracownik Gorna Stacja] msgrcv krzeslo error");
             sleep(1);
             continue;
         }
 
-        long baseType = msg.mtype - 200;
+        long baseType = msg1.mtype - 200;
         if (baseType >= 0 && baseType < 80) {
-            int kIdx = msg.nrKrzesla;
-            int ile = msg.liczbaOsob;
+            int kId = msg1.nrKrzesla;
+            int ile = msg1.liczbaOsob;
 
             sem_P(semIdWyciag);
             infoWyciag->krzeslaWTrasie--;
-            infoWyciag->liczbaNarciarzyWTrasie -= msg.liczbaOsob;
-            cout << "[Pracownik Gorna Stacja] Krzeslo #" << (kIdx+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
+            infoWyciag->liczbaNarciarzyWTrasie -= ile;
+            cout << "[Pracownik Gorna Stacja] Krzeslo #" << (kId+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
             sem_V(semIdWyciag);
 
+            //wysiadanie narciarzy
+            for (int i=0;i<ile;i++){
+                msgNarciarz msg2;
+                msg2.mtype = 1000+msg1.idNarciarzyNaKrzesle[i];
+                msg2.narciarzId = msg1.idNarciarzyNaKrzesle[i];
+                if(msgsnd(msgIdNarciarz, &msg2, sizeof(msgNarciarz)-sizeof(long), 0) ==-1){
+                    blad("[Pracownik Gorna Stacja] msgsnd narciarz error");
+                    return 1;
+                }
+                cout << "[Pracownik Gorna Stacja] Narciarz #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada" << endl;
+            }
+
             //odeslanie krzesla
-            msgWyciag msg2;
-            msg2.mtype = 300 + kIdx;
-            msg2.nrKrzesla = kIdx;
-            msg2.liczbaOsob= 0;
-            if (msgsnd(msgIdWyciag, &msg2, sizeof(msgWyciag)-sizeof(long), 0)==-1){
+            msgWyciag msg3;
+            msg3.mtype = 300 + kId;
+            msg3.nrKrzesla = kId;
+            msg3.liczbaOsob= 0;
+            memset(msg3.idNarciarzyNaKrzesle, 0, sizeof(msg3.idNarciarzyNaKrzesle));
+            if (msgsnd(msgIdWyciag, &msg3, sizeof(msgWyciag)-sizeof(long), 0)==-1){
                 blad("[Pracownik Gorna Stacja] msgsnd krzeslo error");
                 return 1;
             }

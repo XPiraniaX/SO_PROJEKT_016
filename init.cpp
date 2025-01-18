@@ -6,6 +6,7 @@ static WyciagInfo* g_infoWyciag = nullptr;
 static int g_semIdWyciag=-1;
 static vector<pid_t> g_pidKrzesel;
 static pid_t g_pidPracownikGora;
+static pid_t g_pidKasjera;
 static bool koniecZegara = false;
 
 void sigintObsluga(int) {
@@ -33,7 +34,7 @@ void Zegar() {
     sem_V(g_semIdStacja);
 
     cout << "[Zegar] Zamykamy stacje"<<endl;
-
+    /*
     waitpid(g_pidPracownikGora,nullptr,0);
 
     int i=0;
@@ -45,6 +46,7 @@ void Zegar() {
         sem_V(g_semIdWyciag);
         i++;
     }
+    */
 }
 
 int main()
@@ -92,6 +94,8 @@ int main()
         infoWyciag->ileOsobNaKrzesle[i] = 0;
     }
     infoBramki->liczbaNarciarzyWKolejce = 0;
+    infoBramki->przod=0;
+    infoBramki->tyl=0;
 
     //tworzenie i podlaczenie semaforów
     int semIdStacja = semget(keyStacja, 1, IPC_CREAT | 0600);
@@ -112,6 +116,12 @@ int main()
     argBramki.val = 1;
     if (semctl(semIdBramki, 0, SETVAL, argBramki) == -1) blad("init semctl bramek");
 
+    int semIdBramkiWejscie = semget(keyBramki, 1, IPC_CREAT | 0600);
+    if (semIdBramkiWejscie == -1) blad("init bramek");
+    semun argBramkiWejscie;
+    argBramkiWejscie.val = 4;
+    if (semctl(semIdBramkiWejscie, 0, SETVAL, argBramkiWejscie) == -1) blad("init semctl bramek wejscie");
+
     int semIdKasjer = semget(keyKasjer, 1, IPC_CREAT | 0600);
     if (semIdKasjer == -1) blad("init semget kasjera");
     semun argKasjer;
@@ -125,6 +135,9 @@ int main()
     int msgIdKasjer = msgget(keyKasjer, IPC_CREAT | 0600);
     if (msgIdKasjer == -1) blad("init msgget kasjer");
 
+    int msgIdNarciarz = msgget(keyWyciag, IPC_CREAT | 0600);
+    if (msgIdNarciarz == -1) blad("init msgget narciarz");
+
     //rejestracja handlera
     g_infoStacja = infoStacja;
     g_semIdStacja = semIdStacja;
@@ -134,6 +147,7 @@ int main()
 
     srand(time(NULL));
 
+    //uruchomienie zegara
     thread timerThread(Zegar);
 
     cout << "[INIT] Zasoby IPC utworzone" << endl;
@@ -177,32 +191,38 @@ int main()
         }
     }
     sumaProcesow += 80;
-
-    for(int i=0; i<ILOSC_TURYSTOW_NA_OTWARCIU; i++){
+    int liczbaTurystow;
+    for( liczbaTurystow=0; liczbaTurystow<ILOSC_TURYSTOW_NA_OTWARCIU; liczbaTurystow++){
         pid_t pt = fork();
         if(pt == 0){
-            execlp("./turysta", "turysta", nullptr);
+            char buf[16];
+            sprintf(buf, "%d", liczbaTurystow);
+            execlp("./turysta", "turysta",buf, nullptr);
             blad("execlp turysta");
         }
     }
-    sumaProcesow += ILOSC_TURYSTOW_NA_OTWARCIU;
-
+    /*
     while(true){
+        sem_P(semIdStacja);
         if (infoStacja->koniecSymulacji == true) break;
-        sleep(CZESTOTLIWOSC_TURYSTOW);
+        sem_V(semIdStacja);
+        sleep(rand()%CZESTOTLIWOSC_TURYSTOW);
         pid_t pt = fork();
         if(pt == 0){
-            execlp("./turysta", "turysta", nullptr);
+            char buf[16];
+            sprintf(buf, "%d", liczbaTurystow);
+            execlp("./turysta", "turysta",buf, nullptr);
             blad("execlp turysta");
         }
-        sumaProcesow++;
     }
+    */
+    sumaProcesow+=liczbaTurystow+1;
 
     //oczekiwanie na zakonczenie procesow
-
     for(int i = 0; i < sumaProcesow; i++){
         wait(nullptr);
     }
+
 
     //zwolnienie ipc
     cout << "[INIT] Usuwam zasoby IPC" << endl;
@@ -213,10 +233,12 @@ int main()
     semctl(semIdStacja, 0, IPC_RMID);
     semctl(semIdWyciag, 0, IPC_RMID);
     semctl(semIdBramki, 0, IPC_RMID);
+    semctl(semIdBramkiWejscie, 0, IPC_RMID);
     semctl(semIdKasjer, 0, IPC_RMID);
 
     msgctl(msgIdWyciag, IPC_RMID, nullptr);
     msgctl(msgIdKasjer, IPC_RMID, nullptr);
+    msgctl(msgIdNarciarz, IPC_RMID, nullptr);
 
     //odlaczenie pamieci
     shmdt(infoStacja);

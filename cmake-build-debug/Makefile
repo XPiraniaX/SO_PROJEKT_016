@@ -181,6 +181,32 @@ narciarz/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/narciarz.dir/build.make CMakeFiles/narciarz.dir/build
 .PHONY : narciarz/fast
 
+#=============================================================================
+# Target rules for targets named kasjer
+
+# Build rule for target.
+kasjer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 kasjer
+.PHONY : kasjer
+
+# fast build rule for target.
+kasjer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/build
+.PHONY : kasjer/fast
+
+#=============================================================================
+# Target rules for targets named turysta
+
+# Build rule for target.
+turysta: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 turysta
+.PHONY : turysta
+
+# fast build rule for target.
+turysta/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/turysta.dir/build.make CMakeFiles/turysta.dir/build
+.PHONY : turysta/fast
+
 init.o: init.cpp.o
 .PHONY : init.o
 
@@ -210,7 +236,7 @@ kasjer.o: kasjer.cpp.o
 
 # target to build an object file
 kasjer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/kasjer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/kasjer.cpp.o
 .PHONY : kasjer.cpp.o
 
 kasjer.i: kasjer.cpp.i
@@ -218,7 +244,7 @@ kasjer.i: kasjer.cpp.i
 
 # target to preprocess a source file
 kasjer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/kasjer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/kasjer.cpp.i
 .PHONY : kasjer.cpp.i
 
 kasjer.s: kasjer.cpp.s
@@ -226,7 +252,7 @@ kasjer.s: kasjer.cpp.s
 
 # target to generate assembly for a file
 kasjer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/kasjer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/kasjer.cpp.s
 .PHONY : kasjer.cpp.s
 
 krzeslo.o: krzeslo.cpp.o
@@ -330,7 +356,7 @@ turysta.o: turysta.cpp.o
 
 # target to build an object file
 turysta.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/turysta.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/turysta.dir/build.make CMakeFiles/turysta.dir/turysta.cpp.o
 .PHONY : turysta.cpp.o
 
 turysta.i: turysta.cpp.i
@@ -338,7 +364,7 @@ turysta.i: turysta.cpp.i
 
 # target to preprocess a source file
 turysta.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/turysta.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/turysta.dir/build.make CMakeFiles/turysta.dir/turysta.cpp.i
 .PHONY : turysta.cpp.i
 
 turysta.s: turysta.cpp.s
@@ -346,7 +372,7 @@ turysta.s: turysta.cpp.s
 
 # target to generate assembly for a file
 turysta.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/turysta.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/turysta.dir/build.make CMakeFiles/turysta.dir/turysta.cpp.s
 .PHONY : turysta.cpp.s
 
 # Help Target
@@ -358,10 +384,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... init"
+	@echo "... kasjer"
 	@echo "... krzeslo"
 	@echo "... narciarz"
 	@echo "... pracownik_dol"
 	@echo "... pracownik_gora"
+	@echo "... turysta"
 	@echo "... init.o"
 	@echo "... init.i"
 	@echo "... init.s"

@@ -59,4 +59,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/pracownik_gora.dir/DependInfo.cmake"
   "CMakeFiles/krzeslo.dir/DependInfo.cmake"
   "CMakeFiles/narciarz.dir/DependInfo.cmake"
+  "CMakeFiles/kasjer.dir/DependInfo.cmake"
+  "CMakeFiles/turysta.dir/DependInfo.cmake"
   )

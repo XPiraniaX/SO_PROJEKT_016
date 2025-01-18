@@ -3,10 +3,22 @@
 int main()
 {
     //klucze ipc
+    key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
+    if (keyStacja == -1) blad("kasjer ftok stacja");
+
     key_t keyKasjer = ftok(SCIEZKA_KLUCZA_KASJER, KLUCZ_PROJ_KASJER);
     if (keyKasjer == -1) blad("kasjer ftok kasjer");
 
+    //dolaczanie do pamieci dzielonej
+    int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
+    if (shmIdStacja == -1) blad("kasjer shmget stacja");
+    StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
+    if (infoStacja == (void*)-1) blad("kasjer shmat stacja");
+
     //podlaczanie do semafora
+    int semIdStacja = semget(keyStacja, 1, 0);
+    if (semIdStacja == -1) blad("kasjer semget stacja");
+
     int semIdKasjer = semget(keyKasjer, 1, 0);
     if (semIdKasjer == -1) blad("kasjer semget kasjer");
 
@@ -17,14 +29,42 @@ int main()
     cout << "[Kasjer] START"<<endl;
 
     while(true) {
-        //oczekiwanie na turyste
-        msgKasjer req;
-        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), 1, 0) == -1) {
-            if (errno == EINTR) continue;
-            blad("[Kasjer] msgrcv turysta error");
+
+        sem_P(semIdStacja);
+        bool endSim = infoStacja->koniecSymulacji;
+        sem_V(semIdStacja);
+
+        if (endSim){
+            cout << "[Kasjer] KONIEC" << endl;
             break;
         }
-        //infoStacja->koniecSymulacji //TODO
+
+        //oczekiwanie na turyste
+        msgKasjer req;
+        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), 0, IPC_NOWAIT) == -1) {
+            if (errno == ENOMSG)
+            {
+                sem_P(semIdStacja);
+                bool endSim = infoStacja->koniecSymulacji;
+                sem_V(semIdStacja);
+
+                if (endSim){
+                    cout << "[Kasjer] KONIEC" << endl;
+                    break;
+                }
+                continue;
+            }
+            else if (errno == EINTR){
+                continue;
+            }
+            else{
+                blad("[Kasjer] msgrcv turysta error");
+                break;
+            }
+        }
+
+
+        sleep(1);
 
         //wysylamy bilet do turysty
         msgKasjer resp;
@@ -38,6 +78,6 @@ int main()
         cout << "[Kasjer] Sprzedano bilet na 3 zjazdy" << endl;
     }
 
-    cout << "[Kasjer] KONIEC"<<endl;
+    shmdt(infoStacja);
     return 0;
 }

@@ -3,5 +3,7 @@
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/pracownik_gora.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/krzeslo.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/narciarz.dir
+/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/kasjer.dir
+/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/turysta.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/edit_cache.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/rebuild_cache.dir

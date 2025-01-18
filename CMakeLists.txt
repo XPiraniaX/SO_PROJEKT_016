@@ -11,13 +11,14 @@ set(SOURCES
         pracownik_gora.cpp
         krzeslo.cpp
         narciarz.cpp
+        kasjer.cpp
+        turysta.cpp
 )
 
-add_executable(init init.cpp common.h
-        kasjer.cpp
-        turysta.cpp)
+add_executable(init init.cpp common.h)
 add_executable(pracownik_dol pracownik_dol.cpp common.h)
 add_executable(pracownik_gora pracownik_gora.cpp common.h)
 add_executable(krzeslo krzeslo.cpp common.h)
 add_executable(narciarz narciarz.cpp common.h)
-
+add_executable(kasjer kasjer.cpp common.h)
+add_executable(turysta turysta.cpp common.h)

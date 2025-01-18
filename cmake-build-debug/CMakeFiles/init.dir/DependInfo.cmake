@@ -9,8 +9,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/init.cpp" "CMakeFiles/init.dir/init.cpp.o" "gcc" "CMakeFiles/init.dir/init.cpp.o.d"
-  "/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/kasjer.cpp" "CMakeFiles/init.dir/kasjer.cpp.o" "gcc" "CMakeFiles/init.dir/kasjer.cpp.o.d"
-  "/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/turysta.cpp" "CMakeFiles/init.dir/turysta.cpp.o" "gcc" "CMakeFiles/init.dir/turysta.cpp.o.d"
   "" "init" "gcc" "CMakeFiles/init.dir/link.d"
   )
 
