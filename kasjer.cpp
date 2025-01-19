@@ -1,3 +1,4 @@
+
 #include "common.h"
 
 int main()
@@ -19,9 +20,6 @@ int main()
     int semIdStacja = semget(keyStacja, 1, 0);
     if (semIdStacja == -1) blad("kasjer semget stacja");
 
-    int semIdKasjer = semget(keyKasjer, 1, 0);
-    if (semIdKasjer == -1) blad("kasjer semget kasjer");
-
     //dolaczanie do kolejki komunikatow
     int msgIdKasjer = msgget(keyKasjer, 0);
     if (msgIdKasjer == -1) blad("kasjer msgget kasjer");
@@ -30,19 +28,19 @@ int main()
 
     while(true) {
 
-        sem_P(semIdStacja);
+        /*sem_P(semIdStacja);
         bool endSim = infoStacja->koniecSymulacji;
         sem_V(semIdStacja);
 
         if (endSim){
             cout << "[Kasjer] KONIEC" << endl;
             break;
-        }
+        }*/
 
         //oczekiwanie na turyste
         msgKasjer req;
-        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), 0, IPC_NOWAIT) == -1) {
-            if (errno == ENOMSG)
+        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), 1, 0) == -1) {
+            /*if (errno == ENOMSG)
             {
                 sem_P(semIdStacja);
                 bool endSim = infoStacja->koniecSymulacji;
@@ -53,8 +51,8 @@ int main()
                     break;
                 }
                 continue;
-            }
-            else if (errno == EINTR){
+            }*/
+            if (errno == EINTR){
                 continue;
             }
             else{
@@ -64,7 +62,7 @@ int main()
         }
 
 
-        sleep(1);
+        usleep(100000);
 
         //wysylamy bilet do turysty
         msgKasjer resp;

@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 
     while(zjazdy > 0) {
 
-        sem_P(semIdStacja);
+        /*sem_P(semIdStacja);
         bool endSim = infoStacja->koniecSymulacji;
         sem_V(semIdStacja);
 
@@ -63,14 +63,14 @@ int main(int argc, char* argv[])
             shmdt(infoWyciag);
             shmdt(infoBramki);
             return 0;
-        }
-
+        }*/
         sem_P(semIdBramkiWejscie);
         sem_P(semIdBramki);
         if (czyKolejkaPelna(infoBramki)){
             sem_V(semIdBramki);
+            sem_V(semIdBramkiWejscie);
             cout << "[Narciarz #" << (nId+1) << "] Kolejka pelna, próbuje znowu za 0.1s" << endl;
-            sleep(0.1);
+            sleep(5);
             continue;
         }
 
@@ -88,29 +88,25 @@ int main(int argc, char* argv[])
         }
         cout << "[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam" << endl;
 
-        sem_P(semIdStacja);
+        /*sem_P(semIdStacja);
         endSim = infoStacja->koniecSymulacji;
         sem_V(semIdStacja);
 
         if (endSim){
             //symulacja ostatniego zjazdu
-            sleep(5);
-
-            cout << "[Narciarz #" << (nId+1) << "] Zjechałem, idę do domu" << endl;
-            cout << "[Narciarz #" << (nId+1) << "] KONIEC" << endl;
             shmdt(infoStacja);
             shmdt(infoWyciag);
             shmdt(infoBramki);
             return 0;
         }
-        else{
+        else{*/
             //symulacja zjazdu
-            sleep(5);
+        sleep(5);
 
-            cout << "[Narciarz #" << (nId+1) << "] Zjechałem, wracam na stacje" << endl;
+        cout << "[Narciarz #" << (nId+1) << "] Zjechałem, wracam na stacje" << endl;
 
-            sleep(5);
-        }
+        sleep(5);
+        //}
     }
 
     cout << "[Narciarz #"<< (nId+1) << "] Skończyłem wszystkie zjazdy KONIEC" << endl;

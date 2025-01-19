@@ -26,24 +26,23 @@ int main(int argc, char* argv[])
     if (semIdStacja == -1) blad("turysta semget stacja");
 
     int semIdKasjer = semget(keyKasjer, 1, 0);
-    if (semIdKasjer == -1) blad("turysta semget kasjer");
+    if (semIdKasjer == -1) blad("turysta semget kasjera");
 
     //dolaczanie do kolejki komunikatow
     int msgIdKasjer = msgget(keyKasjer, 0);
     if (msgIdKasjer == -1) blad("turysta msgget kasjer");
 
 
-    sem_P(semIdStacja);
+    /*sem_P(semIdStacja);
     bool endSim = infoStacja->koniecSymulacji;
     sem_V(semIdStacja);
-
     if (endSim){
         cout << "[Turysta #"<< (tId+1) <<"] KONIEC" << endl;
         return 0;
-    }
+    }*/
 
-    sleep(rand()%20 + 1);
 
+    sleep(rand()%25 + 1);
     sem_P(semIdKasjer);
     //wysylamy prosbe do kasjera
     msgKasjer req;
@@ -57,36 +56,39 @@ int main(int argc, char* argv[])
 
     //czekamy na odpowiedz
     msgKasjer resp;
-    while (true){
-        ssize_t tmp = msgrcv(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), 2, IPC_NOWAIT);
-        if (tmp >=0){
+    /*while (true){*/
+    msgrcv(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), 2, 0);
+        /*if (tmp >=0){
             break;
         }
         else if (errno == ENOMSG) {
+
             sem_P(semIdStacja);
             bool endSim = infoStacja->koniecSymulacji;
             sem_V(semIdStacja);
 
             if (endSim) {
-                sem_V(semIdKasjer);
                 cout << "[Turysta #"<< (tId+1) <<"] KONIEC" << endl;
                 shmdt(infoStacja);
                 return 0;
             }
 
             continue;
-        }
-        else if (errno == EINTR) {
+        }*/
+        /*else
+        if (errno == EINTR) {
             continue;
         }
         else {
             blad("[Turysta] msgrcv error");
             break;
         }
-    }
+    }*/
 
-    sem_V(semIdKasjer);
     cout << "[Turysta #"<< (tId+1) <<"] Otrzymano karnet na " << resp.liczbaZjazdow << " zjazdow" << endl;
+    sem_V(semIdKasjer);
+
+    sleep(rand()%1);
 
     pid_t pn = fork();
     if (pn == 0) {

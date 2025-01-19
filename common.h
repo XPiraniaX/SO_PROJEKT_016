@@ -35,9 +35,9 @@ static const int   KLUCZ_PROJ_KASJER     = 48;
 
 //ustawienia stacji
 
-static const int DLUGOSC_SYMULACJI = 20;
-static const int ILOSC_TURYSTOW_NA_OTWARCIU = 20;
-static const int CZESTOTLIWOSC_TURYSTOW = 5; // co  ( 0 - CZESTOTLIWOSC_TURYSTOW ) sekund pojawia sie nowy
+static const int DLUGOSC_SYMULACJI = 2000;
+static const int ILOSC_TURYSTOW_NA_OTWARCIU = 200;
+static const int CZESTOTLIWOSC_TURYSTOW =1; // co  ( 0 - CZESTOTLIWOSC_TURYSTOW ) sekund pojawia sie nowy
 static const int MAX_DLUGOSC_KOLEJKI = 100;
 
 //implementacja jednolitego zarzadzania bledami

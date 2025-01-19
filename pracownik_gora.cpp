@@ -34,20 +34,10 @@ int main()
     int msgIdNarciarz = msgget(keyWyciag, 0);
     if (msgIdNarciarz == -1) blad("pracownik_gora msgget narciarz");
 
-    cout << "[Pracownik Gorna Stacja] START" << endl;
+    cout << "\033[32m[Pracownik Gorna Stacja] START\033[0m" << endl;
 
     while(true) {
-
-        sem_P(semIdStacja);
-        sem_P(semIdWyciag);
-        bool endSim = infoStacja->koniecSymulacji && infoWyciag->krzeslaWTrasie==0;
-        sem_V(semIdStacja);
-        sem_V(semIdWyciag);
-
-        if (endSim){
-            cout << "[Pracownik Gorna Stacja] KONIEC" << endl;
-            break;
-        }
+        sleep(1);
         //oczekiwanie na komunikat krzesla
         msgWyciag msg1;
         if (msgrcv(msgIdWyciag, &msg1, sizeof(msgWyciag)-sizeof(long), 0, 0) == -1) {
@@ -56,16 +46,27 @@ int main()
             continue;
         }
 
+        //sem_P(semIdStacja);
+
+        //bool endSim = infoStacja->koniecSymulacji && infoWyciag->liczbaNarciarzyWTrasie==0;
+
+        /*if (endSim){
+            cout << "\033[32m[Pracownik Gorna Stacja] KONIEC\033[0m" << endl;
+            sem_V(semIdWyciag);
+            sem_V(semIdStacja);
+            break;
+        }*/
+
         long baseType = msg1.mtype - 200;
         if (baseType >= 0 && baseType < 80) {
             int kId = msg1.nrKrzesla;
             int ile = msg1.liczbaOsob;
-
             sem_P(semIdWyciag);
             infoWyciag->krzeslaWTrasie--;
             infoWyciag->liczbaNarciarzyWTrasie -= ile;
-            cout << "[Pracownik Gorna Stacja] Krzeslo #" << (kId+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
+            cout << "\033[32m[Pracownik Gorna Stacja] Krzeslo #" << (kId+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << "\033[0m"<< endl;
             sem_V(semIdWyciag);
+            //sem_V(semIdStacja);
 
             //wysiadanie narciarzy
             for (int i=0;i<ile;i++){
@@ -76,7 +77,7 @@ int main()
                     blad("[Pracownik Gorna Stacja] msgsnd narciarz error");
                     return 1;
                 }
-                cout << "[Pracownik Gorna Stacja] Narciarz #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada" << endl;
+                //cout << "\033[32m[Pracownik Gorna Stacja] Narciarz #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada\033[0m" << endl;
             }
 
             //odeslanie krzesla

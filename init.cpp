@@ -20,7 +20,7 @@ void sigintObsluga(int) {
 
 void Zegar() {
 
-    cout << "[Zegar] Otwieramy Stacje"<<endl;
+    cout << "\033[31m[Zegar] Otwieramy Stacje\033[0m"<<endl;
 
     int czasZegara=0;
     while (czasZegara < DLUGOSC_SYMULACJI){
@@ -33,20 +33,14 @@ void Zegar() {
     g_infoStacja->koniecSymulacji = true;
     sem_V(g_semIdStacja);
 
-    cout << "[Zegar] Zamykamy stacje"<<endl;
-    /*
+    cout << "\033[31m[Zegar] Zamykamy stacje\033[0m"<<endl;
+
     waitpid(g_pidPracownikGora,nullptr,0);
 
-    int i=0;
     for (pid_t pid : g_pidKrzesel) {
-        sem_P(g_semIdWyciag);
-        if (g_infoWyciag->stanKrzesla[i] != 1 ){
-            kill(pid, SIGUSR1);
-        }
-        sem_V(g_semIdWyciag);
-        i++;
+        kill(pid, SIGUSR1);
     }
-    */
+
 }
 
 int main()
@@ -132,9 +126,6 @@ int main()
     int msgIdWyciag = msgget(keyWyciag, IPC_CREAT | 0600);
     if (msgIdWyciag == -1) blad("init msgget wyciag");
 
-    int msgIdKasjer = msgget(keyKasjer, IPC_CREAT | 0600);
-    if (msgIdKasjer == -1) blad("init msgget kasjer");
-
     int msgIdNarciarz = msgget(keyWyciag, IPC_CREAT | 0600);
     if (msgIdNarciarz == -1) blad("init msgget narciarz");
 
@@ -190,7 +181,9 @@ int main()
             g_pidKrzesel.push_back(pk);
         }
     }
+    cout << "\033[32m[Krzesla] START\033[0m" << endl;
     sumaProcesow += 80;
+
     int liczbaTurystow;
     for( liczbaTurystow=0; liczbaTurystow<ILOSC_TURYSTOW_NA_OTWARCIU; liczbaTurystow++){
         pid_t pt = fork();
@@ -201,22 +194,31 @@ int main()
             blad("execlp turysta");
         }
     }
-    /*
-    while(true){
+    sumaProcesow+=ILOSC_TURYSTOW_NA_OTWARCIU;
+
+    while(true) {
         sem_P(semIdStacja);
-        if (infoStacja->koniecSymulacji == true) break;
+        if (infoStacja->koniecSymulacji == true) {
+            sem_V(semIdStacja);
+            break;
+        }
         sem_V(semIdStacja);
-        sleep(rand()%CZESTOTLIWOSC_TURYSTOW);
+
+        int odst = rand() % (CZESTOTLIWOSC_TURYSTOW+1);
+        sleep(odst);
+
         pid_t pt = fork();
-        if(pt == 0){
+        if (pt == 0) {
             char buf[16];
             sprintf(buf, "%d", liczbaTurystow);
-            execlp("./turysta", "turysta",buf, nullptr);
+            execlp("./turysta", "turysta", buf, nullptr);
             blad("execlp turysta");
+        } else if (pt > 0) {
+            sumaProcesow++;
+            liczbaTurystow++;
         }
     }
-    */
-    sumaProcesow+=liczbaTurystow+1;
+
 
     //oczekiwanie na zakonczenie procesow
     for(int i = 0; i < sumaProcesow; i++){
@@ -237,7 +239,6 @@ int main()
     semctl(semIdKasjer, 0, IPC_RMID);
 
     msgctl(msgIdWyciag, IPC_RMID, nullptr);
-    msgctl(msgIdKasjer, IPC_RMID, nullptr);
     msgctl(msgIdNarciarz, IPC_RMID, nullptr);
 
     //odlaczenie pamieci

@@ -42,29 +42,23 @@ int main()
     int msgIdWyciag = msgget(keyWyciag, 0);
     if (msgIdWyciag == -1) blad("pracownik_dol msgget wyciag");
 
-    cout << "[Pracownik Dolna Stacja] START" << endl;
-
-    while (true)
-    {
-        sem_P(semIdBramki);
-        if (infoBramki->liczbaNarciarzyWKolejce>0) break;
-        sem_V(semIdBramki);
-    }
+    cout << "\033[32m[Pracownik Dolna Stacja] START\033[0m" << endl;
 
     while(true) {
         sleep(1);
 
-        sem_P(semIdStacja);
-        sem_P(semIdBramki);
-        if (infoStacja->koniecSymulacji && infoBramki->liczbaNarciarzyWKolejce == 0)
-        {
-            sem_V(semIdStacja);
-            sem_V(semIdBramki);
-            cout << "[Pracownik Dolna Stacja] KONIEC" << endl;
-            break;
-        }
-        sem_V(semIdStacja);
+        //sem_P(semIdStacja);
         sem_P(semIdWyciag);
+        sem_P(semIdBramki);
+        /*if (infoStacja->koniecSymulacji && infoBramki->liczbaNarciarzyWKolejce == 0 && infoWyciag->liczbaNarciarzyWTrasie==0)
+        {
+            sem_V(semIdBramki);
+            sem_V(semIdWyciag);
+            sem_V(semIdStacja);
+            cout << "\033[32m[Pracownik Dolna Stacja] KONIEC\033[0m" << endl;
+            break;
+        }*/
+
 
         if (infoWyciag->krzeslaWTrasie < 40) {
             int wolnekId = -1;
@@ -83,16 +77,14 @@ int main()
                     if (nId == -1) break;
                     IdNarciarzy.push_back(nId);
                 }
-                sem_V(semIdBramki);
 
                 infoWyciag->stanKrzesla[wolnekId] = 1;
                 infoWyciag->ileOsobNaKrzesle[wolnekId] = IdNarciarzy.size();
                 infoWyciag->liczbaNarciarzyWTrasie += IdNarciarzy.size();
                 infoWyciag->krzeslaWTrasie++;
-                cout << "[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolnekId+1) << " z " << IdNarciarzy.size() << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << endl;
+                cout << "\033[32m[Pracownik Dolna Stacja] Wypuszczam krzeslo #" << (wolnekId+1) << " z " << IdNarciarzy.size() << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie <<"\033[0m"<< endl;
+                sem_V(semIdBramki);
                 sem_V(semIdWyciag);
-
-
                 //wyslanie start do krzesla
                 msgWyciag msg2;
                 msg2.mtype = 100 + wolnekId;
@@ -107,8 +99,11 @@ int main()
                 continue;
             }
         }
-        sem_V(semIdWyciag);
-        sem_V(semIdBramki);
+        else{
+            sem_V(semIdBramki);
+            sem_V(semIdWyciag);
+        }
+        //sem_V(semIdStacja);
     }
 
     //odlaczenie pamieci
