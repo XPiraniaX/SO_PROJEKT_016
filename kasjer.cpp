@@ -27,55 +27,40 @@ int main()
     cout << "[Kasjer] START"<<endl;
 
     while(true) {
-
-        /*sem_P(semIdStacja);
-        bool endSim = infoStacja->koniecSymulacji;
-        sem_V(semIdStacja);
-
-        if (endSim){
-            cout << "[Kasjer] KONIEC" << endl;
-            break;
-        }*/
-
-        //oczekiwanie na turyste
         msgKasjer req;
-        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), 1, 0) == -1) {
-            /*if (errno == ENOMSG)
-            {
-                sem_P(semIdStacja);
-                bool endSim = infoStacja->koniecSymulacji;
-                sem_V(semIdStacja);
-
-                if (endSim){
-                    cout << "[Kasjer] KONIEC" << endl;
-                    break;
-                }
-                continue;
-            }*/
-            if (errno == EINTR){
-                continue;
-            }
-            else{
-                blad("[Kasjer] msgrcv turysta error");
-                break;
-            }
+        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), -99, 0) == -1) {
+            if (errno == EINTR) continue;
+            blad("[Kasjer] msgrcv turysta error");
+            break;
         }
+        //sprawdzanie ilosci wiadomosci na msgIdKasjer
+        /*struct msqid_ds buf;
+        if (msgctl(msgIdKasjer, IPC_STAT, &buf) == -1) {
+            perror("msgctl error");
+        } else {
+            cout << "Aktualna liczba wiadomości w kolejce: " << buf.msg_qnum <<", rozmiar wiadomosci " << sizeof(msgKasjer) << endl;
 
-
-        usleep(100000);
-
-        //wysylamy bilet do turysty
-        msgKasjer resp;
-        resp.mtype = 2;
-        resp.liczbaZjazdow = 3;
-        if (msgsnd(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), 0)==-1){
-            blad("[Kasjer] msgsnd tursta error");
-            return 1;
+            cout << "Maksymalna pojemność kolejki: " << buf.msg_qbytes << " bajtów" << endl;
+        }*/
+        if (req.mtype == 99){
+            break;
         }
+        else{
+            usleep(100000);
 
-        cout << "[Kasjer] Sprzedano bilet na 3 zjazdy" << endl;
+            //wysylamy bilet do turysty
+            msgKasjer resp;
+            resp.mtype = 2;
+            resp.liczbaZjazdow = req.liczbaZjazdow;
+            if (msgsnd(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), IPC_NOWAIT)==-1){
+                blad("[Kasjer] msgsnd tursta error");
+                return 1;
+            }
+
+            cout << "[Kasjer] Sprzedano bilet na 3 zjazdy" << endl;
+        }
     }
-
+    cout << "[Kasjer] Zamykam kasy KONIEC"<<endl;
     shmdt(infoStacja);
     return 0;
 }

@@ -6,7 +6,6 @@ static WyciagInfo* g_infoWyciag = nullptr;
 static int g_semIdWyciag=-1;
 static vector<pid_t> g_pidKrzesel;
 static pid_t g_pidPracownikGora;
-static pid_t g_pidKasjera;
 static bool koniecZegara = false;
 
 void sigintObsluga(int) {
@@ -29,18 +28,18 @@ void Zegar() {
         czasZegara++;
     }
 
-    sem_P(g_semIdStacja, 0);
+    sem_P(g_semIdStacja);
     g_infoStacja->koniecSymulacji = true;
     sem_V(g_semIdStacja);
 
     cout << "\033[31m[Zegar] Zamykamy stacje\033[0m"<<endl;
 
-    waitpid(g_pidPracownikGora,nullptr,0);
+    /*waitpid(g_pidPracownikGora,nullptr,0);
 
     for (pid_t pid : g_pidKrzesel) {
         kill(pid, SIGUSR1);
     }
-
+    */
 }
 
 int main()
@@ -67,6 +66,9 @@ int main()
 
     int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), IPC_CREAT | 0600);
     if(shmIdBramki == -1) blad("init shmget bramek");
+
+    int shmIdKasjer = shmget(keyKasjer, sizeof(BramkiInfo), IPC_CREAT | 0600);
+    if(shmIdKasjer == -1) blad("init shmget kasjer");
 
     //dolaczanie do pamieci
     StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
@@ -129,6 +131,8 @@ int main()
     int msgIdNarciarz = msgget(keyWyciag, IPC_CREAT | 0600);
     if (msgIdNarciarz == -1) blad("init msgget narciarz");
 
+    int msgIdKasjer = msgget(keyKasjer, IPC_CREAT | 0600);
+    if (msgIdKasjer == -1) blad("init msgget kasjer");
     //rejestracja handlera
     g_infoStacja = infoStacja;
     g_semIdStacja = semIdStacja;
@@ -194,6 +198,7 @@ int main()
             blad("execlp turysta");
         }
     }
+
     sumaProcesow+=ILOSC_TURYSTOW_NA_OTWARCIU;
 
     while(true) {
@@ -218,13 +223,26 @@ int main()
             liczbaTurystow++;
         }
     }
+    //                                  ZAMYKANIE STACJII
 
+    //oczekiwanie na zakonczenie zegara
+    if (timerThread.joinable()) {
+        timerThread.join();
 
-    //oczekiwanie na zakonczenie procesow
+    }
+
+    //wyslanie komunikatu o zakonczeniu do kasjera
+    msgKasjer koniec;
+    koniec.mtype=99;
+    koniec.liczbaZjazdow = 0;
+    if (msgsnd(msgIdKasjer, &koniec, sizeof(koniec) - sizeof(long), 0) == -1) {
+        blad("[INIT] msgsnd kasjer error");
+    }
+
+    //oczekiwanie na zakonczenie procesow(awaryjne)
     for(int i = 0; i < sumaProcesow; i++){
         wait(nullptr);
     }
-
 
     //zwolnienie ipc
     cout << "[INIT] Usuwam zasoby IPC" << endl;
@@ -240,15 +258,12 @@ int main()
 
     msgctl(msgIdWyciag, IPC_RMID, nullptr);
     msgctl(msgIdNarciarz, IPC_RMID, nullptr);
+    msgctl(msgIdKasjer, IPC_RMID, nullptr);
 
     //odlaczenie pamieci
     shmdt(infoStacja);
     shmdt(infoWyciag);
     shmdt(infoBramki);
-
-    if (timerThread.joinable()) {
-        timerThread.join();
-    }
 
     cout << "[INIT] Koniec" << endl;
     return 0;

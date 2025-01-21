@@ -22,9 +22,6 @@ int main(int argc, char* argv[])
     if (infoStacja == (void*)-1) blad("turysta shmat stacja");
 
     //podlaczanie do semafora
-    int semIdStacja = semget(keyStacja, 1, 0);
-    if (semIdStacja == -1) blad("turysta semget stacja");
-
     int semIdKasjer = semget(keyKasjer, 1, 0);
     if (semIdKasjer == -1) blad("turysta semget kasjera");
 
@@ -33,62 +30,58 @@ int main(int argc, char* argv[])
     if (msgIdKasjer == -1) blad("turysta msgget kasjer");
 
 
-    /*sem_P(semIdStacja);
-    bool endSim = infoStacja->koniecSymulacji;
-    sem_V(semIdStacja);
-    if (endSim){
-        cout << "[Turysta #"<< (tId+1) <<"] KONIEC" << endl;
+    if (infoStacja->koniecSymulacji)
+    {
+        cout << "[Turysta #"<< (tId+1) <<"] Stacja się zamyka, ide do domu KONIEC" << endl;
+        shmdt(infoStacja);
         return 0;
-    }*/
+    }
 
-
-    sleep(rand()%25 + 1);
+    sleep(rand()%25);
     sem_P(semIdKasjer);
     //wysylamy prosbe do kasjera
     msgKasjer req;
     req.mtype = 1;
-    req.liczbaZjazdow = 0;
-    if (msgsnd(msgIdKasjer, &req, sizeof(req) - sizeof(long), 0) == -1) {
-        blad("[Turysta] msgsnd kasjer error");
-        return 1;
+    req.liczbaZjazdow = 3;
+    while (true)
+    {
+        if (infoStacja->koniecSymulacji)
+        {
+            cout << "[Turysta #"<< (tId+1) <<"] Stacja się zamyka, ide do domu KONIEC" << endl;
+            shmdt(infoStacja);
+            return 0;
+        }
+        if (msgsnd(msgIdKasjer, &req, sizeof(req) - sizeof(long), IPC_NOWAIT) == -1) {
+            if (errno == EAGAIN)
+            {
+                sleep(1);
+                continue;
+            }
+            blad("[Turysta] msgsnd kasjer error");
+            return 1;
+        }
+        break;
     }
+
+    if (infoStacja->koniecSymulacji)
+    {
+        cout << "[Turysta #"<< (tId+1) <<"] Stacja się zamyka, ide do domu KONIEC" << endl;
+        sem_V(semIdKasjer);
+        shmdt(infoStacja);
+        return 0;
+    }
+
     cout << "[Turysta #"<< (tId+1) <<"] Wyslano prosbe o karnet do kasjera" << endl;
 
     //czekamy na odpowiedz
     msgKasjer resp;
-    /*while (true){*/
+
     msgrcv(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), 2, 0);
-        /*if (tmp >=0){
-            break;
-        }
-        else if (errno == ENOMSG) {
-
-            sem_P(semIdStacja);
-            bool endSim = infoStacja->koniecSymulacji;
-            sem_V(semIdStacja);
-
-            if (endSim) {
-                cout << "[Turysta #"<< (tId+1) <<"] KONIEC" << endl;
-                shmdt(infoStacja);
-                return 0;
-            }
-
-            continue;
-        }*/
-        /*else
-        if (errno == EINTR) {
-            continue;
-        }
-        else {
-            blad("[Turysta] msgrcv error");
-            break;
-        }
-    }*/
 
     cout << "[Turysta #"<< (tId+1) <<"] Otrzymano karnet na " << resp.liczbaZjazdow << " zjazdow" << endl;
     sem_V(semIdKasjer);
 
-    sleep(rand()%1);
+    sleep(rand()%3);
 
     pid_t pn = fork();
     if (pn == 0) {

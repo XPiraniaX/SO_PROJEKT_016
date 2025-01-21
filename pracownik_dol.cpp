@@ -103,7 +103,6 @@ int main()
             sem_V(semIdBramki);
             sem_V(semIdWyciag);
         }
-        //sem_V(semIdStacja);
     }
 
     //odlaczenie pamieci
