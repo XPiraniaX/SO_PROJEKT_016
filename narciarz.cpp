@@ -7,6 +7,8 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    srand(time(NULL)^getpid());
+
     int zjazdy = atoi(argv[1]);
     int nId = atoi(argv[2]);
     //klucze ipc
@@ -24,11 +26,6 @@ int main(int argc, char* argv[])
     if (shmIdStacja == -1) blad("narciarz shmget stacja");
     StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
     if (infoStacja == (void*)-1) blad("narciarz shmat stacja");
-
-    int shmIdWyciag = shmget(keyWyciag, sizeof(WyciagInfo), 0);
-    if (shmIdWyciag == -1) blad("narciarz shmget wyciag");
-    WyciagInfo* infoWyciag = (WyciagInfo*)shmat(shmIdWyciag, nullptr, 0);
-    if (infoWyciag == (void*)-1) blad("narciarz shmat wyciag");
 
     int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), 0);
     if (shmIdBramki == -1) blad("narciarz shmget bramki");
@@ -56,25 +53,27 @@ int main(int argc, char* argv[])
         sem_P(semIdBramki);
         if (infoStacja->koniecSymulacji)
             {
-            cout << "[Narciarz #" << (nId+1) << "] Bramki nie dzialaja, ide do domu KONIEC" << endl;
+            cout << "\033[37m[Narciarz #" << (nId+1) << "] Bramki nie dzialaja, ide do domu KONIEC\033[0m" << endl;
             sem_V(semIdBramki);
             sem_V(semIdBramkiWejscie);
             shmdt(infoStacja);
-            shmdt(infoWyciag);
             shmdt(infoBramki);
             return 0;
             }
         if (czyKolejkaPelna(infoBramki)){
             sem_V(semIdBramki);
             sem_V(semIdBramkiWejscie);
-            cout << "[Narciarz #" << (nId+1) << "] Kolejka pelna, próbuje znowu za 5s" << endl;
+            cout << "\033[37m[Narciarz #" << (nId+1) << "] Kolejka pelna, próbuje znowu za 5s\033[0m" << endl;
             sleep(5);
             continue;
         }
 
         pushNarciarz(infoBramki,nId);
-        zjazdy--;
-        cout << "[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki" << endl;
+        if (zjazdy==100 || zjazdy ==1000){}
+        else{
+            zjazdy--;
+        }
+        cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[0m" << endl;
         sem_V(semIdBramki);
         sem_V(semIdBramkiWejscie);
 
@@ -82,34 +81,42 @@ int main(int argc, char* argv[])
         msgNarciarz msg1;
         if (msgrcv(msgIdNarciarz, &msg1, sizeof(msgNarciarz)-sizeof(long), 1000+nId,0)==-1){
             blad("[Narciarz] msgrcv wysiadaj error");
-            break;
         }
+
+        int losowaTrasa = rand()%3;
 
         if (infoStacja->koniecSymulacji)
         {
             //symulacja ostatniego zjazdu
-            cout << "[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam " << endl;
+            cout << "\032[34m[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam\033[0m" << endl;
 
             //zjazd
-            sleep(20);
+            sleep(mozliweTrasy[losowaTrasa]);
 
-            cout << "[Narciarz #" << (nId+1) << "] Zjechałem, idę do domu KONIEC" << endl;
+            cout << "\033[35m[Narciarz #" << (nId+1) << "] Zjechałem trasą " << losowaTrasa+1 << ", idę do domu KONIEC\033[0m" << endl;
 
             //odlaczenie pamieci
             shmdt(infoStacja);
-            shmdt(infoWyciag);
             shmdt(infoBramki);
             return 0;
         }
         else{
             //symulacja zjazdu
-            cout << "[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam" << endl;
+            cout << "\033[35m[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam\033[0m" << endl;
 
-            sleep(5);
+            //zjazd
+            sleep(mozliweTrasy[losowaTrasa]);
 
-            cout << "[Narciarz #" << (nId+1) << "] Zjechałem, wracam na stacje" << endl;
+            cout << "\033[35m[Narciarz #" << (nId+1) << "] Zjechalem trasa " << losowaTrasa+1 << ", wracam na stacje\033[0m" << endl;
+            if (zjazdy==100 || zjazdy ==1000){
+                cout << "\033[34m[Narciarz #" << (nId+1) << "] Zjezdzam do woli\033[0m" << endl;
+            }
+            else{
+                cout << "\033[34m[Narciarz #" << (nId+1) << "] Pozostale zjazdy: " << zjazdy << "\033[0m" << endl;
+            }
 
-            sleep(20);
+            //powrot na stacje
+            sleep(10);
         }
     }
 
@@ -117,7 +124,6 @@ int main(int argc, char* argv[])
 
     //odlaczenie pamieci
     shmdt(infoStacja);
-    shmdt(infoWyciag);
     shmdt(infoBramki);
     return 0;
 }

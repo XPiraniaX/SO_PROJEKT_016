@@ -4,9 +4,10 @@ int main(int argc, char* argv[])
 {
     if (argc < 2) {
         blad("[Turysta] Podaj id krzesla w argumencie!");
-        return 1;
     }
     int tId = atoi(argv[1]);
+
+    srand(time(NULL)^getpid());
 
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
@@ -38,11 +39,26 @@ int main(int argc, char* argv[])
     }
 
     sleep(rand()%25);
+
+    if ((rand()%100+1)>SZANSA_NA_BYCIE_NARCIARZEM)
+    {
+        cout << "[Turysta #"<< (tId+1) <<"] Wychodzę, KONIEC" << endl;
+        shmdt(infoStacja);
+        return 0;
+    }
+
     sem_P(semIdKasjer);
+
     //wysylamy prosbe do kasjera
     msgKasjer req;
     req.mtype = 1;
-    req.liczbaZjazdow = 3;
+    req.turystaId = 100+tId;
+    int losowyIndeks = rand() % 4;
+    req.liczbaZjazdow = wyborBiletu[losowyIndeks];
+    req.wiek=0;
+    if ((rand()%100)+1<=SZANSA_NA_ZAKUP_BILETU_VIP){
+        req.liczbaZjazdow = 1000;
+    }
     while (true)
     {
         if (infoStacja->koniecSymulacji)
@@ -51,14 +67,13 @@ int main(int argc, char* argv[])
             shmdt(infoStacja);
             return 0;
         }
-        if (msgsnd(msgIdKasjer, &req, sizeof(req) - sizeof(long), IPC_NOWAIT) == -1) {
+        if (msgsnd(msgIdKasjer, &req, sizeof(msgKasjer) - sizeof(long), IPC_NOWAIT) == -1) {
             if (errno == EAGAIN)
             {
                 sleep(1);
                 continue;
             }
             blad("[Turysta] msgsnd kasjer error");
-            return 1;
         }
         break;
     }
@@ -71,14 +86,26 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    cout << "[Turysta #"<< (tId+1) <<"] Wyslano prosbe o karnet do kasjera" << endl;
+    cout << "\033[34m[Turysta #"<< (tId+1) <<"] Wyslano prosbe o karnet do kasjera\033[0m" << endl;
 
     //czekamy na odpowiedz
     msgKasjer resp;
 
-    msgrcv(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), 2, 0);
+    if (msgrcv(msgIdKasjer, &resp, sizeof(msgKasjer) - sizeof(long), 100+tId, 0)==-1){
+        blad("[Turysta msgrcv kasjer error]");
+    }
 
-    cout << "[Turysta #"<< (tId+1) <<"] Otrzymano karnet na " << resp.liczbaZjazdow << " zjazdow" << endl;
+    if (resp.liczbaZjazdow == 100){
+        cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet calodniowy\033[0m" << endl;
+    }
+    else if (resp.liczbaZjazdow == 1000){
+        cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet VIP\033[33m [V.I.P]\033[0m" << endl;
+    }
+    else{
+        cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet na " << resp.liczbaZjazdow << " zjazdow\033[0m" << endl;
+    }
+
+
     sem_V(semIdKasjer);
 
     sleep(rand()%3);
@@ -92,7 +119,13 @@ int main(int argc, char* argv[])
         execlp("./narciarz", "narciarz", buf1, buf2 ,(char*)nullptr);
         blad("execlp narciarz");
     } else if (pn > 0) {
-        cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z " << resp.liczbaZjazdow << " zjazdami" << endl;
+        if (resp.liczbaZjazdow == 100){
+            cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z biletem calodniowym" << endl;
+        }
+        else{
+            cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z " << resp.liczbaZjazdow << " zjazdami" << endl;
+        }
+
     }
 
     shmdt(infoStacja);

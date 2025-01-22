@@ -19,6 +19,7 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <atomic>
 
 using namespace std;
 
@@ -34,11 +35,23 @@ static const char* SCIEZKA_KLUCZA_KASJER = "./tmp/kasjer";
 static const int   KLUCZ_PROJ_KASJER     = 48;
 
 //ustawienia stacji
+//ilosc,czasy jazdy krzeselka i czestotliwosc z jaką są wypuszczane to integralna czesc systemu wiec nie zostaje dodana jako ustawienie poniewaz negatywnie wplywa na sens działania stacji
+static const int GODZINA_OTWARCIA = 6;
+static const int GODZINA_ZAMKNIECIA = 16;   // w zagarze jedna godzina odpowiada relanej minucie a minuta to prawdziwa sekunda
+static const int DLUGOSC_SYMULACJI = 200;
 
-static const int DLUGOSC_SYMULACJI = 5;
-static const int ILOSC_TURYSTOW_NA_OTWARCIU = 200;
+static const int ILOSC_TURYSTOW_NA_OTWARCIU = 200; // ilosc turystow pojawiajacych sie po paru sekunach przy kasie od otwarcia stacji
 static const int CZESTOTLIWOSC_TURYSTOW =1; // co  ( 0 - CZESTOTLIWOSC_TURYSTOW ) sekund pojawia sie nowy
+static const int SZANSA_NA_BYCIE_NARCIARZEM = 70; //w % od 0-100%
+static const int SZANSA_NA_ZAKUP_BILETU_VIP = 1; //w % od 0-100%
+
 static const int MAX_DLUGOSC_KOLEJKI = 100;
+
+//tablice zasobow losowych
+
+int mozliweTrasy[3]={10,15,20}; //10,15,20 sekund, 3 rozne trasy
+
+static const int wyborBiletu[4]={3,5,10,100}; //3,5,10 zjazdow i na caly dzien
 
 //implementacja jednolitego zarzadzania bledami
 
@@ -112,10 +125,12 @@ struct msgNarciarz {
 
 struct msgKasjer {
     long mtype;
+    int turystaId;
     int liczbaZjazdow;
+    int wiek;
 };
 
-//implementacja jednolitego korzystania z semaforow
+//implementacja jednolitego korzystania z semaforow sem_V
 
 union semun {
     int val;

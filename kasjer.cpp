@@ -1,37 +1,24 @@
-
 #include "common.h"
 
 int main()
 {
     //klucze ipc
-    key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
-    if (keyStacja == -1) blad("kasjer ftok stacja");
-
     key_t keyKasjer = ftok(SCIEZKA_KLUCZA_KASJER, KLUCZ_PROJ_KASJER);
     if (keyKasjer == -1) blad("kasjer ftok kasjer");
-
-    //dolaczanie do pamieci dzielonej
-    int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
-    if (shmIdStacja == -1) blad("kasjer shmget stacja");
-    StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
-    if (infoStacja == (void*)-1) blad("kasjer shmat stacja");
-
-    //podlaczanie do semafora
-    int semIdStacja = semget(keyStacja, 1, 0);
-    if (semIdStacja == -1) blad("kasjer semget stacja");
 
     //dolaczanie do kolejki komunikatow
     int msgIdKasjer = msgget(keyKasjer, 0);
     if (msgIdKasjer == -1) blad("kasjer msgget kasjer");
 
-    cout << "[Kasjer] START"<<endl;
+    cout << "\033[34m[Kasjer] START\033[0m"<<endl;
+
+    srand(time(NULL)^getpid());
 
     while(true) {
         msgKasjer req;
-        if (msgrcv(msgIdKasjer, &req, sizeof(req) - sizeof(long), -99, 0) == -1) {
+        if (msgrcv(msgIdKasjer, &req, sizeof(msgKasjer) - sizeof(long), -99, 0) == -1) {
             if (errno == EINTR) continue;
             blad("[Kasjer] msgrcv turysta error");
-            break;
         }
         //sprawdzanie ilosci wiadomosci na msgIdKasjer
         /*struct msqid_ds buf;
@@ -50,17 +37,24 @@ int main()
 
             //wysylamy bilet do turysty
             msgKasjer resp;
-            resp.mtype = 2;
+            resp.mtype = req.turystaId;
             resp.liczbaZjazdow = req.liczbaZjazdow;
-            if (msgsnd(msgIdKasjer, &resp, sizeof(resp) - sizeof(long), IPC_NOWAIT)==-1){
+            resp.wiek=0;
+            resp.turystaId=0;
+            if (msgsnd(msgIdKasjer, &resp, sizeof(msgKasjer) - sizeof(long), IPC_NOWAIT)==-1){
                 blad("[Kasjer] msgsnd tursta error");
-                return 1;
             }
-
-            cout << "[Kasjer] Sprzedano bilet na 3 zjazdy" << endl;
+            if (resp.liczbaZjazdow == 100){
+                cout << "\033[34m[Kasjer] Sprzedano bilet calodniowy\033[0m" << endl;
+            }
+            else if (resp.liczbaZjazdow == 1000){
+                cout << "\033[34m[Kasjer] Sprzedano bilet VIP\033[0m" << endl;
+            }
+            else{
+                cout << "\033[34m[Kasjer] Sprzedano bilet uprawniajacy do "<< resp.liczbaZjazdow << " zjazdow\033[0m" << endl;
+            }
         }
     }
-    cout << "[Kasjer] Zamykam kasy KONIEC"<<endl;
-    shmdt(infoStacja);
+    cout << "\033[34m[Kasjer] Zamykam kasy KONIEC\033[0m"<<endl;
     return 0;
 }

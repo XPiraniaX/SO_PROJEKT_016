@@ -2,11 +2,7 @@
 
 static StacjaInfo* g_infoStacja = nullptr;
 static int g_semIdStacja=-1;
-static WyciagInfo* g_infoWyciag = nullptr;
-static int g_semIdWyciag=-1;
-static vector<pid_t> g_pidKrzesel;
-static pid_t g_pidPracownikGora;
-static bool koniecZegara = false;
+atomic<bool> koniecZegara(false);
 
 void sigintObsluga(int) {
     if (g_infoStacja) {
@@ -33,13 +29,6 @@ void Zegar() {
     sem_V(g_semIdStacja);
 
     cout << "\033[31m[Zegar] Zamykamy stacje\033[0m"<<endl;
-
-    /*waitpid(g_pidPracownikGora,nullptr,0);
-
-    for (pid_t pid : g_pidKrzesel) {
-        kill(pid, SIGUSR1);
-    }
-    */
 }
 
 int main()
@@ -66,9 +55,6 @@ int main()
 
     int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), IPC_CREAT | 0600);
     if(shmIdBramki == -1) blad("init shmget bramek");
-
-    int shmIdKasjer = shmget(keyKasjer, sizeof(BramkiInfo), IPC_CREAT | 0600);
-    if(shmIdKasjer == -1) blad("init shmget kasjer");
 
     //dolaczanie do pamieci
     StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
@@ -133,11 +119,10 @@ int main()
 
     int msgIdKasjer = msgget(keyKasjer, IPC_CREAT | 0600);
     if (msgIdKasjer == -1) blad("init msgget kasjer");
+
     //rejestracja handlera
     g_infoStacja = infoStacja;
     g_semIdStacja = semIdStacja;
-    g_infoWyciag = infoWyciag;
-    g_semIdWyciag = semIdWyciag;
     signal(SIGINT, sigintObsluga);
 
     srand(time(NULL));
@@ -161,8 +146,6 @@ int main()
     if (pg == 0) {
         execlp("./pracownik_gora", "pracownik_gora", nullptr);
         blad("execlp pracownik_gora");
-    }else{
-        g_pidPracownikGora=pg;
     }
     sumaProcesow++;
 
@@ -173,6 +156,7 @@ int main()
     }
     sumaProcesow++;
 
+    vector<pid_t> pidKrzesel;
 
     for(int i=0; i<80; i++){
         pid_t pk = fork();
@@ -182,12 +166,13 @@ int main()
             execlp("./krzeslo", "krzeslo", buf, nullptr);
             blad("execlp krzeslo");
         }else{
-            g_pidKrzesel.push_back(pk);
+            pidKrzesel.push_back(pk);
         }
     }
     cout << "\033[32m[Krzesla] START\033[0m" << endl;
     sumaProcesow += 80;
 
+    vector<pid_t> pidTurystow;
     int liczbaTurystow;
     for( liczbaTurystow=0; liczbaTurystow<ILOSC_TURYSTOW_NA_OTWARCIU; liczbaTurystow++){
         pid_t pt = fork();
@@ -196,7 +181,10 @@ int main()
             sprintf(buf, "%d", liczbaTurystow);
             execlp("./turysta", "turysta",buf, nullptr);
             blad("execlp turysta");
+        }else if (pt>0){
+            pidTurystow.push_back(pt);
         }
+
     }
 
     sumaProcesow+=ILOSC_TURYSTOW_NA_OTWARCIU;
@@ -210,7 +198,17 @@ int main()
         sem_V(semIdStacja);
 
         int odst = rand() % (CZESTOTLIWOSC_TURYSTOW+1);
-        sleep(odst);
+        int czasSnu=0;
+        while (odst>=czasSnu){
+            sem_P(semIdStacja);
+            if (infoStacja->koniecSymulacji == true) {
+                sem_V(semIdStacja);
+                break;
+            }
+            sem_V(semIdStacja);
+            sleep(1);
+            czasSnu++;
+        }
 
         pid_t pt = fork();
         if (pt == 0) {
@@ -219,30 +217,44 @@ int main()
             execlp("./turysta", "turysta", buf, nullptr);
             blad("execlp turysta");
         } else if (pt > 0) {
+            pidTurystow.push_back(pt);
             sumaProcesow++;
             liczbaTurystow++;
         }
     }
+
     //                                  ZAMYKANIE STACJII
 
     //oczekiwanie na zakonczenie zegara
-    if (timerThread.joinable()) {
-        timerThread.join();
-
-    }
+    timerThread.join();
 
     //wyslanie komunikatu o zakonczeniu do kasjera
-    msgKasjer koniec;
-    koniec.mtype=99;
-    koniec.liczbaZjazdow = 0;
-    if (msgsnd(msgIdKasjer, &koniec, sizeof(koniec) - sizeof(long), 0) == -1) {
+    msgKasjer koniecKasjer;
+    koniecKasjer.mtype=99;
+    if (msgsnd(msgIdKasjer, &koniecKasjer, sizeof(koniecKasjer) - sizeof(long), 0) == -1) {
         blad("[INIT] msgsnd kasjer error");
     }
 
-    //oczekiwanie na zakonczenie procesow(awaryjne)
-    for(int i = 0; i < sumaProcesow; i++){
-        wait(nullptr);
+    //wyslanie komunikatu o zakonczeniu do pracownika_dol
+    msgWyciag koniecPracownicy;
+    koniecPracownicy.mtype=99999;
+    if (msgsnd(msgIdWyciag, &koniecPracownicy, sizeof(koniecPracownicy) - sizeof(long), 0) == -1) {
+        blad("[INIT] msgsnd pracownicy error");
     }
+
+    waitpid(pg,nullptr,0);
+
+    for (pid_t pid : pidKrzesel) {
+        kill(pid, SIGTERM);
+    }
+    cout << "\033[32m[Krzesla] KONIEC\033[0m" << endl;
+
+    for (pid_t pid : pidTurystow) {
+        kill(pid, SIGTERM);
+    }
+
+    //odstep aby kazdy narciarz wyslal komunikat o zjezdzie przed komunikatem o usunieciu zasobów( mozna go usunac tylko poprawia wyglad wyjscia po zakonczeniu programu)
+    sleep(20);
 
     //zwolnienie ipc
     cout << "[INIT] Usuwam zasoby IPC" << endl;

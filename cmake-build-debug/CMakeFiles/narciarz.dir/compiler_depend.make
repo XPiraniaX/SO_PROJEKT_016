@@ -7,11 +7,14 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o: /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
   /usr/include/c++/13/algorithm \
+  /usr/include/c++/13/atomic \
   /usr/include/c++/13/backward/binders.h \
   /usr/include/c++/13/bit \
   /usr/include/c++/13/bits/algorithmfwd.h \
   /usr/include/c++/13/bits/alloc_traits.h \
   /usr/include/c++/13/bits/allocator.h \
+  /usr/include/c++/13/bits/atomic_base.h \
+  /usr/include/c++/13/bits/atomic_lockfree_defines.h \
   /usr/include/c++/13/bits/basic_ios.h \
   /usr/include/c++/13/bits/basic_ios.tcc \
   /usr/include/c++/13/bits/basic_string.h \
@@ -318,9 +321,9 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
 
-/usr/include/pthread.h:
+/usr/include/x86_64-linux-gnu/sys/ipc.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
 /usr/include/c++/13/bits/streambuf.tcc:
 
@@ -376,8 +379,6 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_msqid_ds.h:
 
-/usr/include/x86_64-linux-gnu/sys/ipc.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
 /usr/include/c++/13/cctype:
@@ -420,6 +421,8 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/c++/13/bits/uses_allocator_args.h:
 
+/usr/include/c++/13/bits/atomic_base.h:
+
 /usr/include/c++/13/exception:
 
 /usr/include/c++/13/bits/uses_allocator.h:
@@ -442,12 +445,6 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
-/usr/include/locale.h:
-
-/usr/include/c++/13/bits/utility.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
-
 /usr/include/c++/13/bits/stringfwd.h:
 
 /usr/include/c++/13/bits/this_thread_sleep.h:
@@ -464,13 +461,11 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/sigaction.h:
 
-/usr/include/c++/13/bits/basic_string.h:
-
-/usr/include/c++/13/ios:
-
 /usr/include/c++/13/bits/functexcept.h:
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
+
+/usr/include/c++/13/ios:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
 
@@ -484,13 +479,17 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/c++/13/bits/concept_check.h:
 
-/usr/include/c++/13/algorithm:
-
 /usr/include/c++/13/bits/cxxabi_forced.h:
 
 /usr/include/c++/13/bits/cpp_type_traits.h:
 
+/usr/include/c++/13/string:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
+
 /usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/c++/13/bits/move.h:
 
 /usr/include/c++/13/bits/exception.h:
 
@@ -502,33 +501,35 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/c++/13/string:
-
-/usr/include/x86_64-linux-gnu/bits/endianness.h:
-
-/usr/include/c++/13/bits/chrono.h:
-
 /usr/include/c++/13/bits/istream.tcc:
 
 /usr/include/c++/13/bits/exception_ptr.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
+/usr/include/c++/13/bits/atomic_lockfree_defines.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/c++/13/ext/numeric_traits.h:
+
+/usr/include/c++/13/bits/stl_iterator.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/usr/include/c++/13/bits/basic_string.h:
+
+/usr/include/c++/13/bits/chrono.h:
+
+/usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/include/c++/13/atomic:
+
 /usr/include/c++/13/bits/locale_facets.h:
 
 /usr/include/c++/13/bits/localefwd.h:
 
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/common.h:
-
-/usr/include/c++/13/bits/hash_bytes.h:
-
-/usr/include/x86_64-linux-gnu/sys/wait.h:
-
-/usr/include/c++/13/bits/stl_iterator_base_funcs.h:
-
-/usr/include/asm-generic/errno-base.h:
 
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
@@ -548,11 +549,15 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
 
-/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
+/usr/include/c++/13/algorithm:
 
-/usr/include/linux/close_range.h:
+/usr/include/x86_64-linux-gnu/sys/wait.h:
 
-/usr/include/c++/13/chrono:
+/usr/include/c++/13/bits/stl_iterator_base_funcs.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/c++/13/bits/hash_bytes.h:
 
 /usr/include/c++/13/backward/binders.h:
 
@@ -574,15 +579,19 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/c++/13/type_traits:
 
-/usr/include/c++/13/bits/move.h:
+/usr/include/c++/13/tuple:
+
+/usr/include/c++/13/bits/nested_exception.h:
 
 /usr/include/c++/13/bits/basic_ios.h:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
-/usr/include/c++/13/tuple:
+/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
 
-/usr/include/c++/13/bits/nested_exception.h:
+/usr/include/linux/close_range.h:
+
+/usr/include/c++/13/chrono:
 
 /usr/include/c++/13/bits/ios_base.h:
 
@@ -616,10 +625,6 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 
 /usr/include/c++/13/stdexcept:
 
-/usr/include/linux/errno.h:
-
-/usr/include/c++/13/debug/debug.h:
-
 /usr/include/c++/13/bits/refwrap.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
@@ -631,6 +636,20 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 /usr/include/c++/13/bits/stl_algobase.h:
 
 /usr/include/c++/13/bits/stl_construct.h:
+
+/usr/include/c++/13/debug/debug.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
+
+/usr/include/locale.h:
+
+/usr/include/c++/13/bits/utility.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/usr/include/pthread.h:
 
 /usr/include/wctype.h:
 
@@ -665,14 +684,6 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 /usr/include/c++/13/cstddef:
 
 /usr/include/x86_64-linux-gnu/bits/sem.h:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/c++/13/ext/numeric_traits.h:
-
-/usr/include/c++/13/bits/stl_iterator.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
 /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
 
@@ -853,5 +864,3 @@ CMakeFiles/narciarz.dir/narciarz.cpp.o:
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
-
-/usr/include/x86_64-linux-gnu/sys/cdefs.h:

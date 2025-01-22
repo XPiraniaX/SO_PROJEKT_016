@@ -3,17 +3,8 @@
 int main()
 {
     //klucze ipc
-    key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
-    if (keyStacja == -1) blad("pracownik_dol ftok stacja");
-
     key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
     if (keyWyciag == -1) blad("pracownik_dol ftok wyciag");
-
-    //dolaczanie do pamieci dzielonej
-    int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
-    if (shmIdStacja == -1) blad("pracownik_gora shmget stacja");
-    StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
-    if (infoStacja == (void*)-1) blad("pracownik_gora shmat stacja");
 
     int shmIdWyciag = shmget(keyWyciag, sizeof(WyciagInfo), 0);
     if (shmIdWyciag == -1) blad("pracownik_gora shmget wyciag");
@@ -21,9 +12,6 @@ int main()
     if (infoWyciag == (void*)-1) blad("pracownik_gora shmat wyciag");
 
     //podlaczanie do semafora
-    int semIdStacja = semget(keyStacja, 1, 0);
-    if (semIdStacja == -1) blad("pracownik_gora semget stacja");
-
     int semIdWyciag = semget(keyWyciag, 1, 0);
     if (semIdWyciag == -1) blad("pracownik_gora semget wyciag");
 
@@ -38,24 +26,23 @@ int main()
 
     while(true) {
         sleep(1);
+
+        msgWyciag koniec;
+        if (msgrcv(msgIdWyciag, &koniec, sizeof(koniec)-sizeof(long), 100000, IPC_NOWAIT) != -1){
+            break;
+        }
+        else if (errno ==ENOMSG){}
+        else{
+            blad("[Pracownik Gorna Stacja] msgrcv pracownik_dol error");
+        }
+
         //oczekiwanie na komunikat krzesla
         msgWyciag msg1;
-        if (msgrcv(msgIdWyciag, &msg1, sizeof(msgWyciag)-sizeof(long), 0, 0) == -1) {
+        if (msgrcv(msgIdWyciag, &msg1, sizeof(msgWyciag)-sizeof(long), -299, 0) == -1) {
             blad("[Pracownik Gorna Stacja] msgrcv krzeslo error");
             sleep(1);
             continue;
         }
-
-        //sem_P(semIdStacja);
-
-        //bool endSim = infoStacja->koniecSymulacji && infoWyciag->liczbaNarciarzyWTrasie==0;
-
-        /*if (endSim){
-            cout << "\033[32m[Pracownik Gorna Stacja] KONIEC\033[0m" << endl;
-            sem_V(semIdWyciag);
-            sem_V(semIdStacja);
-            break;
-        }*/
 
         long baseType = msg1.mtype - 200;
         if (baseType >= 0 && baseType < 80) {
@@ -65,8 +52,6 @@ int main()
             infoWyciag->krzeslaWTrasie--;
             infoWyciag->liczbaNarciarzyWTrasie -= ile;
             cout << "\033[32m[Pracownik Gorna Stacja] Krzeslo #" << (kId+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << "\033[0m"<< endl;
-            sem_V(semIdWyciag);
-            //sem_V(semIdStacja);
 
             //wysiadanie narciarzy
             for (int i=0;i<ile;i++){
@@ -75,10 +60,10 @@ int main()
                 msg2.narciarzId = msg1.idNarciarzyNaKrzesle[i];
                 if(msgsnd(msgIdNarciarz, &msg2, sizeof(msgNarciarz)-sizeof(long), 0) ==-1){
                     blad("[Pracownik Gorna Stacja] msgsnd narciarz error");
-                    return 1;
                 }
                 //cout << "\033[32m[Pracownik Gorna Stacja] Narciarz #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada\033[0m" << endl;
             }
+            sem_V(semIdWyciag);
 
             //odeslanie krzesla
             msgWyciag msg3;
@@ -88,14 +73,12 @@ int main()
             memset(msg3.idNarciarzyNaKrzesle, 0, sizeof(msg3.idNarciarzyNaKrzesle));
             if (msgsnd(msgIdWyciag, &msg3, sizeof(msgWyciag)-sizeof(long), 0)==-1){
                 blad("[Pracownik Gorna Stacja] msgsnd krzeslo error");
-                return 1;
             }
 
         }
     }
-
+    cout << "\033[32m[Pracownik Gorna Stacja] Stacja zamknieta i krzeselka puste KONIEC\033[0m" << endl;
     //odlaczenie pamieci
-    shmdt(infoStacja);
     shmdt(infoWyciag);
     return 0;
 }
