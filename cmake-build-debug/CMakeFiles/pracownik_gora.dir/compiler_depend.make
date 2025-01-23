@@ -26,6 +26,7 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/enable_special_members.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -95,6 +96,7 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/c++/13/debug/assertions.h \
   /usr/include/c++/13/debug/debug.h \
   /usr/include/c++/13/exception \
+  /usr/include/c++/13/ext/aligned_buffer.h \
   /usr/include/c++/13/ext/alloc_traits.h \
   /usr/include/c++/13/ext/atomicity.h \
   /usr/include/c++/13/ext/numeric_traits.h \
@@ -121,14 +123,17 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/c++/13/tuple \
   /usr/include/c++/13/type_traits \
   /usr/include/c++/13/typeinfo \
+  /usr/include/c++/13/variant \
   /usr/include/c++/13/vector \
   /usr/include/ctype.h \
   /usr/include/endian.h \
   /usr/include/errno.h \
+  /usr/include/fcntl.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
   /usr/include/linux/close_range.h \
   /usr/include/linux/errno.h \
+  /usr/include/linux/falloc.h \
   /usr/include/locale.h \
   /usr/include/pthread.h \
   /usr/include/sched.h \
@@ -152,6 +157,8 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/x86_64-linux-gnu/bits/endianness.h \
   /usr/include/x86_64-linux-gnu/bits/environments.h \
   /usr/include/x86_64-linux-gnu/bits/errno.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
@@ -186,6 +193,7 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
   /usr/include/x86_64-linux-gnu/bits/sigthread.h \
   /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
+  /usr/include/x86_64-linux-gnu/bits/stat.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
@@ -193,6 +201,7 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
   /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
   /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
@@ -222,6 +231,7 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o: /mnt/c/Users/xxmis/Desktop/K
   /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_msqid64_ds.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_msqid_ds.h \
@@ -309,8 +319,6 @@ pracownik_gora: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /lib64/ld-linux-x86-64.so.2:
 
-/lib/x86_64-linux-gnu/libm.so.6:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
 /usr/include/x86_64-linux-gnu/sys/ucontext.h:
@@ -323,7 +331,25 @@ pracownik_gora: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
+
 /usr/include/c++/13/bits/streambuf.tcc:
+
+/usr/include/c++/13/variant:
+
+/usr/include/c++/13/bits/vector.tcc:
 
 /usr/include/c++/13/typeinfo:
 
@@ -345,6 +371,8 @@ pracownik_gora: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
 
+/usr/include/linux/falloc.h:
+
 /usr/include/c++/13/pstl/execution_defs.h:
 
 /usr/include/c++/13/bits/basic_ios.tcc:
@@ -359,17 +387,11 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
 
-/usr/include/features-time64.h:
-
-/usr/include/c++/13/string_view:
-
 /usr/include/c++/13/istream:
 
 /usr/include/c++/13/thread:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_semid_ds.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
 
 /usr/include/c++/13/ext/type_traits.h:
 
@@ -380,6 +402,10 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
 /usr/include/c++/13/cctype:
+
+/usr/include/c++/13/ext/aligned_buffer.h:
+
+/usr/include/locale.h:
 
 /usr/include/errno.h:
 
@@ -417,9 +443,15 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
-/usr/include/c++/13/bits/vector.tcc:
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/usr/include/c++/13/bits/utility.h:
 
 /usr/include/c++/13/bits/stl_function.h:
+
+/lib/x86_64-linux-gnu/libm.so.6:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl.h:
 
 /usr/include/c++/13/bits/uses_allocator_args.h:
 
@@ -457,8 +489,6 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/c++/13/bits/stl_uninitialized.h:
 
-/usr/include/c++/13/bits/stl_vector.h:
-
 /usr/include/c++/13/bits/stl_tempbuf.h:
 
 /usr/include/x86_64-linux-gnu/bits/sigaction.h:
@@ -467,19 +497,7 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
-/usr/include/c++/13/ios:
-
-/usr/include/x86_64-linux-gnu/bits/long-double.h:
-
-/usr/include/c++/13/bits/algorithmfwd.h:
-
-/usr/include/c++/13/ext/alloc_traits.h:
-
-/usr/include/c++/13/new:
-
-/usr/include/c++/13/bits/alloc_traits.h:
-
-/usr/include/c++/13/bits/concept_check.h:
+/usr/include/c++/13/bits/stl_construct.h:
 
 /usr/include/c++/13/bits/cxxabi_forced.h:
 
@@ -537,6 +555,14 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/common.h:
 
+/usr/include/c++/13/bits/enable_special_members.h:
+
+/usr/include/c++/13/type_traits:
+
+/usr/include/c++/13/bit:
+
+/usr/include/c++/13/bits/basic_string.tcc:
+
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/c++/13/cwchar:
@@ -545,17 +571,13 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/alloca.h:
 
-/usr/include/c++/13/bits/basic_string.tcc:
-
-/usr/include/c++/13/bit:
-
 /usr/include/c++/13/bits/ptr_traits.h:
 
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
-
 /usr/include/c++/13/algorithm:
+
+/usr/include/c++/13/string_view:
+
+/usr/include/features-time64.h:
 
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 
@@ -566,8 +588,6 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 /usr/include/c++/13/bits/hash_bytes.h:
 
 /usr/include/c++/13/backward/binders.h:
-
-/usr/include/features.h:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
@@ -583,11 +603,19 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
-/usr/include/c++/13/type_traits:
+/usr/include/x86_64-linux-gnu/bits/long-double.h:
 
-/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
+/usr/include/c++/13/bits/algorithmfwd.h:
 
-/usr/include/linux/close_range.h:
+/usr/include/c++/13/ext/alloc_traits.h:
+
+/usr/include/c++/13/new:
+
+/usr/include/c++/13/bits/alloc_traits.h:
+
+/usr/include/c++/13/bits/concept_check.h:
+
+/usr/include/c++/13/ios:
 
 /usr/include/c++/13/chrono:
 
@@ -602,6 +630,12 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 /usr/include/c++/13/bits/allocator.h:
 
 /usr/include/c++/13/bits/stl_bvector.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
+
+/usr/include/c++/13/bits/char_traits.h:
+
+/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
 
 /usr/include/c++/13/bits/uniform_int_dist.h:
 
@@ -635,19 +669,19 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/c++/13/bits/stl_algobase.h:
 
-/usr/include/c++/13/bits/stl_construct.h:
+/usr/include/fcntl.h:
+
+/usr/include/features.h:
+
+/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/usr/include/linux/close_range.h:
 
 /usr/include/c++/13/debug/debug.h:
 
 /usr/include/linux/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
-
-/usr/include/locale.h:
-
-/usr/include/c++/13/bits/utility.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
 /usr/include/pthread.h:
 
@@ -685,6 +719,12 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/sem.h:
 
+/usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+
 /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
@@ -697,7 +737,11 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/timex.h:
 
 /usr/include/c++/13/bits/requires_hosted.h:
 
@@ -733,6 +777,8 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/shmlba.h:
 
+/usr/include/x86_64-linux-gnu/bits/struct_stat.h:
+
 /usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
 
 /usr/include/time.h:
@@ -748,6 +794,10 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
+
+/usr/include/x86_64-linux-gnu/bits/stat.h:
 
 /usr/include/c++/13/bits/stl_pair.h:
 
@@ -768,12 +818,6 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 /usr/include/c++/13/bits/locale_classes.h:
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
-/usr/include/x86_64-linux-gnu/bits/timex.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
 
 /usr/include/x86_64-linux-gnu/bits/ipctypes.h:
 
@@ -813,6 +857,10 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
 
+/usr/include/c++/13/bits/stl_vector.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h:
+
 /usr/include/x86_64-linux-gnu/sys/shm.h:
 
 /usr/include/asm-generic/errno.h:
@@ -846,21 +894,3 @@ CMakeFiles/pracownik_gora.dir/pracownik_gora.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
-
-/usr/include/c++/13/bits/char_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
-
-/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:

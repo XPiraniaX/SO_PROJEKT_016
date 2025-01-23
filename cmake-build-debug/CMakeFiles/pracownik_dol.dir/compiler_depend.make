@@ -125,10 +125,12 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o: /mnt/c/Users/xxmis/Desktop/Kam
   /usr/include/ctype.h \
   /usr/include/endian.h \
   /usr/include/errno.h \
+  /usr/include/fcntl.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
   /usr/include/linux/close_range.h \
   /usr/include/linux/errno.h \
+  /usr/include/linux/falloc.h \
   /usr/include/locale.h \
   /usr/include/pthread.h \
   /usr/include/sched.h \
@@ -152,6 +154,8 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o: /mnt/c/Users/xxmis/Desktop/Kam
   /usr/include/x86_64-linux-gnu/bits/endianness.h \
   /usr/include/x86_64-linux-gnu/bits/environments.h \
   /usr/include/x86_64-linux-gnu/bits/errno.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
   /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
@@ -186,6 +190,7 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o: /mnt/c/Users/xxmis/Desktop/Kam
   /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
   /usr/include/x86_64-linux-gnu/bits/sigthread.h \
   /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
+  /usr/include/x86_64-linux-gnu/bits/stat.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
@@ -193,6 +198,7 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o: /mnt/c/Users/xxmis/Desktop/Kam
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
   /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
   /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
@@ -222,6 +228,7 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o: /mnt/c/Users/xxmis/Desktop/Kam
   /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_msqid64_ds.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_msqid_ds.h \
@@ -309,8 +316,6 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /lib64/ld-linux-x86-64.so.2:
 
-/lib/x86_64-linux-gnu/libm.so.6:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
 /usr/include/x86_64-linux-gnu/sys/ucontext.h:
@@ -322,6 +327,14 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/include/x86_64-linux-gnu/sys/ipc.h:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
 
 /usr/include/c++/13/bits/streambuf.tcc:
 
@@ -345,9 +358,13 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
 
+/usr/include/linux/falloc.h:
+
 /usr/include/c++/13/pstl/execution_defs.h:
 
 /usr/include/c++/13/bits/basic_ios.tcc:
+
+/usr/include/fcntl.h:
 
 /usr/include/c++/13/ostream:
 
@@ -368,8 +385,6 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/include/x86_64-linux-gnu/bits/types/struct_semid_ds.h:
 
 /usr/include/c++/13/iostream:
-
-/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
 
 /usr/include/c++/13/ext/type_traits.h:
 
@@ -417,6 +432,10 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/c++/13/bits/stl_function.h:
 
+/lib/x86_64-linux-gnu/libm.so.6:
+
+/usr/include/x86_64-linux-gnu/bits/fcntl.h:
+
 /usr/include/c++/13/bits/uses_allocator_args.h:
 
 /usr/include/c++/13/bits/atomic_base.h:
@@ -452,8 +471,6 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/include/c++/13/bits/new_allocator.h:
 
 /usr/include/c++/13/bits/stl_uninitialized.h:
-
-/usr/include/c++/13/bits/stl_vector.h:
 
 /usr/include/c++/13/bits/stl_tempbuf.h:
 
@@ -555,8 +572,6 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
 
-/usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
-
 /usr/include/c++/13/algorithm:
 
 /usr/include/x86_64-linux-gnu/sys/wait.h:
@@ -577,10 +592,6 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/c++/13/type_traits:
 
-/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
-
-/usr/include/linux/close_range.h:
-
 /usr/include/c++/13/chrono:
 
 /usr/include/c++/13/bits/ios_base.h:
@@ -594,6 +605,12 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/include/c++/13/bits/allocator.h:
 
 /usr/include/c++/13/bits/stl_bvector.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
+
+/usr/include/c++/13/bits/char_traits.h:
+
+/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
 
 /usr/include/c++/13/bits/uniform_int_dist.h:
 
@@ -632,6 +649,10 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/include/c++/13/bits/stl_algobase.h:
 
 /usr/include/c++/13/bits/stl_construct.h:
+
+/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/usr/include/linux/close_range.h:
 
 /usr/include/c++/13/debug/debug.h:
 
@@ -681,6 +702,12 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/x86_64-linux-gnu/bits/sem.h:
 
+/usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+
 /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
@@ -693,7 +720,13 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
 
 /usr/include/c++/13/bits/requires_hosted.h:
 
@@ -731,6 +764,8 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 
 /usr/include/x86_64-linux-gnu/bits/shmlba.h:
 
+/usr/include/x86_64-linux-gnu/bits/struct_stat.h:
+
 /usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
 
 /usr/include/time.h:
@@ -746,6 +781,10 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigstksz.h:
+
+/usr/include/x86_64-linux-gnu/bits/stat.h:
 
 /usr/include/c++/13/bits/stl_pair.h:
 
@@ -766,12 +805,6 @@ pracownik_dol: /lib/x86_64-linux-gnu/libc.so.6 \
 /usr/include/c++/13/bits/locale_classes.h:
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
-/usr/include/x86_64-linux-gnu/bits/timex.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
 
 /usr/include/x86_64-linux-gnu/bits/ipctypes.h:
 
@@ -813,6 +846,10 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
 
+/usr/include/c++/13/bits/stl_vector.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h:
+
 /usr/include/x86_64-linux-gnu/sys/shm.h:
 
 /usr/include/asm-generic/errno.h:
@@ -848,19 +885,3 @@ CMakeFiles/pracownik_dol.dir/pracownik_dol.cpp.o:
 /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
-
-/usr/include/c++/13/bits/char_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/signal_ext.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
-
-/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:

@@ -2,8 +2,10 @@
 
 static StacjaInfo* g_infoStacja = nullptr;
 static int g_semIdStacja=-1;
+static ZegarInfo* g_infoZegar = nullptr;
 atomic<bool> koniecZegara(false);
 
+//obsluga cygnalu ctrl+c
 void sigintObsluga(int) {
     if (g_infoStacja) {
         sem_P(g_semIdStacja);
@@ -13,15 +15,26 @@ void sigintObsluga(int) {
     koniecZegara = true;
 }
 
+//zegar
 void Zegar() {
 
-    cout << "\033[31m[Zegar] Otwieramy Stacje\033[0m"<<endl;
+    cout << "\033[31m[Zegar] Otwieramy Stacje, godzina "<< GODZINA_OTWARCIA <<"\033[0m"<<endl;
 
     int czasZegara=0;
-    while (czasZegara < DLUGOSC_SYMULACJI){
-        if(koniecZegara) return;
+    while (g_infoZegar->godzina !=GODZINA_ZAMKNIECIA) {
+        if(koniecZegara)
+        {
+            return;
+        }
         this_thread::sleep_for(chrono::seconds(1));
         czasZegara++;
+        g_infoZegar->minuta++;
+        if (g_infoZegar->minuta == 60){
+            g_infoZegar->godzina++;
+            g_infoZegar->minuta=0;
+            cout << "\033[31m[Zegar] Wybila godzina "<< g_infoZegar->godzina <<"\033[0m"<<endl;
+        }
+
     }
 
     sem_P(g_semIdStacja);
@@ -31,8 +44,94 @@ void Zegar() {
     cout << "\033[31m[Zegar] Zamykamy stacje\033[0m"<<endl;
 }
 
+//funckja do wypisywania logow
+void wypiszLogi(){
+
+    int fd = open(SCIEZKA_PLIKU_LOGI,O_RDONLY);
+    if(fd == -1)blad("init wypisanie logi");
+
+    constexpr size_t BUFSZ = 256;
+    char buf[BUFSZ];
+    ssize_t bytesRead;
+
+    while ((bytesRead = read(fd, buf, BUFSZ)) > 0) {
+        cout.write(buf, bytesRead);
+    }
+
+    if (bytesRead == -1) blad("init read logi");
+
+    close(fd);
+}
+
 int main()
 {
+    //                                  WALIDACJA USTAWIEN
+
+    //ustawienia stacji
+    if (GODZINA_OTWARCIA>GODZINA_ZAMKNIECIA || GODZINA_OTWARCIA>24 || GODZINA_OTWARCIA<0 || GODZINA_ZAMKNIECIA>24 || GODZINA_ZAMKNIECIA<0 || GODZINA_OTWARCIA == GODZINA_ZAMKNIECIA)blad("Zle ustawienia godzin");
+    //ustawienia turystow/narciarzy
+    if (ILOSC_TURYSTOW_NA_OTWARCIU<0) blad("Zle ustawienia turystow na otwarciu");
+    if (CZESTOTLIWOSC_TURYSTOW<0) blad("Zle ustawienia czestotliwosci turystow");
+    if (SZANSA_NA_BYCIE_NARCIARZEM>100||SZANSA_NA_BYCIE_NARCIARZEM<0) blad("Zle ustawienia szansy na bycie narciarzem");
+    if (SZANSA_NA_ZAKUP_BILETU_VIP>100||SZANSA_NA_ZAKUP_BILETU_VIP<0) blad("Zle ustawienia szansy na zakup vip");
+    if (SZANSA_NA_POSIADANIE_DZIECKA>100||SZANSA_NA_POSIADANIE_DZIECKA<0) blad("Zle ustawienia szansy na posiadanie dziecka");
+    //ustawienia kolejki
+    if (MAX_DLUGOSC_KOLEJKI<=0) blad("Zle ustawienia max dlugosc kolejki");
+    //ustawienia krzeselek i pracownikow
+    if (SZANAS_NA_AWARIE_KOLEJKI>1000||SZANAS_NA_AWARIE_KOLEJKI<0) blad("Zle ustawienia szansy krzeselek i pracownikow");
+
+    //                                  INICJALIZACJA ZASOBOW
+
+    //tworzenie plikow
+    int fd = open(SCIEZKA_PLIKU_LOGI, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+    if (fd==-1)blad("init stworzenie  logi");
+    close(fd);
+
+    int fks = open(SCIEZKA_KLUCZA_STACJA, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if (fks==-1){
+        if (errno == EEXIST){}
+        else{
+            blad("init stworzenie pliku key stacja");
+        }
+    }
+    close(fks);
+
+    int fkw = open(SCIEZKA_KLUCZA_WYCIAG, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if (fkw==-1){
+        if (errno == EEXIST){}
+        else{
+            blad("init stworzenie pliku key wyciag");
+        }
+    }
+    close(fkw);
+
+    int fkb = open(SCIEZKA_KLUCZA_BRAMKI, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if (fkb==-1){
+        if (errno == EEXIST){}
+        else{
+            blad("init stworzenie pliku key bramki");
+        }
+    }
+    close(fkb);
+
+    int fkk = open(SCIEZKA_KLUCZA_KASJER, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if (fkk==-1){
+        if (errno == EEXIST){}
+        else{
+            blad("init stworzenie pliku key kasjer");
+        }
+    }
+    close(fkk);
+
+    int fkz = open(SCIEZKA_KLUCZA_ZEGAR, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if (fkz==-1){
+        if (errno == EEXIST){}
+        else{
+            blad("init stworzenie pliku key zegar");
+        }
+    }
+    close(fkz);
+
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
     if(keyStacja == -1) blad("init ftok stacji");
@@ -46,6 +145,10 @@ int main()
     key_t keyKasjer = ftok(SCIEZKA_KLUCZA_KASJER, KLUCZ_PROJ_KASJER);
     if (keyKasjer == -1) blad("init ftok kasjer");
 
+    key_t keyZegar = ftok(SCIEZKA_KLUCZA_ZEGAR, KLUCZ_PROJ_KASJER);
+    if (keyZegar == -1) blad("init ftok zegar");
+
+
     //tworzenie pamieci dzielonej
     int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), IPC_CREAT | 0600);
     if(shmIdStacja == -1) blad("init shmget stacji");
@@ -56,6 +159,9 @@ int main()
     int shmIdBramki = shmget(keyBramki, sizeof(BramkiInfo), IPC_CREAT | 0600);
     if(shmIdBramki == -1) blad("init shmget bramek");
 
+    int shmIdZegar = shmget(keyZegar, sizeof(ZegarInfo), IPC_CREAT | 0600);
+    if(shmIdZegar == -1) blad("init shmget zegar");
+
     //dolaczanie do pamieci
     StacjaInfo* infoStacja = (StacjaInfo*)shmat(shmIdStacja, nullptr, 0);
     if (infoStacja == (void*)-1) blad("init shmat stacji");
@@ -65,6 +171,9 @@ int main()
 
     BramkiInfo* infoBramki = (BramkiInfo*)shmat(shmIdBramki, nullptr, 0);
     if (infoBramki == (void*)-1) blad("init shmat bramek");
+
+    ZegarInfo* infoZegar = (ZegarInfo*)shmat(shmIdZegar, nullptr, 0);
+    if (infoZegar == (void*)-1) blad("init shmat zegar");
 
     //inicjalizacja pamieci
     infoStacja->koniecSymulacji = false;
@@ -78,6 +187,8 @@ int main()
     infoBramki->liczbaNarciarzyWKolejce = 0;
     infoBramki->przod=0;
     infoBramki->tyl=0;
+    infoZegar->godzina = GODZINA_OTWARCIA;
+    infoZegar->minuta = 0;
 
     //tworzenie i podlaczenie semaforów
     int semIdStacja = semget(keyStacja, 1, IPC_CREAT | 0600);
@@ -127,7 +238,10 @@ int main()
 
     srand(time(NULL));
 
+    //                                  START SYMULACJI
+
     //uruchomienie zegara
+    g_infoZegar=infoZegar;
     thread timerThread(Zegar);
 
     cout << "[INIT] Zasoby IPC utworzone" << endl;
@@ -135,6 +249,7 @@ int main()
     //uruchamianie procesow
     int sumaProcesow = 0;
 
+    //pracownicy
     pid_t pd = fork();
     if (pd == 0) {
         execlp("./pracownik_dol", "pracownik_dol", nullptr);
@@ -149,6 +264,7 @@ int main()
     }
     sumaProcesow++;
 
+    //kasjer
     pid_t pk = fork();
     if (pk == 0) {
         execlp("./kasjer", "kasjer", nullptr);
@@ -156,8 +272,8 @@ int main()
     }
     sumaProcesow++;
 
+    //krzeselka
     vector<pid_t> pidKrzesel;
-
     for(int i=0; i<80; i++){
         pid_t pk = fork();
         if(pk == 0){
@@ -172,6 +288,7 @@ int main()
     cout << "\033[32m[Krzesla] START\033[0m" << endl;
     sumaProcesow += 80;
 
+    //turysci na start
     vector<pid_t> pidTurystow;
     int liczbaTurystow;
     for( liczbaTurystow=0; liczbaTurystow<ILOSC_TURYSTOW_NA_OTWARCIU; liczbaTurystow++){
@@ -186,9 +303,9 @@ int main()
         }
 
     }
-
     sumaProcesow+=ILOSC_TURYSTOW_NA_OTWARCIU;
 
+    //generator tursytow
     while(true) {
         sem_P(semIdStacja);
         if (infoStacja->koniecSymulacji == true) {
@@ -242,13 +359,16 @@ int main()
         blad("[INIT] msgsnd pracownicy error");
     }
 
+    //oczekiwanie na zakonczenie pracownika gora
     waitpid(pg,nullptr,0);
 
+    //zakonczenie procesow krzesel
     for (pid_t pid : pidKrzesel) {
         kill(pid, SIGTERM);
     }
     cout << "\033[32m[Krzesla] KONIEC\033[0m" << endl;
 
+    //wyproszenie pozostalych turystow
     for (pid_t pid : pidTurystow) {
         kill(pid, SIGTERM);
     }
@@ -256,11 +376,15 @@ int main()
     //odstep aby kazdy narciarz wyslal komunikat o zjezdzie przed komunikatem o usunieciu zasobów( mozna go usunac tylko poprawia wyglad wyjscia po zakonczeniu programu)
     sleep(20);
 
+    cout << "\033[37m[Bramki] Zapisy karnetow: \033[0m" << endl;
+    wypiszLogi();
+
     //zwolnienie ipc
     cout << "[INIT] Usuwam zasoby IPC" << endl;
     shmctl(shmIdStacja, IPC_RMID, nullptr);
     shmctl(shmIdWyciag, IPC_RMID, nullptr);
     shmctl(shmIdBramki, IPC_RMID, nullptr);
+    shmctl(shmIdZegar, IPC_RMID, nullptr);
 
     semctl(semIdStacja, 0, IPC_RMID);
     semctl(semIdWyciag, 0, IPC_RMID);
@@ -276,7 +400,7 @@ int main()
     shmdt(infoStacja);
     shmdt(infoWyciag);
     shmdt(infoBramki);
-
+    shmdt(infoZegar);
     cout << "[INIT] Koniec" << endl;
     return 0;
 }

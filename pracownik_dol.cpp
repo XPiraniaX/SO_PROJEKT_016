@@ -61,15 +61,33 @@ int main()
             }
             if (wolnekId != -1) {
 
-                int ileDoZabrania = min(3, infoBramki->liczbaNarciarzyWKolejce);
-                vector<int> IdNarciarzy;
-                for (int i=0; i<ileDoZabrania; i++){
-                    int nId = popNarciarz(infoBramki);
-                    if (nId == -1) break;
-                    IdNarciarzy.push_back(nId);
-                    cout << "\033[32m[Pracownik Dolna Stacja] Laduje narciarza: " << (nId+1) <<"\033[0m"<< endl;
-                }
+                int wolneMiejsca =3;
+                vector<Narciarz> IdNarciarzy;
+                while (wolneMiejsca > 0 && infoBramki->liczbaNarciarzyWKolejce > 0){
 
+                    int ileOsob = infoBramki->kolejka[infoBramki->przod].liczbadzieci+1;
+
+                    if (ileOsob <= wolneMiejsca){
+                        Narciarz narciarz = popNarciarz(infoBramki);
+                        if (narciarz.narciarzId==-1)break;
+
+                        for (int i=0;i<ileOsob;i++){
+                            IdNarciarzy.push_back(narciarz);
+                        }
+
+                        wolneMiejsca-=ileOsob;
+
+                        if (narciarz.liczbadzieci > 0){
+                            cout << "\033[32m[Pracownik Dolna Stacja] Laduje narciarza #" << (narciarz.narciarzId+1) <<" z dziecmi w liczbie "<< narciarz.liczbadzieci <<"\033[0m"<< endl;
+                        }
+                        else{
+                            cout << "\033[32m[Pracownik Dolna Stacja] Laduje narciarza #" << (narciarz.narciarzId+1) <<"\033[0m"<< endl;
+                        }
+                    }
+                    else{
+                        break;
+                    }
+                }
 
                 infoWyciag->stanKrzesla[wolnekId] = 1;
                 infoWyciag->ileOsobNaKrzesle[wolnekId] = IdNarciarzy.size();
@@ -97,7 +115,7 @@ int main()
                 msg.nrKrzesla = wolnekId;
                 msg.liczbaOsob= IdNarciarzy.size();
                 for (int i=0; i<IdNarciarzy.size(); i++){
-                    msg.idNarciarzyNaKrzesle[i] = IdNarciarzy[i];
+                    msg.idNarciarzyNaKrzesle[i] = IdNarciarzy[i].narciarzId;
                 }
                 if (msgsnd(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 0) == -1) {
                     blad("[Pracownik Dolna Stacja] msgsnd krzeslo error");

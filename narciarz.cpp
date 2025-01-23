@@ -1,5 +1,64 @@
 #include "common.h"
 
+void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
+
+    int fd = open(SCIEZKA_PLIKU_LOGI,O_WRONLY|O_APPEND);
+    if (fd ==- 1) blad("narciarz zapis bramek log");
+
+    string log;
+
+    if (godzina<10 && minuta>10){
+        if (typKarnetu==1){
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu z liczba zjadow\n";
+        }
+        else if (typKarnetu==2){
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
+        }
+        else{
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+    }
+    else if (godzina>10 && minuta<10){
+        if (typKarnetu==1){
+            log = "[Bramki] " + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu z liczba zjadow\n";
+        }
+        else if (typKarnetu==2){
+            log = "[Bramki] " + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
+        }
+        else{
+            log = "[Bramki] " + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+    }
+    else if (godzina<10 && minuta<10){
+        if (typKarnetu==1){
+            log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu z liczba zjadow\n";
+        }
+        else if (typKarnetu==2){
+            log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
+        }
+        else{
+            log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+    }
+    else{
+        if (typKarnetu==1){
+            log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu z liczba zjadow\n";
+        }
+        else if (typKarnetu==2){
+            log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
+        }
+        else{
+            log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+    }
+
+    ssize_t bytesWritten = write(fd,log.c_str(),log.size());
+    if (bytesWritten == -1){blad("Zly zapis narciarz logi");}
+    else if (static_cast<size_t>(bytesWritten) < log.size()){blad("Nie zapisano wszystkiego");}
+
+    close(fd);
+}
+
 int main(int argc, char* argv[])
 {
     if (argc < 3) {
@@ -7,10 +66,13 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    srand(time(NULL)^getpid());
-
     int zjazdy = atoi(argv[1]);
     int nId = atoi(argv[2]);
+
+    srand(time(NULL)^getpid());
+
+
+
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
     if (keyStacja == -1) blad("narciarz ftok stacja");
@@ -20,6 +82,9 @@ int main(int argc, char* argv[])
 
     key_t keyBramki = ftok(SCIEZKA_KLUCZA_BRAMKI, KLUCZ_PROJ_BRAMKI);
     if (keyBramki == -1) blad("narciarz ftok bramki");
+
+    key_t keyZegar = ftok(SCIEZKA_KLUCZA_ZEGAR, KLUCZ_PROJ_KASJER);
+    if (keyZegar == -1) blad("init ftok zegar");
 
     //dolaczanie do pamieci dzielonej
     int shmIdStacja = shmget(keyStacja, sizeof(StacjaInfo), 0);
@@ -31,6 +96,11 @@ int main(int argc, char* argv[])
     if (shmIdBramki == -1) blad("narciarz shmget bramki");
     BramkiInfo* infoBramki = (BramkiInfo*)shmat(shmIdBramki, nullptr, 0);
     if (infoBramki == (void*)-1) blad("narciarz shmat bramki");
+
+    int shmIdZegar = shmget(keyZegar, sizeof(ZegarInfo), 0);
+    if (shmIdZegar == -1) blad("narciarz shmget zegar");
+    ZegarInfo* infoZegar = (ZegarInfo*)shmat(shmIdZegar, nullptr, 0);
+    if (infoZegar == (void*)-1) blad("narciarz shmat zegar");
 
     //podlaczanie do semafora
 
@@ -44,20 +114,25 @@ int main(int argc, char* argv[])
     int msgIdNarciarz = msgget(keyWyciag, 0);
     if (msgIdNarciarz == -1) blad("narciarz msgget narciarz");
 
+    int typKarnetu=0;
+
     if (zjazdy== 100){
         cout << "[Narciarz #" << (nId+1) << "] START z biletem calodniowym" << endl;
+        typKarnetu = 2;
     }
     else if(zjazdy == 1000){
         cout << "[Narciarz #" << (nId+1) << "] START z biletem VIP\033[33m [V.I.P]\033[0m" << endl;
+        typKarnetu = 3;
     }
     else{
         cout << "[Narciarz #" << (nId+1) << "] START z " << zjazdy << " zjazdami" << endl;
+        typKarnetu = 1;
     }
-
 
     int ileDzieci=0;
     if ((rand()%100)+1<=SZANSA_NA_POSIADANIE_DZIECKA) ileDzieci++;
     if ((rand()%100)+1<=SZANSA_NA_POSIADANIE_DZIECKA) ileDzieci++;
+    Narciarz narciarz = {nId,ileDzieci};
     sleep(rand() %2);
     while(zjazdy > 0) {
 
@@ -70,17 +145,18 @@ int main(int argc, char* argv[])
             sem_V(semIdBramkiWejscie);
             shmdt(infoStacja);
             shmdt(infoBramki);
+            shmdt(infoZegar);
             return 0;
             }
-        if (iloscMiejscKolejki(infoBramki)<1+ileDzieci){
+        if (iloscMiejscKolejki(infoBramki)<narciarz.liczbadzieci+1){
             sem_V(semIdBramki);
             sem_V(semIdBramkiWejscie);
             cout << "\033[37m[Narciarz #" << (nId+1) << "] Kolejka pelna, próbuje znowu za 5s\033[0m" << endl;
             sleep(5);
             continue;
         }
-        if (zjazdy==100){
-            for (int i=0; i<1+ileDzieci; i++) pushNarciarz(infoBramki,nId);
+        if (typKarnetu==2){
+            pushNarciarz(infoBramki,narciarz);
             if (ileDzieci>0){
                 cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[0m" << endl;
             }
@@ -89,8 +165,8 @@ int main(int argc, char* argv[])
             }
 
         }
-        else if(zjazdy==1000){
-            for (int i=0; i<1+ileDzieci; i++) pushVipNarciarz(infoBramki,nId);
+        else if(typKarnetu==3){
+            pushVipNarciarz(infoBramki,narciarz);
             if (ileDzieci>0){
                 cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[33m [V.I.P]\033[0m" << endl;
             }
@@ -100,7 +176,7 @@ int main(int argc, char* argv[])
             }
         }
         else{
-            for (int i=0; i<1+ileDzieci; i++) pushNarciarz(infoBramki,nId);
+            pushNarciarz(infoBramki,narciarz);
             zjazdy--;
             if (ileDzieci>0){
                 cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[0m" << endl;
@@ -110,6 +186,9 @@ int main(int argc, char* argv[])
                 cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[0m" << endl;
             }
         }
+        //cout << infoZegar->godzina << infoZegar->minuta << nId<< typKarnetu << endl;
+
+        zapiszLog(infoZegar->godzina,infoZegar->minuta,nId+1,typKarnetu);
 
         sem_V(semIdBramki);
         sem_V(semIdBramkiWejscie);
@@ -135,6 +214,7 @@ int main(int argc, char* argv[])
             //odlaczenie pamieci
             shmdt(infoStacja);
             shmdt(infoBramki);
+            shmdt(infoZegar);
             return 0;
         }
         else{
@@ -145,7 +225,7 @@ int main(int argc, char* argv[])
             sleep(mozliweTrasy[losowaTrasa]);
 
             cout << "\033[35m[Narciarz #" << (nId+1) << "] Zjechalem trasa " << losowaTrasa+1 << ", wracam na stacje\033[0m" << endl;
-            if (zjazdy==100 || zjazdy ==1000){
+            if (typKarnetu==1 || typKarnetu==2){
                 cout << "\033[34m[Narciarz #" << (nId+1) << "] Zjezdzam do woli\033[0m" << endl;
             }
             else{
@@ -162,5 +242,6 @@ int main(int argc, char* argv[])
     //odlaczenie pamieci
     shmdt(infoStacja);
     shmdt(infoBramki);
+    shmdt(infoZegar);
     return 0;
 }

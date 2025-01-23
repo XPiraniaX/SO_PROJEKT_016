@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         cout << "\033[32m[Krzeslo #" << (kId+1) << "] Wracam na dol\033[0m" << endl;
 
         sem_P(semIdWyciag);
-        infoWyciag->stanKrzesla[kId] = 2;
+        infoWyciag->stanKrzesla[kId] = 0;
         infoWyciag->ileOsobNaKrzesle[kId] = 0;
         sem_V(semIdWyciag);
 

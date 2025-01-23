@@ -1,3 +1,5 @@
+#include <variant>
+
 #include "common.h"
 
 int main()
@@ -55,14 +57,23 @@ int main()
             cout << "\033[32m[Pracownik Gorna Stacja] Krzeslo #" << (kId+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << "\033[0m"<< endl;
 
             //wysiadanie narciarzy
+            int ostanieId = -1;
             for (int i=0;i<ile;i++){
+                int biezaceId = msg1.idNarciarzyNaKrzesle[i];
+
+                if (biezaceId == ostanieId){
+                    cout << "\033[32m[Pracownik Gorna Stacja] Dziecko Narciarza #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada\033[0m" << endl;
+                    continue;
+                }
+
                 msgNarciarz msg2;
                 msg2.mtype = 1000+msg1.idNarciarzyNaKrzesle[i];
                 msg2.narciarzId = msg1.idNarciarzyNaKrzesle[i];
                 if(msgsnd(msgIdNarciarz, &msg2, sizeof(msgNarciarz)-sizeof(long), 0) ==-1){
                     blad("[Pracownik Gorna Stacja] msgsnd narciarz error");
                 }
-                //cout << "\033[32m[Pracownik Gorna Stacja] Narciarz #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada\033[0m" << endl;
+                cout << "\033[32m[Pracownik Gorna Stacja] Narciarz #" << msg1.idNarciarzyNaKrzesle[i] +1 << " wysiada\033[0m" << endl;
+                ostanieId=biezaceId;
             }
             sem_V(semIdWyciag);
 
