@@ -34,24 +34,29 @@ static const int   KLUCZ_PROJ_BRAMKI     = 19;
 static const char* SCIEZKA_KLUCZA_KASJER = "./tmp/kasjer";
 static const int   KLUCZ_PROJ_KASJER     = 48;
 
-//ustawienia stacji
+//ustawienia
 //ilosc,czasy jazdy krzeselka i czestotliwosc z jaką są wypuszczane to integralna czesc systemu wiec nie zostaje dodana jako ustawienie poniewaz negatywnie wplywa na sens działania stacji
+
+//ustawienia stacji
 static const int GODZINA_OTWARCIA = 6;
 static const int GODZINA_ZAMKNIECIA = 16;   // w zagarze jedna godzina odpowiada relanej minucie a minuta to prawdziwa sekunda
-static const int DLUGOSC_SYMULACJI = 200;
+static const int DLUGOSC_SYMULACJI = 20;
 
+//ustawienia turystow/narciarzy
 static const int ILOSC_TURYSTOW_NA_OTWARCIU = 200; // ilosc turystow pojawiajacych sie po paru sekunach przy kasie od otwarcia stacji
 static const int CZESTOTLIWOSC_TURYSTOW =1; // co  ( 0 - CZESTOTLIWOSC_TURYSTOW ) sekund pojawia sie nowy
 static const int SZANSA_NA_BYCIE_NARCIARZEM = 70; //w % od 0-100%
 static const int SZANSA_NA_ZAKUP_BILETU_VIP = 1; //w % od 0-100%
-
+static const int SZANSA_NA_POSIADANIE_DZIECKA = 20; //w % od 0-100%
+//ustawienia kolejki do peronu
 static const int MAX_DLUGOSC_KOLEJKI = 100;
+
 
 //tablice zasobow losowych
 
 int mozliweTrasy[3]={10,15,20}; //10,15,20 sekund, 3 rozne trasy
 
-static const int wyborBiletu[4]={3,5,10,100}; //3,5,10 zjazdow i na caly dzien
+static const int wyborBiletu[4]={3,5,10,100}; //3,5,10 zjazdow i na caly dzien (karnet vip osobno)
 
 //implementacja jednolitego zarzadzania bledami
 
@@ -80,6 +85,11 @@ struct  WyciagInfo{
 
 //struktura pamieci BramkiInfo i implementacja kolejki fifo
 
+struct NarciarzDzieckiem{
+    int narciarzId;
+    int liczbadzieci;
+};
+
 struct BramkiInfo{
 
     int liczbaNarciarzyWKolejce;
@@ -90,6 +100,10 @@ struct BramkiInfo{
 
 inline bool czyKolejkaPelna(const BramkiInfo* br) {
     return (br->liczbaNarciarzyWKolejce == MAX_DLUGOSC_KOLEJKI);
+}
+
+inline int iloscMiejscKolejki(const BramkiInfo* br) {
+    return (100-br->liczbaNarciarzyWKolejce);
 }
 
 inline bool czyKolejkaPusta(const BramkiInfo* br) {
@@ -107,6 +121,12 @@ inline int popNarciarz(BramkiInfo* br) {
     br->przod = (br->przod + 1) % MAX_DLUGOSC_KOLEJKI;
     br->liczbaNarciarzyWKolejce--;
     return nId;
+}
+
+inline void pushVipNarciarz(BramkiInfo* br, int vipId) {
+    br->przod = (br->przod + MAX_DLUGOSC_KOLEJKI - 1) % MAX_DLUGOSC_KOLEJKI;
+    br->kolejka[br->przod] = vipId;
+    br->liczbaNarciarzyWKolejce++;
 }
 
 //struktury wiadomosci

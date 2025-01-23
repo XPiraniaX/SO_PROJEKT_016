@@ -44,8 +44,20 @@ int main(int argc, char* argv[])
     int msgIdNarciarz = msgget(keyWyciag, 0);
     if (msgIdNarciarz == -1) blad("narciarz msgget narciarz");
 
-    cout << "[Narciarz #" << (nId+1) << "] START z " << zjazdy << " zjazdami" << endl;
+    if (zjazdy== 100){
+        cout << "[Narciarz #" << (nId+1) << "] START z biletem calodniowym" << endl;
+    }
+    else if(zjazdy == 1000){
+        cout << "[Narciarz #" << (nId+1) << "] START z biletem VIP\033[33m [V.I.P]\033[0m" << endl;
+    }
+    else{
+        cout << "[Narciarz #" << (nId+1) << "] START z " << zjazdy << " zjazdami" << endl;
+    }
 
+
+    int ileDzieci=0;
+    if ((rand()%100)+1<=SZANSA_NA_POSIADANIE_DZIECKA) ileDzieci++;
+    if ((rand()%100)+1<=SZANSA_NA_POSIADANIE_DZIECKA) ileDzieci++;
     sleep(rand() %2);
     while(zjazdy > 0) {
 
@@ -60,20 +72,45 @@ int main(int argc, char* argv[])
             shmdt(infoBramki);
             return 0;
             }
-        if (czyKolejkaPelna(infoBramki)){
+        if (iloscMiejscKolejki(infoBramki)<1+ileDzieci){
             sem_V(semIdBramki);
             sem_V(semIdBramkiWejscie);
             cout << "\033[37m[Narciarz #" << (nId+1) << "] Kolejka pelna, próbuje znowu za 5s\033[0m" << endl;
             sleep(5);
             continue;
         }
+        if (zjazdy==100){
+            for (int i=0; i<1+ileDzieci; i++) pushNarciarz(infoBramki,nId);
+            if (ileDzieci>0){
+                cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[0m" << endl;
+            }
+            else{
+                cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[0m" << endl;
+            }
 
-        pushNarciarz(infoBramki,nId);
-        if (zjazdy==100 || zjazdy ==1000){}
-        else{
-            zjazdy--;
         }
-        cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[0m" << endl;
+        else if(zjazdy==1000){
+            for (int i=0; i<1+ileDzieci; i++) pushVipNarciarz(infoBramki,nId);
+            if (ileDzieci>0){
+                cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[33m [V.I.P]\033[0m" << endl;
+            }
+            else
+            {
+                cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[33m [V.I.P]\033[0m" << endl;
+            }
+        }
+        else{
+            for (int i=0; i<1+ileDzieci; i++) pushNarciarz(infoBramki,nId);
+            zjazdy--;
+            if (ileDzieci>0){
+                cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[0m" << endl;
+            }
+            else
+            {
+                cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[0m" << endl;
+            }
+        }
+
         sem_V(semIdBramki);
         sem_V(semIdBramkiWejscie);
 
@@ -88,7 +125,7 @@ int main(int argc, char* argv[])
         if (infoStacja->koniecSymulacji)
         {
             //symulacja ostatniego zjazdu
-            cout << "\032[34m[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam\033[0m" << endl;
+            cout << "\033[35m[Narciarz #" << (nId+1) << "] Wysiadam na gorze, i zjezdzam\033[0m" << endl;
 
             //zjazd
             sleep(mozliweTrasy[losowaTrasa]);

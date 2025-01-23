@@ -48,10 +48,13 @@ int main()
                 cout << "\033[34m[Kasjer] Sprzedano bilet calodniowy\033[0m" << endl;
             }
             else if (resp.liczbaZjazdow == 1000){
-                cout << "\033[34m[Kasjer] Sprzedano bilet VIP\033[0m" << endl;
+                cout << "\033[34m[Kasjer] Sprzedano bilet VIP\033[33m [V.I.P]\033[0m" << endl;
             }
             else{
                 cout << "\033[34m[Kasjer] Sprzedano bilet uprawniajacy do "<< resp.liczbaZjazdow << " zjazdow\033[0m" << endl;
+            }
+            if (req.wiek < 8 || req.wiek >65){
+                cout << "\033[34m[Kasjer] Przyznano znizke 25%\033[0m" << endl;
             }
         }
     }

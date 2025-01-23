@@ -29,6 +29,7 @@ int main()
 
         msgWyciag koniec;
         if (msgrcv(msgIdWyciag, &koniec, sizeof(koniec)-sizeof(long), 100000, IPC_NOWAIT) != -1){
+            sleep(5);
             break;
         }
         else if (errno ==ENOMSG){}

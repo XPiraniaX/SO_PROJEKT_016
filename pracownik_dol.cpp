@@ -67,7 +67,9 @@ int main()
                     int nId = popNarciarz(infoBramki);
                     if (nId == -1) break;
                     IdNarciarzy.push_back(nId);
+                    cout << "\033[32m[Pracownik Dolna Stacja] Laduje narciarza: " << (nId+1) <<"\033[0m"<< endl;
                 }
+
 
                 infoWyciag->stanKrzesla[wolnekId] = 1;
                 infoWyciag->ileOsobNaKrzesle[wolnekId] = IdNarciarzy.size();
@@ -82,6 +84,7 @@ int main()
                         if (msgsnd(msgIdWyciag, &koniecPracownikGora, sizeof(koniecPracownikGora) - sizeof(long), 0) == -1) {
                             blad("[INIT] msgsnd pracownicy error");
                         }
+                        sleep(5);
                         break;
                     }
                 }

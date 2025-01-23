@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     req.turystaId = 100+tId;
     int losowyIndeks = rand() % 4;
     req.liczbaZjazdow = wyborBiletu[losowyIndeks];
-    req.wiek=0;
+    req.wiek=(rand()%68+8); // wiek turystow (od 8 do 75, ponizej 8 za darmo)
     if ((rand()%100)+1<=SZANSA_NA_ZAKUP_BILETU_VIP){
         req.liczbaZjazdow = 1000;
     }
