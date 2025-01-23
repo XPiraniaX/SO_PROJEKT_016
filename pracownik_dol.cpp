@@ -121,6 +121,12 @@ int main()
                     blad("[Pracownik Dolna Stacja] msgsnd krzeslo error");
                 }
             }
+            else{
+                sem_V(semIdBramki);
+                sem_V(semIdWyciag);
+                continue;
+            }
+
         }
         else{
             sem_V(semIdBramki);

@@ -1,5 +1,6 @@
 #include "common.h"
 
+//funkcja zapisujaca
 void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
 
     int fd = open(SCIEZKA_PLIKU_LOGI,O_WRONLY|O_APPEND);
@@ -186,12 +187,11 @@ int main(int argc, char* argv[])
                 cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki\033[0m" << endl;
             }
         }
-        //cout << infoZegar->godzina << infoZegar->minuta << nId<< typKarnetu << endl;
-
-        zapiszLog(infoZegar->godzina,infoZegar->minuta,nId+1,typKarnetu);
 
         sem_V(semIdBramki);
         sem_V(semIdBramkiWejscie);
+
+        zapiszLog(infoZegar->godzina,infoZegar->minuta,nId+1,typKarnetu);
 
         //oczekiwanie na wysiadaj
         msgNarciarz msg1;

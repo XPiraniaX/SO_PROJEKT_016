@@ -28,6 +28,7 @@ using namespace std;
 //ilosc,czasy jazdy krzeselka i czestotliwosc z jaką są wypuszczane to integralna czesc systemu wiec nie zostaje dodana jako ustawienie poniewaz negatywnie wplywa na sens działania stacji
 
 //ustawienia stacji
+static const int LICZBA_DNI=1; //ilosc dni przez ktore symulacja bedzie dzialac
 static const int GODZINA_OTWARCIA = 6;
 static const int GODZINA_ZAMKNIECIA = 16;   // w zagarze jedna godzina odpowiada relanej minucie a minuta to prawdziwa sekunda
 
