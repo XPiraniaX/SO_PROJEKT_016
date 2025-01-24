@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "init"
+			"path" : "start"
 		}
 	],
 	"backtrace" : 1,
@@ -53,7 +53,7 @@
 			]
 		}
 	],
-	"id" : "init::@6890427a1f51a3e7e1df",
+	"id" : "start::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -69,8 +69,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "init",
-	"nameOnDisk" : "init",
+	"name" : "start",
+	"nameOnDisk" : "start",
 	"paths" : 
 	{
 		"build" : ".",

@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named init
+# Target rules for targets named start
 
 # Build rule for target.
-init: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 init
-.PHONY : init
+start: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 start
+.PHONY : start
 
 # fast build rule for target.
-init/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/build
-.PHONY : init/fast
+start/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/build
+.PHONY : start/fast
 
 #=============================================================================
 # Target rules for targets named pracownik_dol
@@ -212,7 +212,7 @@ init.o: init.cpp.o
 
 # target to build an object file
 init.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/init.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/init.cpp.o
 .PHONY : init.cpp.o
 
 init.i: init.cpp.i
@@ -220,7 +220,7 @@ init.i: init.cpp.i
 
 # target to preprocess a source file
 init.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/init.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/init.cpp.i
 .PHONY : init.cpp.i
 
 init.s: init.cpp.s
@@ -228,7 +228,7 @@ init.s: init.cpp.s
 
 # target to generate assembly for a file
 init.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/init.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/init.cpp.s
 .PHONY : init.cpp.s
 
 kasjer.o: kasjer.cpp.o
@@ -383,12 +383,12 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... init"
 	@echo "... kasjer"
 	@echo "... krzeslo"
 	@echo "... narciarz"
 	@echo "... pracownik_dol"
 	@echo "... pracownik_gora"
+	@echo "... start"
 	@echo "... turysta"
 	@echo "... init.o"
 	@echo "... init.i"

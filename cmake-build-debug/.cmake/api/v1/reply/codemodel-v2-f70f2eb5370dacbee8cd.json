@@ -50,13 +50,6 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "init::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-init-Debug-ca9e4b6598224cfb3639.json",
-					"name" : "init",
-					"projectIndex" : 0
-				},
-				{
-					"directoryIndex" : 0,
 					"id" : "kasjer::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-kasjer-Debug-883182f932ddbea75e67.json",
 					"name" : "kasjer",
@@ -88,6 +81,13 @@
 					"id" : "pracownik_gora::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-pracownik_gora-Debug-003d41824edb5bab92d7.json",
 					"name" : "pracownik_gora",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "start::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-start-Debug-85ce114d8ce0c0376aa3.json",
+					"name" : "start",
 					"projectIndex" : 0
 				},
 				{

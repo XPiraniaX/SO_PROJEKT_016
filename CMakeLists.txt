@@ -15,7 +15,7 @@ set(SOURCES
         turysta.cpp
 )
 
-add_executable(init init.cpp common.h)
+add_executable(start init.cpp common.h)
 add_executable(pracownik_dol pracownik_dol.cpp common.h)
 add_executable(pracownik_gora pracownik_gora.cpp common.h)
 add_executable(krzeslo krzeslo.cpp common.h)

@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-b
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/init.dir/all
+all: CMakeFiles/start.dir/all
 all: CMakeFiles/pracownik_dol.dir/all
 all: CMakeFiles/pracownik_gora.dir/all
 all: CMakeFiles/krzeslo.dir/all
@@ -73,7 +73,7 @@ all: CMakeFiles/turysta.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/init.dir/codegen
+codegen: CMakeFiles/start.dir/codegen
 codegen: CMakeFiles/pracownik_dol.dir/codegen
 codegen: CMakeFiles/pracownik_gora.dir/codegen
 codegen: CMakeFiles/krzeslo.dir/codegen
@@ -87,7 +87,7 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/init.dir/clean
+clean: CMakeFiles/start.dir/clean
 clean: CMakeFiles/pracownik_dol.dir/clean
 clean: CMakeFiles/pracownik_gora.dir/clean
 clean: CMakeFiles/krzeslo.dir/clean
@@ -97,36 +97,36 @@ clean: CMakeFiles/turysta.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/init.dir
+# Target rules for target CMakeFiles/start.dir
 
 # All Build rule for target.
-CMakeFiles/init.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target init"
-.PHONY : CMakeFiles/init.dir/all
+CMakeFiles/start.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=11,12 "Built target start"
+.PHONY : CMakeFiles/start.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/init.dir/rule: cmake_check_build_system
+CMakeFiles/start.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/init.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/start.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/init.dir/rule
+.PHONY : CMakeFiles/start.dir/rule
 
 # Convenience name for target.
-init: CMakeFiles/init.dir/rule
-.PHONY : init
+start: CMakeFiles/start.dir/rule
+.PHONY : start
 
 # codegen rule for target.
-CMakeFiles/init.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=1,2 "Finished codegen for target init"
-.PHONY : CMakeFiles/init.dir/codegen
+CMakeFiles/start.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=11,12 "Finished codegen for target start"
+.PHONY : CMakeFiles/start.dir/codegen
 
 # clean rule for target.
-CMakeFiles/init.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/init.dir/build.make CMakeFiles/init.dir/clean
-.PHONY : CMakeFiles/init.dir/clean
+CMakeFiles/start.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start.dir/build.make CMakeFiles/start.dir/clean
+.PHONY : CMakeFiles/start.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/pracownik_dol.dir
@@ -135,7 +135,7 @@ CMakeFiles/init.dir/clean:
 CMakeFiles/pracownik_dol.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_dol.dir/build.make CMakeFiles/pracownik_dol.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_dol.dir/build.make CMakeFiles/pracownik_dol.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=9,10 "Built target pracownik_dol"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=7,8 "Built target pracownik_dol"
 .PHONY : CMakeFiles/pracownik_dol.dir/all
 
 # Build rule for subdir invocation for target.
@@ -152,7 +152,7 @@ pracownik_dol: CMakeFiles/pracownik_dol.dir/rule
 # codegen rule for target.
 CMakeFiles/pracownik_dol.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_dol.dir/build.make CMakeFiles/pracownik_dol.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=9,10 "Finished codegen for target pracownik_dol"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=7,8 "Finished codegen for target pracownik_dol"
 .PHONY : CMakeFiles/pracownik_dol.dir/codegen
 
 # clean rule for target.
@@ -167,7 +167,7 @@ CMakeFiles/pracownik_dol.dir/clean:
 CMakeFiles/pracownik_gora.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_gora.dir/build.make CMakeFiles/pracownik_gora.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_gora.dir/build.make CMakeFiles/pracownik_gora.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=11,12 "Built target pracownik_gora"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=9,10 "Built target pracownik_gora"
 .PHONY : CMakeFiles/pracownik_gora.dir/all
 
 # Build rule for subdir invocation for target.
@@ -184,7 +184,7 @@ pracownik_gora: CMakeFiles/pracownik_gora.dir/rule
 # codegen rule for target.
 CMakeFiles/pracownik_gora.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pracownik_gora.dir/build.make CMakeFiles/pracownik_gora.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=11,12 "Finished codegen for target pracownik_gora"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=9,10 "Finished codegen for target pracownik_gora"
 .PHONY : CMakeFiles/pracownik_gora.dir/codegen
 
 # clean rule for target.
@@ -199,7 +199,7 @@ CMakeFiles/pracownik_gora.dir/clean:
 CMakeFiles/krzeslo.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/krzeslo.dir/build.make CMakeFiles/krzeslo.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/krzeslo.dir/build.make CMakeFiles/krzeslo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target krzeslo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target krzeslo"
 .PHONY : CMakeFiles/krzeslo.dir/all
 
 # Build rule for subdir invocation for target.
@@ -216,7 +216,7 @@ krzeslo: CMakeFiles/krzeslo.dir/rule
 # codegen rule for target.
 CMakeFiles/krzeslo.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/krzeslo.dir/build.make CMakeFiles/krzeslo.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=5,6 "Finished codegen for target krzeslo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=3,4 "Finished codegen for target krzeslo"
 .PHONY : CMakeFiles/krzeslo.dir/codegen
 
 # clean rule for target.
@@ -231,7 +231,7 @@ CMakeFiles/krzeslo.dir/clean:
 CMakeFiles/narciarz.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/narciarz.dir/build.make CMakeFiles/narciarz.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/narciarz.dir/build.make CMakeFiles/narciarz.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=7,8 "Built target narciarz"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target narciarz"
 .PHONY : CMakeFiles/narciarz.dir/all
 
 # Build rule for subdir invocation for target.
@@ -248,7 +248,7 @@ narciarz: CMakeFiles/narciarz.dir/rule
 # codegen rule for target.
 CMakeFiles/narciarz.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/narciarz.dir/build.make CMakeFiles/narciarz.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=7,8 "Finished codegen for target narciarz"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=5,6 "Finished codegen for target narciarz"
 .PHONY : CMakeFiles/narciarz.dir/codegen
 
 # clean rule for target.
@@ -263,7 +263,7 @@ CMakeFiles/narciarz.dir/clean:
 CMakeFiles/kasjer.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target kasjer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target kasjer"
 .PHONY : CMakeFiles/kasjer.dir/all
 
 # Build rule for subdir invocation for target.
@@ -280,7 +280,7 @@ kasjer: CMakeFiles/kasjer.dir/rule
 # codegen rule for target.
 CMakeFiles/kasjer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/kasjer.dir/build.make CMakeFiles/kasjer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=3,4 "Finished codegen for target kasjer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles --progress-num=1,2 "Finished codegen for target kasjer"
 .PHONY : CMakeFiles/kasjer.dir/codegen
 
 # clean rule for target.

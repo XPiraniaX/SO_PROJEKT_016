@@ -54,7 +54,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/init.dir/DependInfo.cmake"
+  "CMakeFiles/start.dir/DependInfo.cmake"
   "CMakeFiles/pracownik_dol.dir/DependInfo.cmake"
   "CMakeFiles/pracownik_gora.dir/DependInfo.cmake"
   "CMakeFiles/krzeslo.dir/DependInfo.cmake"

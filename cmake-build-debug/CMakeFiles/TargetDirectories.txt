@@ -1,4 +1,4 @@
-/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/init.dir
+/mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/start.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/pracownik_dol.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/pracownik_gora.dir
 /mnt/c/Users/xxmis/Desktop/Kamil_Gebala_SO_Projekt_16/cmake-build-debug/CMakeFiles/krzeslo.dir
