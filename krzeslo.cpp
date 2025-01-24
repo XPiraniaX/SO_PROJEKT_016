@@ -2,11 +2,15 @@
 
 int main(int argc, char* argv[])
 {
+    //                                  WALIDACJA ARGUMENTOW
+
     if (argc < 2) {
         blad("[krzeslo] Podaj id krzesla w argumencie!");
         return 1;
     }
     int kId = atoi(argv[1]);
+
+    //                                  INICJALIZACJA ZASOBOW
 
     //klucze ipc
     key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
@@ -37,6 +41,8 @@ int main(int argc, char* argv[])
     int msgIdWyciag = msgget(keyWyciag, 0);
     if (msgIdWyciag == -1) blad("krzeslo msgget wyciag");
 
+    //                                  START SYMULACJI
+
     //cout << "\033[32m[Krzeslo #" << (kId+1) << "] START\033[0m" << endl;
 
     while(true){
@@ -51,9 +57,10 @@ int main(int argc, char* argv[])
         int ileOsob = msg1.liczbaOsob;
         cout << "\033[32m[Krzeslo #" << (kId+1) << "] Ruszam w gore z " << ileOsob << " osobami\033[0m" << endl;
 
-
-        sleep(40);
-
+        //jazda w gore
+        for (int i=0;i<40;i++){
+            sleep(1);
+        }
 
         //komunikat na górze
         msgWyciag msg2;
@@ -78,8 +85,12 @@ int main(int argc, char* argv[])
         infoWyciag->ileOsobNaKrzesle[kId] = 0;
         sem_V(semIdWyciag);
 
-        sleep(40);
+        //powrot na dol
+        for (int i=0;i<40;i++){
+            sleep(1);
+        }
 
+        //flagi o gotowosci do drogi
         sem_P(semIdWyciag);
         infoWyciag->stanKrzesla[kId] = 0;
         sem_V(semIdWyciag);

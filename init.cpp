@@ -79,7 +79,7 @@ int main()
     //ustawienia kolejki
     if (MAX_DLUGOSC_KOLEJKI<=0) blad("Zle ustawienia max dlugosc kolejki");
     //ustawienia krzeselek i pracownikow
-    if (SZANAS_NA_AWARIE_KOLEJKI>1000||SZANAS_NA_AWARIE_KOLEJKI<0) blad("Zle ustawienia szansy krzeselek i pracownikow");
+    if (SZANSA_NA_AWARIE_KOLEJKI>1000||SZANSA_NA_AWARIE_KOLEJKI<0) blad("Zle ustawienia szansy krzeselek i pracownikow");
 
 
     for (int i=0;i<LICZBA_DNI;i++)
@@ -187,6 +187,7 @@ int main()
         for(int i=0; i<80; i++){
             infoWyciag->stanKrzesla[i] = 0;
             infoWyciag->ileOsobNaKrzesle[i] = 0;
+            infoWyciag->pidKrzesel[i] = -1;
         }
         infoBramki->liczbaNarciarzyWKolejce = 0;
         infoBramki->przod=0;
@@ -235,6 +236,8 @@ int main()
         int msgIdKasjer = msgget(keyKasjer, IPC_CREAT | 0600);
         if (msgIdKasjer == -1) blad("init msgget kasjer");
 
+        cout << "[INIT] Zasoby IPC utworzone" << endl;
+
         //rejestracja handlera
         g_infoStacja = infoStacja;
         g_semIdStacja = semIdStacja;
@@ -247,8 +250,6 @@ int main()
         //uruchomienie zegara
         g_infoZegar=infoZegar;
         thread timerThread(Zegar);
-
-        cout << "[INIT] Zasoby IPC utworzone" << endl;
 
         //uruchamianie procesow
         int sumaProcesow = 0;
@@ -287,6 +288,9 @@ int main()
                 blad("execlp krzeslo");
             }else{
                 pidKrzesel.push_back(pk);
+                sem_P(semIdWyciag);
+                infoWyciag->pidKrzesel[i]=pk;
+                sem_V(semIdWyciag);
             }
         }
         cout << "\033[32m[Krzesla] START\033[0m" << endl;

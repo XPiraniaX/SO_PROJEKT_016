@@ -2,6 +2,8 @@
 
 int main()
 {
+    //                                  INICJALIZACJA ZASOBOW
+
     //klucze ipc
     key_t keyKasjer = ftok(SCIEZKA_KLUCZA_KASJER, KLUCZ_PROJ_KASJER);
     if (keyKasjer == -1) blad("kasjer ftok kasjer");
@@ -10,11 +12,14 @@ int main()
     int msgIdKasjer = msgget(keyKasjer, 0);
     if (msgIdKasjer == -1) blad("kasjer msgget kasjer");
 
+    //                                  START SYMULACJI
+
     cout << "\033[34m[Kasjer] START\033[0m"<<endl;
 
     srand(time(NULL)^getpid());
 
     while(true) {
+        //rejestracja sygnalu od turysty/innit
         msgKasjer req;
         if (msgrcv(msgIdKasjer, &req, sizeof(msgKasjer) - sizeof(long), -99, 0) == -1) {
             if (errno == EINTR) continue;
@@ -29,9 +34,11 @@ int main()
 
             cout << "Maksymalna pojemność kolejki: " << buf.msg_qbytes << " bajtów" << endl;
         }*/
+        //otrzymano komuniakt o zakonczeniu dzialania
         if (req.mtype == 99){
             break;
         }
+        //trzymano komunikat od turysty
         else{
             usleep(100000);
 
@@ -58,6 +65,7 @@ int main()
             }
         }
     }
+    //                                  KONIEC SYMULACJI
     cout << "\033[34m[Kasjer] Zamykam kasy KONIEC\033[0m"<<endl;
     return 0;
 }

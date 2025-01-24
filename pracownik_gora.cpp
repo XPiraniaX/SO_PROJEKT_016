@@ -4,6 +4,8 @@
 
 int main()
 {
+    //                                  INICJALIZACJA ZASOBOW
+
     //klucze ipc
     key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
     if (keyWyciag == -1) blad("pracownik_dol ftok wyciag");
@@ -24,11 +26,14 @@ int main()
     int msgIdNarciarz = msgget(keyWyciag, 0);
     if (msgIdNarciarz == -1) blad("pracownik_gora msgget narciarz");
 
+    //                                  START SYMULACJI
+
     cout << "\033[32m[Pracownik Gorna Stacja] START\033[0m" << endl;
 
     while(true) {
         sleep(1);
 
+        //otrzymanie komunikatu o koncu
         msgWyciag koniec;
         if (msgrcv(msgIdWyciag, &koniec, sizeof(koniec)-sizeof(long), 100000, IPC_NOWAIT) != -1){
             sleep(5);
@@ -39,19 +44,35 @@ int main()
             blad("[Pracownik Gorna Stacja] msgrcv pracownik_dol error");
         }
 
-        //oczekiwanie na komunikat krzesla
+        //oczekiwanie na komunikat krzesla/pracownika_dol
         msgWyciag msg1;
+        msg1.mtype = -1;
         if (msgrcv(msgIdWyciag, &msg1, sizeof(msgWyciag)-sizeof(long), -299, 0) == -1) {
             blad("[Pracownik Gorna Stacja] msgrcv krzeslo error");
-            sleep(1);
-            continue;
         }
 
+        if (msg1.mtype==290){ //otrzymanie komunikatu o awarii
+            cout << "\033[32m[Pracownik Gorna Stacja] Awaria krzeselek, przerwa techniczna \033[31m[AWARIA]\033[0m"<< endl;
+
+            //naprawa awarii
+            sleep(20);
+
+            //komunikat o naprawie do pracownika dol
+            msgWyciag naprawaPracownikDol;
+            naprawaPracownikDol.mtype=291;
+            if (msgsnd(msgIdWyciag, &naprawaPracownikDol, sizeof(naprawaPracownikDol) - sizeof(long), 0) == -1) {
+                blad("[INIT] msgsnd pracownicy naprawa error");
+            }
+
+            cout << "\033[32m[Pracownik Gorna Stacja] Awaria zostala naprawiona, wznawiamy dzialanie krzeselek \033[31m[AWARIA]\033[0m"<< endl;
+            continue;
+        }
+        sem_P(semIdWyciag);
         long baseType = msg1.mtype - 200;
         if (baseType >= 0 && baseType < 80) {
             int kId = msg1.nrKrzesla;
             int ile = msg1.liczbaOsob;
-            sem_P(semIdWyciag);
+
             infoWyciag->krzeslaWTrasie--;
             infoWyciag->liczbaNarciarzyWTrasie -= ile;
             cout << "\033[32m[Pracownik Gorna Stacja] Krzeslo #" << (kId+1) << " dotarło z " << ile << " osobami. wTrasie=" << infoWyciag->krzeslaWTrasie << "\033[0m"<< endl;
@@ -88,7 +109,12 @@ int main()
             }
 
         }
+        else{
+            sem_V(semIdWyciag);
+        }
     }
+    //                                  KONIEC SYMULACJI
+
     cout << "\033[32m[Pracownik Gorna Stacja] Stacja zamknieta i krzeselka puste KONIEC\033[0m" << endl;
     //odlaczenie pamieci
     shmdt(infoWyciag);

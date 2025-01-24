@@ -24,7 +24,8 @@
 
 using namespace std;
 
-//ustawienia
+//                                  USTAWIENIA
+
 //ilosc,czasy jazdy krzeselka i czestotliwosc z jaką są wypuszczane to integralna czesc systemu wiec nie zostaje dodana jako ustawienie poniewaz negatywnie wplywa na sens działania stacji
 
 //ustawienia stacji
@@ -41,13 +42,15 @@ static const int SZANSA_NA_POSIADANIE_DZIECKA = 20; //w % od 0 do 100%
 //ustawienia kolejki do peronu
 static const int MAX_DLUGOSC_KOLEJKI = 100;
 //ustawienia krzeselek i pracownikow
-static const int SZANAS_NA_AWARIE_KOLEJKI = 1; // w % od 0.1 do 100%
+static const int SZANSA_NA_AWARIE_KOLEJKI = 1; // w % od 0.1 do 100%
 
-//tablice zasobow losowych
+//                                  TABLICE ZASOBOW LOSOWYCH
 
 int mozliweTrasy[3]={10,15,20}; //10,15,20 sekund, 3 rozne trasy
 
 static const int wyborBiletu[4]={3,5,10,100}; //3,5,10 zjazdow i na caly dzien (karnet vip osobno)
+
+//                                  DEFINICJE ZASOBOW
 
 //definicja kluczy ipc
 
@@ -88,6 +91,7 @@ struct  WyciagInfo{
     int ileOsobNaKrzesle[80];
     int liczbaNarciarzyWTrasie;
     int krzeslaWTrasie;
+    pid_t pidKrzesel[80];
 
 };
 

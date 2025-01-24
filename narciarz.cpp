@@ -41,6 +41,17 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
             log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
         }
     }
+    else if (godzina<10 && minuta==10){
+        if (typKarnetu==1){
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu z liczba zjadow\n";
+        }
+        else if (typKarnetu==2){
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
+        }
+        else{
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+    }
     else{
         if (typKarnetu==1){
             log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu z liczba zjadow\n";
@@ -62,6 +73,8 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
 
 int main(int argc, char* argv[])
 {
+    //                                  WALIDACJA ARGUMENTOW
+
     if (argc < 3) {
         blad("[narciarz] Brak argumentow: liczba zjazdow/id narciarza!");
         return 1;
@@ -72,7 +85,7 @@ int main(int argc, char* argv[])
 
     srand(time(NULL)^getpid());
 
-
+    //                                  INICJALIZACJA ZASOBOW
 
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
@@ -115,6 +128,8 @@ int main(int argc, char* argv[])
     int msgIdNarciarz = msgget(keyWyciag, 0);
     if (msgIdNarciarz == -1) blad("narciarz msgget narciarz");
 
+    //                                  START SYMULACJI
+
     int typKarnetu=0;
 
     if (zjazdy== 100){
@@ -130,15 +145,21 @@ int main(int argc, char* argv[])
         typKarnetu = 1;
     }
 
+    //losowanie czy narciarz posiada dzieci
     int ileDzieci=0;
     if ((rand()%100)+1<=SZANSA_NA_POSIADANIE_DZIECKA) ileDzieci++;
     if ((rand()%100)+1<=SZANSA_NA_POSIADANIE_DZIECKA) ileDzieci++;
     Narciarz narciarz = {nId,ileDzieci};
-    sleep(rand() %2);
-    while(zjazdy > 0) {
 
+    //symulacja czasu dojscia do bramek
+    sleep(rand() %2);
+
+    //narciarz sprawdza czy ma wazny karnet
+    while(zjazdy > 0) {
+        //zajmowanie bramki
         sem_P(semIdBramkiWejscie);
         sem_P(semIdBramki);
+        //logika bramek
         if (infoStacja->koniecSymulacji)
             {
             cout << "\033[37m[Narciarz #" << (nId+1) << "] Bramki nie dzialaja, ide do domu KONIEC\033[0m" << endl;
@@ -190,7 +211,7 @@ int main(int argc, char* argv[])
 
         sem_V(semIdBramki);
         sem_V(semIdBramkiWejscie);
-
+        //zapis do bramek
         zapiszLog(infoZegar->godzina,infoZegar->minuta,nId+1,typKarnetu);
 
         //oczekiwanie na wysiadaj
@@ -199,8 +220,10 @@ int main(int argc, char* argv[])
             blad("[Narciarz] msgrcv wysiadaj error");
         }
 
+        //losowanie trasy
         int losowaTrasa = rand()%3;
 
+        //zjazd zalezny od tego czy stacja sie zamyka
         if (infoStacja->koniecSymulacji)
         {
             //symulacja ostatniego zjazdu
@@ -236,7 +259,7 @@ int main(int argc, char* argv[])
             sleep(10);
         }
     }
-
+    //                                  KONIEC NARCIARZA
     cout << "[Narciarz #"<< (nId+1) << "] Skonczylem wszystkie zjazdy KONIEC" << endl;
 
     //odlaczenie pamieci

@@ -2,6 +2,10 @@
 
 int main()
 {
+    //                                  INICJALIZACJA ZASOBOW
+
+    srand(time(NULL)^getpid());
+
     //klucze ipc
     key_t keyWyciag = ftok(SCIEZKA_KLUCZA_WYCIAG, KLUCZ_PROJ_WYCIAG);
     if (keyWyciag == -1) blad("pracownik_dol ftok wyciag");
@@ -31,8 +35,9 @@ int main()
     int msgIdWyciag = msgget(keyWyciag, 0);
     if (msgIdWyciag == -1) blad("pracownik_dol msgget wyciag");
 
+    //                                  START SYMULACJI
+
     bool zamykanie = false;
-    bool kolejkaPusta = false;
     cout << "\033[32m[Pracownik Dolna Stacja] START\033[0m" << endl;
 
     while(true) {
@@ -119,6 +124,41 @@ int main()
                 }
                 if (msgsnd(msgIdWyciag, &msg, sizeof(msgWyciag)-sizeof(long), 0) == -1) {
                     blad("[Pracownik Dolna Stacja] msgsnd krzeslo error");
+                }
+                if (!zamykanie){
+                    if (rand()%1000+1<=SZANSA_NA_AWARIE_KOLEJKI){ //obsluga awarii
+                        sem_P(semIdWyciag);
+
+                        //zastopowanie krzeselek
+                        for (int i=0;i<80;i++){
+                            kill(infoWyciag->pidKrzesel[i],SIGSTOP);
+                        }
+
+                        cout << "\033[32m[Pracownik Dolna Stacja] Awaria krzeselek, przerwa techniczna \033[31m[AWARIA]\033[0m"<< endl;
+
+                        //komunikat o awarii do pracownika gora
+                        msgWyciag awariaPracownikGora;
+                        awariaPracownikGora.mtype=290;
+                        if (msgsnd(msgIdWyciag, &awariaPracownikGora, sizeof(awariaPracownikGora) - sizeof(long), 0) == -1) {
+                            blad("[INIT] msgsnd pracownicy awaria error");
+                        }
+
+
+
+                        //oczekiwanie na komunikat o naprawie od pracownika gora
+                        msgWyciag naprawaPracownikGora;
+                        if (msgrcv(msgIdWyciag, &naprawaPracownikGora, sizeof(naprawaPracownikGora)-sizeof(long), 291, 0) == -1) {
+                            blad("[Pracownik Gorna Stacja] msgrcv pracownicy naprawa error");
+                        }
+
+                        //wznowienie pracy krzeselek
+                        for (int i=0;i<80;i++){
+                            kill(infoWyciag->pidKrzesel[i],SIGCONT);
+                        }
+
+                        cout << "\033[32m[Pracownik Dolna Stacja] Awaria zostala naprawiona, wznawiamy dzialanie krzeselek \033[31m[AWARIA]\033[0m"<< endl;
+                        sem_V(semIdWyciag);
+                    }
                 }
             }
             else{

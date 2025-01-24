@@ -2,12 +2,16 @@
 
 int main(int argc, char* argv[])
 {
+    //                                  WALIDACJA ARGUMENTOW
+
     if (argc < 2) {
         blad("[Turysta] Podaj id krzesla w argumencie!");
     }
     int tId = atoi(argv[1]);
 
     srand(time(NULL)^getpid());
+
+    //                                  INICJALIZACJA ZASOBOW
 
     //klucze ipc
     key_t keyStacja = ftok(SCIEZKA_KLUCZA_STACJA, KLUCZ_PROJ_STACJA);
@@ -30,7 +34,9 @@ int main(int argc, char* argv[])
     int msgIdKasjer = msgget(keyKasjer, 0);
     if (msgIdKasjer == -1) blad("turysta msgget kasjer");
 
+    //                                  START SYMULACJI
 
+    //sprawdzanie flagi konca symulacji
     if (infoStacja->koniecSymulacji)
     {
         cout << "[Turysta #"<< (tId+1) <<"] Stacja się zamyka, ide do domu KONIEC" << endl;
@@ -38,8 +44,10 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    //zwiedzanie stacji
     sleep(rand()%25);
 
+    //decyzja czy zostaje narciarzem
     if ((rand()%100+1)>SZANSA_NA_BYCIE_NARCIARZEM)
     {
         cout << "[Turysta #"<< (tId+1) <<"] Wychodzę, KONIEC" << endl;
@@ -61,12 +69,14 @@ int main(int argc, char* argv[])
     }
     while (true)
     {
+        //sprawdzanie flagi konca symulacji
         if (infoStacja->koniecSymulacji)
         {
             cout << "[Turysta #"<< (tId+1) <<"] Stacja się zamyka, ide do domu KONIEC" << endl;
             shmdt(infoStacja);
             return 0;
         }
+        //otrzmanie wyslanie komunikatu do kasjera
         if (msgsnd(msgIdKasjer, &req, sizeof(msgKasjer) - sizeof(long), IPC_NOWAIT) == -1) {
             if (errno == EAGAIN)
             {
@@ -78,6 +88,7 @@ int main(int argc, char* argv[])
         break;
     }
 
+    //sprawdzanie flagi konca symulacji
     if (infoStacja->koniecSymulacji)
     {
         cout << "[Turysta #"<< (tId+1) <<"] Stacja się zamyka, ide do domu KONIEC" << endl;
@@ -90,7 +101,6 @@ int main(int argc, char* argv[])
 
     //czekamy na odpowiedz
     msgKasjer resp;
-
     if (msgrcv(msgIdKasjer, &resp, sizeof(msgKasjer) - sizeof(long), 100+tId, 0)==-1){
         blad("[Turysta msgrcv kasjer error]");
     }
@@ -105,9 +115,9 @@ int main(int argc, char* argv[])
         cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet na " << resp.liczbaZjazdow << " zjazdow\033[0m" << endl;
     }
 
-
     sem_V(semIdKasjer);
 
+    //symulacja przebrania sie i zostania narciarzem
     sleep(rand()%3);
 
     pid_t pn = fork();
@@ -127,7 +137,7 @@ int main(int argc, char* argv[])
         }
 
     }
-
+    //                                  KONIEC TURYSTY
     shmdt(infoStacja);
     return 0;
 }
