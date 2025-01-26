@@ -21,11 +21,8 @@ void Zegar() {
     cout << "\033[31m[Zegar] Otwieramy Stacje, godzina "<< GODZINA_OTWARCIA <<"\033[0m"<<endl;
 
     int czasZegara=0;
-    while (g_infoZegar->godzina !=GODZINA_ZAMKNIECIA) {
-        if(koniecZegara)
-        {
-            return;
-        }
+    while (g_infoZegar->godzina!=GODZINA_ZAMKNIECIA) {
+        if(koniecZegara)return;
         this_thread::sleep_for(chrono::seconds(1));
         czasZegara++;
         g_infoZegar->minuta++;
@@ -34,7 +31,6 @@ void Zegar() {
             g_infoZegar->minuta=0;
             cout << "\033[31m[Zegar] Wybila godzina "<< g_infoZegar->godzina <<"\033[0m"<<endl;
         }
-
     }
 
     sem_P(g_semIdStacja);

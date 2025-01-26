@@ -135,7 +135,7 @@ int main()
                         }
 
                         cout << "\033[32m[Pracownik Dolna Stacja] Awaria krzeselek, przerwa techniczna \033[31m[AWARIA]\033[0m"<< endl;
-
+                        sem_V(semIdWyciag);
                         //komunikat o awarii do pracownika gora
                         msgWyciag awariaPracownikGora;
                         awariaPracownikGora.mtype=290;
@@ -150,7 +150,7 @@ int main()
                         if (msgrcv(msgIdWyciag, &naprawaPracownikGora, sizeof(naprawaPracownikGora)-sizeof(long), 291, 0) == -1) {
                             blad("[Pracownik Gorna Stacja] msgrcv pracownicy naprawa error");
                         }
-
+                        sem_P(semIdWyciag);
                         //wznowienie pracy krzeselek
                         for (int i=0;i<80;i++){
                             kill(infoWyciag->pidKrzesel[i],SIGCONT);

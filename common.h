@@ -42,7 +42,7 @@ static const int SZANSA_NA_POSIADANIE_DZIECKA = 20; //w % od 0 do 100%
 //ustawienia kolejki do peronu
 static const int MAX_DLUGOSC_KOLEJKI = 100;
 //ustawienia krzeselek i pracownikow
-static const int SZANSA_NA_AWARIE_KOLEJKI = 1; // w % od 0.1 do 100%
+static const int SZANSA_NA_AWARIE_KOLEJKI = 1;// w % od 0.1 do 100%
 
 //                                  TABLICE ZASOBOW LOSOWYCH
 
@@ -169,7 +169,7 @@ struct msgKasjer {
     int wiek;
 };
 
-//implementacja jednolitego korzystania z semaforow sem_V
+//implementacja jednolitego korzystania z semaforow
 
 union semun {
     int val;
@@ -187,7 +187,7 @@ inline void sem_op(int semid, short num, short op, short flg=0) {
         _exit(1);
     }
 }
-inline void sem_P(int semid, short num=0) { sem_op(semid, num, -1);}
-inline void sem_V(int semid, short num=0) { sem_op(semid, num, +1);}
+inline void sem_P(int semid, short num=0) { sem_op(semid, num, -1);}// blokowanie
+inline void sem_V(int semid, short num=0) { sem_op(semid, num, +1);}// odblokowanie
 
 #endif
