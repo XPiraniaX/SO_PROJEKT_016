@@ -124,6 +124,9 @@ int main(int argc, char* argv[])
     int semIdBramkiWejscie = semget(keyBramki, 1, 0);
     if (semIdBramkiWejscie == -1) blad("narciarz semget bramki");
 
+    int semIdPeronWyjazd = semget(keyWyciag, 1, 0);
+    if (semIdPeronWyjazd == -1) blad("narciarz semget bramki");
+
     //dolaczanie do kolejki komunikatow
     int msgIdNarciarz = msgget(keyWyciag, 0);
     if (msgIdNarciarz == -1) blad("narciarz msgget narciarz");
@@ -220,6 +223,9 @@ int main(int argc, char* argv[])
             blad("[Narciarz] msgrcv wysiadaj error");
         }
 
+        //symulacja 2 wyjazdow z peronu gora
+        sem_P(semIdBramkiWejscie);
+        sem_V(semIdBramkiWejscie);
         //losowanie trasy
         int losowaTrasa = rand()%3;
 

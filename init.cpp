@@ -204,6 +204,12 @@ int main()
         argWyciag.val = 1;
         if (semctl(semIdWyciag, 0, SETVAL, argWyciag) == -1) blad("init semctl SETVAL wycaigu");
 
+        int semIdPeronWyjaz = semget(keyWyciag, 1, IPC_CREAT | 0600);
+        if (semIdPeronWyjaz == -1) blad("init semget peron wyjazd");
+        semun argPeronWyjaz;
+        argPeronWyjaz.val = 2;
+        if (semctl(semIdPeronWyjaz, 0, SETVAL, argPeronWyjaz) == -1) blad("init semctl SETVAL peron wyjazd");
+
         int semIdBramki = semget(keyBramki, 1, IPC_CREAT | 0600);
         if (semIdBramki == -1) blad("init bramek");
         semun argBramki;
@@ -392,6 +398,7 @@ int main()
 
         semctl(semIdStacja, 0, IPC_RMID);
         semctl(semIdWyciag, 0, IPC_RMID);
+        semctl(semIdPeronWyjaz, 0, IPC_RMID);
         semctl(semIdBramki, 0, IPC_RMID);
         semctl(semIdBramkiWejscie, 0, IPC_RMID);
         semctl(semIdKasjer, 0, IPC_RMID);
