@@ -118,15 +118,25 @@ Taka interpretacja pozwala zachować mi odpowiednią modularyzację oraz decentr
 ## IV. Podstawowe działanie systemu
 
 1.Kompilacja komendą make oraz uruchomienie symulacji ./start
+
 2.Inicjalizacja zasobów
+
 3.Uruchomienie procesów kasjer, pracownik_dol i pracownik_gora, krzesełek, turystow, generatora turystow oraz wątku zegar
+
 4.Procesy inicjalizują zasoby oraz wykonują swoje zadania opisane w II.Komponenty->1.Podmioty
+
 5.Wątek główny oczekuje na zakończenie zegara po którym następuje oznaczenie flagi koniec symulacji dla turystów i narciarzy(zamkniecie bramek)
+
 6.Wysłanie komunikatów do kasjera i pracownika_dol o zamknięciu stacji (pracownik_dol oczekuje na opróżnienie peronu i krzesełek z narciarzy po czym wysyła komunikat do pracownika_gora który kończy działanie i sam kończy działanie)
+
 7.Oczekiwanie na zakończenie pracownika_gora
+
 8.Wyłączenie krzesełek 
+
 9.Wyproszenie pozostałych turystów
+
 10.Wypisanie informacji o karnetach z bramek
+
 11.Zwolnienie zasobów i rozpoczęcie kolejnego dnia / zakończenie programu
 
 ---
