@@ -92,11 +92,11 @@ Taka interpretacja pozwala zachować mi odpowiednią modularyzację oraz decentr
 
 ### 1. Dokumentacja/raport projektu
 
-- [readme.md](readme.md)
+- [readme.md](README.md)
 
 ### 2. Pliki źródłowe oraz deklaracje
 
-- [common.h](blob/common.h) : Plik zawierający ustawienia oraz deklaracje.
+- [common.h](common.h) : Plik zawierający ustawienia oraz deklaracje.
 - [init.cpp](init.cpp) : Plik zawierający implementację podmiotu init oraz zegara.
 - [kasjer.cpp](kasjer.cpp) : Plik zawierający implementację podmiotu kasjer.
 - [turysta.cpp](turysta.cpp) : Plik zawierający implementację podmiotu turysta.
