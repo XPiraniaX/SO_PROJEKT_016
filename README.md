@@ -1,525 +1,369 @@
-####I. OgÛlne za≥oøenia projektu 
+# Dokumentacja
+Projektu SO Temat 
+16 Stacja Narciarska
+Kamil Gƒôbala 151868
 
-Projekt realizujπcy modularnπ symulacje stacji narciarskiej w jÍzyku C++ w úrodowisku WSL, 
-umieszczony i udokumentowany w repozytorium GitHub 
-https://github.com/XPiraniaX/SO_PROJEKT_016/ 
+---
 
-Temat 16 ñ Stacja narciarska Na terenie stacji narciarskiej znajduje siÍ z krzese≥kowa kolej linowa. 
-Kolej sk≥ada siÍ z 3 osobowych krzese≥ek o ≥πcznej liczbie 80 sztuk. Jednoczeúnie moøe byÊ zajÍtych 
-40 krzese≥ek na ktÛrych siedzi maksymalnie 3x40 = 120 osÛb. Narciarze/turyúci przychodzπ na teren 
-stacji w losowych momentach czasu (nie wszyscy z nich muszπ jeüdziÊ na nartach). Wejúcie na teren 
-kolejki linowej odbywa siÍ po op≥aceniu karnetu w kasie. Karnety sπ czasowe (Tk1, Tk2, Tk3) lub 
-dzienne. Dzieci poniøej 12 roku øycia oraz seniorzy powyøej 65 roku øycia majπ 25% zniøkÍ. Dzieci 
-poniøej 8 roku øycia znajdujπ siÍ pod sta≥π opiekπ osoby doros≥ej. Wejúcie na peron dolnej stacji 
-odbywa siÍ czterema bramkami jednoczeúnie. Na peronie dolnej stacji moøe przebywaÊ maksymalnie 
-N osÛb. Wyjazd z peronu stacji gÛrnej odbywa siÍ dwoma drogami jednoczeúnie (ruch 
-jednokierunkowy). Stacja dolna jest obs≥ugiwana przez pracownika1, stacja gÛrna jest obs≥ugiwana 
-przez pracownika2. W przypadku zagroøenia pracownik1 lub pracownik2 zatrzymujπ kolej linowπ 
-(sygna≥1). Aby wznowiÊ dzia≥anie pracownik, ktÛry zatrzyma≥ kolej komunikuje siÍ z drugim 
-pracownikiem ñ po otrzymaniu komunikatu zwrotnego o gotowoúci kolej jest uruchamiana ponownie 
-(sygna≥2). Zjazd odbywa siÍ trzema trasami o rÛønym stopniu trudnoúci ñ úredni czas przejazdu dla 
-poszczegÛlnych tras jest rÛøny i wynosi odpowiednio T1, T2 i T3 (T1<T2<T3).  
-Zasady dzia≥ania stacji ustalone przez kierownika sπ nastÍpujπce:  
-ï Kolej linowa jest czynna w godzinach od Tp do Tk, W momencie osiπgniÍcia czasu Tk na bramkach 
-przestajπ dzia≥aÊ karnety. Wszystkie osoby, ktÛre wesz≥y na peron majπ zostaÊ przetransportowane do 
-stacji gÛrnej. NastÍpnie po 5 sekundach kolej ma zostaÊ wy≥πczona.  
-ï Dzieci w wieku od 4 do 8 lat siadajπ na krzese≥ko pod opiekπ osoby doros≥ej;  
-ï Osoba doros≥a moøe opiekowaÊ siÍ jednoczeúnie co najwyøej dwoma dzieÊmi w wieku od 4 do 8 lat;  
-ï Kaøde przejúcie przez bramki (uøycie danego karnetu) jest rejestrowane (id karnetu - godzina) ñ na 
-koniec dnia jest generowany raport/podsumowanie iloúci wykonanych zjazdÛw przez poszczegÛlne 
-osoby/karnety. 
-ï Osoby uprawnione VIP wchodzπ na peron dolnej stacji bez kolejki (uøywajπc karnetu!); 
+## Spis tre≈õci
 
-Zgodnie z mojπ interpretacjπ, zrealizowa≥em symulacje w ktÛrej jest: 
-Stacja narciarska(w niej jest kasjer, turyúci przychodzπ i mogπ zakupiÊ bilet aby zostaÊ narciarzem 
-oraz narciarze przechodzπ przez bramki) 
-Peron dolny/Kolejka do krzese≥ek(w nim znajdujπ siÍ narciarze po przejúciu przez bramki i ma 
-maksymalnπ pojemnoúÊ, obs≥uguje go pracownik dol i jest to kolejka FiFo z ktÛrej narciarze 
-Ñpakowaniî sπ do krzese≥ka a ono jest nastÍpnie wysy≥ane w drogÍ) 
-Krzese≥ka(osobne byty jest ich 80 i podrÛøujπ miedzy peronem dolnym a gÛrnym) 
-Peron gÛrny(zarzπdza nim pracownik gora, Ñwypakowywujeî narciarzy i odsy≥a krzese≥ka, z niego 
-narciarze wyjeødøajπ w trasy) 
-Trasy zjazdu(narciarze jπ wybierajπ z peronu gÛrnego i po przejechaniu jej wracajπ na stacje 
-narciarskπ) 
-Taka interpretacja pozwala zachowaÊ mi odpowiedniπ modularyzacje oraz decentralizacje projektu, 
-przy zachowaniu jak najwiÍkszego realizmu funkcjonowania stacji.   
-3 
-II. Komponenty 
-1.Podmioty -Init : inicjalizuje zasoby i odpowiada za uruchomienie procesÛw, bierze udzia≥ w 
-zamykaniu stacji, usuwa zasoby  -Zegar : sygnalizuje rozpoczÍcie i zakoÒczenie pracy stacji, mierzy czas wewnÍtrzny 
-symulacji -Kasjer : obs≥uguje sprzedaø biletÛw -Turysta : zwiedza stacje, moøe kupiÊ karnety od kasjera i zostaÊ narciarzem -Narciarz : przechodzi przez bramki, uøywa kolei narciarskiej i korzysta z tras -Pracownik DÛ≥ : ≥aduje narciarzy na krzese≥ka i wysy≥a je w drogÍ na gÛrÍ -Pracownik GÛra: czeka na krzese≥ka, roz≥adowuje narciarzy i odsy≥a je na dÛ≥ -Krzese≥ka: pokonujπ trasy gÛra-dÛ≥ przewoøπc narciarzy  -Generator TurystÛw: prosta pÍtla tworzπca turystÛw co losowy przedzia≥ czasu(max 
-wartoúÊ co jakπ pojawia siÍ turysta moøe byÊ dostosowana w ustawieniach) 
-2.FunkcjonalnoúÊ -Kolej linowa : Symulacja dzia≥ania 80 krzese≥ek(kaøde ma 3 miejsca) z maksymalnie 
-40 w ruchu jednoczeúnie (zak≥adam øe w ruchu oznacza 40 krzese≥ek jedzie w gÛrÍ, 
-40 w dÛ≥ aby zapewniÊ system zamkniÍty w pracy krzese≥ek). -System biletowy : MoøliwoúÊ wyboru jednego z 5 biletÛw -Kontrola wejúcia : Cztery bramki weryfikujπce waønoúÊ karnetÛw  z uwzglÍdnieniem 
-VIP wchodzπcego bez kolejki -Trasy : Trzy zjazdy o rÛønych poziomach trudnoúci co przek≥ada siÍ na czas zjazdu 
-3.Obs≥uga b≥ÍdÛw -Korzystanie z funkcji perror() i zmiennej errno w przypadku b≥ÍdÛw systemowych  
-4.Komunikacja -Wykorzystanie pamiÍci wspÛ≥dzielonej, semaforÛw oraz kolejek komunikatÛw do 
-komunikacji miÍdzy procesami 
-4 
-III. Struktura projektu 
-1.README.md : dokumentacja/raport projektu 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/README.md 
-2.Pliki zrÛd≥owe oraz deklaracje: -common.h : plik zawierajπcy ustawienia oraz deklaracje  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/common.h -init.cpp : plik zawierajπcy implementacje podmiotu init oraz zegara  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/init.cpp -kasjer.cpp : plik zawierajπcy implementacje podmiotu kasjer 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/kasjer.cpp -turysta.cpp : plik zawierajπcy implementacje podmiotu turysta 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/turysta.cpp -narciarz.cpp : plik zawierajπcy implementacje podmiotu narciarz 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/narciarz.cpp -pracownik_dol.cpp : plik zawierajπcy implementacje podmiotu pracownik_dol 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/pracownik_dol.cpp -pracownik_gora.cpp : plik zawierajπcy implementacje podmiotu pracownik_gora 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/pracownik_gora.cpp -krzeslo.cpp : plik zawierajπcy implementacje podmiotu krzese≥ko 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/master/krzeslo.cpp 
-5 
-IV. Podstawowe dzia≥anie 
-systemu 
-1.Kompilacja komendπ make oraz uruchomienie symulacji ./start 
-2.Inicjalizacja zasobÛw 
-3.Uruchomienie procesÛw kasjer, pracownik_dol i pracownik_gora, 
-krzese≥ek, turystow, generatora turystow oraz wπtku zegar 
-4.Procesy inicjalizujπ zasoby oraz wykonujπ swoje zadania opisane w 
-II.Komponenty->1.Podmioty 
-5.Wπtek g≥Ûwny oczekuje na zakoÒczenie zegara po ktÛrym nastÍpuje 
-oznaczenie flagi koniec symulacji dla turystÛw i narciarzy(zamkniecie 
-bramek) 
-6.Wys≥anie komunikatÛw do kasjera i pracownika_dol o zamkniÍciu stacji 
-(pracownik_dol oczekuje na oprÛønienie peronu i krzese≥ek z narciarzy 
-po czym wysy≥a komunikat do pracownika_gora ktÛry koÒczy dzia≥anie i 
-sam koÒczy dzia≥anie) 
-7.Oczekiwanie na zakoÒczenie pracownika_gora 
-8.Wy≥πczenie krzese≥ek  
-9.Wyproszenie pozosta≥ych turystÛw 
-10.Wypisanie informacji o karnetach z bramek 
-11.Zwolnienie zasobÛw i rozpoczÍcie kolejnego dnia / zakoÒczenie 
-programu 
-6 
-V. Implementacja jednolitego 
-systemu b≥ÍdÛw programu i 
-obs≥uga errno 
-1.B≥Ídy programu 
-Gdy wystπpi b≥πd wystarczy skorzystaÊ z blad(Ñkomuniaktî), wtedy program koÒczy 
-dzia≥anie i wyúwietlany jest stosowny komunikat 
-a)Definicja 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/common.h#L72 
-b)Przyk≥ad uøycia  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/krzeslo.cpp#L72 
-2.B≥Ídy errno 
-a)Przyk≥ad obs≥ugi 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_gora.cpp#L42 
-7 
-VI. Implementacja zarzπdzania 
-zasobami, komunikacji oraz 
-synchronizacji procesÛw 
-1.Klucze IPC 
-a)Definicje  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/common.h#L55 
-b)Tworzenie niezbÍdnych plikÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L89 
-c)Tworzenie kluczy ipc 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L139 
-2.PamiÍÊ dzielona 
-Elementy symulacji operujπ na  4 pamiÍciach dzielonych: StacjaInfo, WyciagInfo, 
-BramkiInfo i ZegarInfo 
-a)Definicje pamiÍci dzielonych(wraz z definicjπ kolejki fifo 
-potrzebnej do zarzπdzania narciarzami na peronie) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/common.h#L79 
-b)Utworzenie pamiÍci dzielonych 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L156 
-c)Przyk≥adowe do≥πczenie do pamiÍci 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L169   - w init 
-8 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/narciarz.cpp#L103  - w narciarz  
-d)Inicjalizacja pamiÍci 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L182 
-e)Przyk≥adowe od≥πczanie pamiÍci 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L407   - w init 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/pracownik_gora.cpp#L119  - w pracownik_gora 
-f)Zwolnienie pamiÍci  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L390 
-3.Semafory 
-W projekcie operuje na 5 semaforach(z prefixem semId), Stacja,Brami i Wyciπg 
-Odpowiadajπ za dostÍp do pamiÍci o tej samej nazwie BramkiWejscie odpowiada za 
-istnienie 4 bramek, Kasjer odpowiada za dostep do kasjera 
-a)Uniwersalna implementacja systemu semaforÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/common.h#L172 
-b)Tworzenie i inicjalizacja semaforÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L198 
-c)Przyk≥adowe pod≥πczenie do semaforÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/pracownik_dol.cpp#L27 
-d)Przyk≥adowe uøycie semaforÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/pracownik_dol.cpp#L47 
-9 
-e)Usuwanie semaforÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L397 
-4.Kolejki komunikatÛw 
-Procesy komunikujπ siÍ ze sobπ przy pomocy kolejek: msgIdKasjer(Kasjer-Turysta), 
-msgIdWyciag(Pracownicy-Krzese≥ka), msgIdNarciarz(Pracownicy-Narciarze) 
-a)Definicje  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/common.h#L151 
-b) Tworzenie kolejek 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L229 
-c)Przyk≥ad do≥πczania do kolejki komunikatÛw 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/krzeslo.cpp#L40  - w krzeslo 
-d)Przyk≥ad wys≥ania i oczekiwania na komunikat 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/krzeslo.cpp#L65 
-e)Usuniecie kolejek komunikatÛw  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L403 
-5.Plik 
-W projekcie uøywam jednego pliku jako bezpoúrednie ürÛd≥o danych, logi.txt 
-a)Definicja úcieøki 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/common.h#L68 
-b)Przyk≥ad Uøycia 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f
- 514779e367a0b69/init.cpp#L50  - w funkcji odczytujπcej logi bramek 
-10 
-VII. Implementacja g≥Ûwnych 
-funkcji projektu 
-Przebieg kaødej funkcji wiπøe siÍ z wysy≥aniem odpowiednich komunikatÛw na 
-wyjúcie 
-1.System biletowy 
-a)Turysta po czasie zwiedzania stacji i decyzji o zostaniu 
-narciarzem zajmuje kasjera i wysy≥a komunikat z biletem jaki 
-chce otrzymaÊ 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/turysta.cpp#L48 
-b)Kasjer oczekujπcy na komunikat odbiera jego 
-wiadomoúÊ(moøe to byÊ teø komunikat o zamkniÍciu stacji) i 
-wysy≥a stosowny komunikat z biletem do turysty i oczekuje na 
-kolejnego turyste 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L22 
-c)Turysta otrzymuje bilet, odchodzi od kasjera(zwalnia kasÍ dla 
-kolejnego turysty) i po czasie zostaje turystπ 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/turysta.cpp#L103 
-2.System bramek 
-a)Narciarz wraz z dzieÊmi pod opiekπ (jeøeli takie posiada) po 
-czasie podchodzi do jednej z 4 bramek (zajmuje semafor z 
-wartoúciπ 4 upewnia siÍ øe maksymalnie 4 narciarzy bÍdzie 
-przechodziÊ przez bramki naraz) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L148 
-11 
-b)Bramki weryfikujπ waønoúÊ jego biletu oraz miejsca na 
-peronie, jeøeli warunki sπ spe≥nione to przepuszczajπ narciarza 
-i rejestrujπ uøycie karnetu 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L173 
-c)Narciarz przechodzi przez bramki i do≥πcza do kolejki do 
-krzese≥ek (jeøeli posiada karnet VIP bÍdzie pierwszy w kolejce 
-do krzese≥ka wraz z dzieÊmi) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L180 
-3.System krzese≥ek 
-a)Pracownik dol sprawdza czy krzese≥ka w trasie nie 
-przekraczajπ 40, szuka wolnego krzese≥ka i Ñ≥adujeî na niego 
-narciarzy(jeøeli narciarz posiada dzieci pod opiekπ to zawsze 
-pojedzie ze swoimi dzieÊmi nawet jeøeli wiπøe siÍ to z wolnym 
-miejscem) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L59 
-b)Pracownik dol wysyla komunikat o starcie do krzese≥ka ktÛre 
-wczeúniej Ñza≥adowa≥î narciarzami i wraca do punktu a) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L117 
-c)Krzes≥o ktÛre oczekuje na start odbiera komunikat i 
-rozpoczyna drogÍ na gÛrÍ, gdy tam dotrze wysy≥a stosowny 
-komunikat do pracownika gora 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/krzeslo.cpp#L50 
-12 
-d)Pracownik gora oczekujπcy na komunikat o dojechaniu 
-krzese≥ka otrzymuje go, Ñroz≥adowywujeî narciarzy i wysy≥a do 
-nich komunikat powiadamiajπcy ich øe sπ na gÛrze, oraz wysy≥a 
-komunikat do krzese≥ka o powrocie na dÛ≥  i oczekuje na 
-kolejne krzese≥ko 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_gora.cpp#L47 
-e)Krzese≥ko po odebraniu komunikatu wraca na dÛ≥ i znowu 
-staje siÍ wolne 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/krzeslo.cpp#L75 
-4.System zjazdu narciarza 
-a)Narciarz po otrzymaniu komunikatu o wyjúciu z gÛrnego 
-peronu i wybraniu trasy zjazdu, zjeødøa i jeøeli stacja siÍ nie 
-zamyka wraca na niπ i idzie do bramek  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L217 
-5.System zamykania stacji 
-a)Po up≥ywie czasu dzia≥ania stacji zegar zamyka bramki 
-zmienia flagÍ dla narciarzy i turystÛw koniecSymulacji 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L18 ñ zegar 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L163 ñ zamkniecie bramek 
-b)Po zakoÒczeniu pracy zegara init wysy≥a komunikat do 
-kasjera i pracownika dol o zakoÒczeniu pracy stacji oraz 
-oczekuje na zamkniecie pracownika gora 
-13 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L351 
-c)Pracownik dol po otrzymaniu komunikatu o zamknieciu stacji 
-wypuszcza tyle krzese≥ek aø peron bÍdzie pusty i wszyscy 
-narciarze bÍdπ na gÛrnym peronie 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L50 ñ odebranie komunikatu 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L101 ñ wys≥anie komunikatu do pracownika 
-gora po oprÛønieniu peronu i krzese≥ek 
-d)Pracownik gora otrzymuje komunikat i koÒczy pracÍ 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_gora.cpp#L37 
-e)Po zakoÒczeniu pracy krzese≥ek nastÍpuje wyproszenie 
-pozosta≥ych turystÛw i zamkniecie i wyúwietlenie raportu z 
-bramek 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L370 
-14 
-VIII. Implementacja pobocznych 
-funkcji projektu 
-1.Implementacja wyboru karnetÛw 
-Zaimplementowa≥em 5 rodzajÛw karnetÛw, na 3, 5, 10 zjazdÛw, dzienny oraz vip 
-ktÛry jest biletem dziennym z przywilejem wchodzenia na krzese≥ka bez kolejki na 
-peronie  
-a)Definicja  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/common.h#L51 
-b)WybÛr karnetu z osobnπ szansπ na wybÛr karnetu vip (aby 
-moøna by≥o regulowaÊ czÍstotliwoúÊ vipÛw) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/turysta.cpp#L65 
-2.Implementacja zniøki 
-a)Turysta losuje i podaje wiek podczas proúby o bilet(za≥oøy≥em 
-øe na narty chodzπ ludzie do 75 roku øycia) 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/turysta.cpp#L66 
-b)Kasjer wysy≥a stosowny komunikat jeøeli zniøka zostanie 
-przyznana  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L63 
-15 
-3.Implementacja dzieci pod opiekπ  
-przyjmujÍ øe dzieci nie podchodzπ do kasjera poniewaø robi to tylko rodzic oraz nie 
-potrzebujπ karnetu aby wejúÊ na peron dolny, jednak zajmujπ miejsce na peronie 
-oraz na krzese≥ku 
-a)Losowanie czy narciarz posiada dzieci 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L148 
-b)Przechodzenie z dzieÊmi przez bramki  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L173 
-c)Wsiadanie do krzese≥ka z dzieÊmi 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L69 
-4.Implementacja sygna≥u o awarii oraz 
-zatrzymanie krzese≥ek 
-zak≥adam øe awaria moøe pojawiÊ siÍ podczas za≥adunku narciarzy 
-a)Pracownik dol wystπpienie awarii, zatrzymanie krzese≥ek oraz 
-komunikat o awarii do pracownika gora 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L129 
-b)Reakcja pracownika gora, naprawa awarii oraz potwierdzenie 
-o naprawie do pracownika dol 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_gora.cpp#L54 
-c)Oczekiwanie na potwierdzenie o naprawie od pracownika 
-gora oraz wznowienie dzia≥ania krzese≥ek 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L149 
-16 
-5.Implementacja rÛønych tras zjazdu 
-a)Definicja 3 tras o rÛønym czasie zjadu 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/common.h#L49 
-b)WybÛr trasy zajdu przez narciarza  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L224 
-6.Zapisywanie informacji o godzinie narciarzu i 
-karnecie przez bramki i wyúwietlenie ich na 
-koniec 
-Po kaødorazowym przejúciu przez bramki, dane zapisywane sπ do pliku logi z 
-ktÛrego na koniec sπ odczytywane  
-a)Zapis do pliku logi 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L215 ñ rejestracja przejúcia 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L3  - funkcja zapisujπca 
-b)Odczyt z pliku logi 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L387  - moment wypisania  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L47  - funkcja wypisujπca  
-17 
-IX. Elementy specjalne 
-1.Kolorowe komunikaty, podzielone kolorami 
-wed≥ug czÍúci systemu ktÛry go wysy≥a: -Systemu Kasowego ñ niebieski 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L55 -Systemu Krzese≥ek ñ zielony 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L114 -Systemu Bramek ñ szary 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L208 -Systemu Zjazdu ñ Magenta 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L250 -Zegara  ñ Czerwony 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L21 -Wszystkie komunikaty zwiπzane z vipem majπ øÛ≥ty tag [V.I.P] 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L58 -Komunikaty o awarii majπ czerwony tag [AWARIA] 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L159 
-18 
-2.Dodanie komunikatÛw o bieøπcej godzinie 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L35 
-3.Obs≥uga sygna≥u ctrl + C 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L8 
-4.Implementacja ustawien stacji ktÛre 
-pozwalajπ na dostosowanie symulacji do 
-swoich potrzeb 
-a)Definicje  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/common.h#L27 
-b)Walidacja 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L68 
-19 
-X. Przyk≥ady uøycia funkcji 
-systemowych 
-1.Tworzenie i obs≥uga plikÛw 
-a)open() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L90 
-b)close() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L71 
-c)read() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L57 
-d)write() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L67 
-2.Tworzenie procesÛw 
-a)fork 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L258() 
-b)exit() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/common.h#L76 
-c)wait() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L371 
-20 
-3.Tworzenie i obs≥uga wπtkÛw 
-a)timerThread() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L252 
-b)this_thread::sleep_for() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L29 
-4.Ob≥uga sygna≥Ûw 
-a)kill() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L375 
-b)signal() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L244 
-5.Synchronizacja procesÛw 
-a)ftok() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L140 
-b)semget() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/narciarz.cpp#L121 
-c)semctl() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L397 
-d)semop() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/common.h#L185 
-21 
-6.Segmenty pamiÍci dzielonej 
-a)ftok() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L13 
-b)shmget() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L22 
-c)shmat() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L24 
-d)shmdt() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L178 
-e)shmctl()  
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L395 
-7.Kolejki komunikatÛw 
-a)ftok() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/pracownik_dol.cpp#L10 
-b)msgget() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L12 
-c)msgsnd() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L51 
-d)msgrcv() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/kasjer.cpp#L24 
-e)msgctl() 
-https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203
- 908e180d4f1d670/init.cpp#L405 
-22 
-XI. Testy 
-Test 1: Przekroczenie limitu osÛb na peronie 
-dolnej stacji 
-Sprawdzenie, czy system prawid≥owo blokuje wejúcie na peron dolnej stacji, gdy 
-liczba osÛb osiπgnie maksymalny limit  
-Narciarze przekraczajπcy pojemnoúÊ peronu nie przechodzπ przez bramki 
-23 
-Test 2: Obs≥uga VIP 
-Weryfikacja, czy osoby z uprawnieniem VIP przechodzπ na peron bez kolejki, z 
-uwzglÍdnieniem priorytetu. 
-Turysta po zakupie karnetu VIP przechodzi przez bramki i jako pierwszy wsiada do 
-krzese≥ka 
-24 
-Test 3: Wy≥πczenie kolejki po zakoÒczeniu 
-czasu pracy 
-Sprawdzenie, czy system prawid≥owo koÒczy dzia≥anie kolejki linowej po godzinie Tk 
-Stacja prawid≥owo zamyka siÍ po godzinie Tk 
-25 
-Test 4: Weryfikacja opieki dzieci na krzese≥kach 
-Sprawdzenie, czy dzieci w wieku 4ñ8 lat siadajπ na krzese≥ko wy≥πcznie z doros≥ym 
-opiekunem. 
-Narciarz zosta≥ za≥adowany na krzese≥ko razem ze swoim dzieckiem 
-Test 5: Obs≥uga awarii kolejki linowej 
-Sprawdzenie, czy system prawid≥owo obs≥uguje awariÍ kolejki i wznawia dzia≥anie po 
-komunikacie zwrotnym. 
-Pracownicy po potwierdzeniu awarii stopujπ krzese≥ka, i po potwierdzeniu naprawy 
-wznawiajπ krzese≥ka 
-26 
+I. [Og√≥lne za≈Ço≈ºenia projektu](#i-og√≥lne-za≈Ço≈ºenia-projektu)
+
+II. [Komponenty](#ii-komponenty)
+
+III. [Struktura projektu](#iii-struktura-projektu)
+
+IV. [Podstawowe dzia≈Çanie systemu](#iv-podstawowe-dzia≈Çanie-systemu)
+
+V. [Implementacja jednolitego systemu b≈Çƒôd√≥w programu i obs≈Çuga errno](#v-implementacja-jednolitego-systemu-b≈Çƒôd√≥w-programu-i-obs≈Çuga-errno)
+
+VI. [Implementacja zarzƒÖdzania zasobami, komunikacji oraz synchronizacji proces√≥w](#vi-implementacja-zarzƒÖdzania-zasobami-komunikacji-oraz-synchronizacji-proces√≥w)
+
+VII. [Implementacja g≈Ç√≥wnych funkcji projektu](#vii-Implementacja-g≈Ç√≥wnych-funkcji-projektu)
+
+VIII. [Implementacja pobocznych funkcji projektu](#viii-implementacja-pobocznych-funkcji-projektu)
+
+IX. [Elementy specjalne](#ix-elementy-specjalne) 
+
+X. [Przyk≈Çady u≈ºycia funkcji systemowych](#x-przyk≈Çady-u≈ºycia-funkcji-systemowych) 
+
+---
+
+## I. Og√≥lne za≈Ço≈ºenia projektu
+
+Projekt realizujƒÖcy modularnƒÖ symulacjƒô stacji narciarskiej w jƒôzyku C++ w ≈õrodowisku WSL, umieszczony i udokumentowany w repozytorium GitHub.
+
+**Temat 16 ‚Äì Stacja narciarska**
+
+Na terenie stacji narciarskiej znajduje siƒô krzese≈Çkowa kolej linowa. Kolej sk≈Çada siƒô z 3-osobowych krzese≈Çek o ≈ÇƒÖcznej liczbie 80 sztuk. Jednocze≈õnie mo≈ºe byƒá zajƒôtych 40 krzese≈Çek, na kt√≥rych siedzi maksymalnie 3x40 = 120 os√≥b. Narciarze/tury≈õci przychodzƒÖ na teren stacji w losowych momentach czasu (nie wszyscy z nich muszƒÖ je≈∫dziƒá na nartach). Wej≈õcie na teren kolejki linowej odbywa siƒô po op≈Çaceniu karnetu w kasie. Karnety sƒÖ czasowe (Tk1, Tk2, Tk3) lub dzienne.
+
+- Dzieci poni≈ºej 12 roku ≈ºycia oraz seniorzy powy≈ºej 65 roku ≈ºycia majƒÖ 25% zni≈ºkƒô.
+- Dzieci poni≈ºej 8 roku ≈ºycia znajdujƒÖ siƒô pod sta≈ÇƒÖ opiekƒÖ osoby doros≈Çej.
+- Wej≈õcie na peron dolnej stacji odbywa siƒô czterema bramkami jednocze≈õnie. Na peronie dolnej stacji mo≈ºe przebywaƒá maksymalnie N os√≥b.
+- Wyjazd z peronu stacji g√≥rnej odbywa siƒô dwoma drogami jednocze≈õnie (ruch jednokierunkowy).
+- Stacja dolna jest obs≈Çugiwana przez pracownika1, stacja g√≥rna jest obs≈Çugiwana przez pracownika2. W przypadku zagro≈ºenia pracownik1 lub pracownik2 zatrzymujƒÖ kolej linowƒÖ (sygna≈Ç1). Aby wznowiƒá dzia≈Çanie, pracownik, kt√≥ry zatrzyma≈Ç kolej, komunikuje siƒô z drugim pracownikiem ‚Äì po otrzymaniu komunikatu zwrotnego o gotowo≈õci kolej jest uruchamiana ponownie (sygna≈Ç2).
+
+Zjazd odbywa siƒô trzema trasami o r√≥≈ºnym stopniu trudno≈õci ‚Äì ≈õredni czas przejazdu dla poszczeg√≥lnych tras wynosi odpowiednio T1, T2 i T3 (T1\<T2\<T3).
+
+**Zasady dzia≈Çania stacji ustalone przez kierownika:**
+
+- Kolej linowa jest czynna w godzinach od Tp do Tk. W momencie osiƒÖgniƒôcia czasu Tk na bramkach przestajƒÖ dzia≈Çaƒá karnety. Wszystkie osoby, kt√≥re wesz≈Çy na peron, majƒÖ zostaƒá przetransportowane do stacji g√≥rnej. Nastƒôpnie po 5 sekundach kolej ma zostaƒá wy≈ÇƒÖczona.
+- Dzieci w wieku od 4 do 8 lat siadajƒÖ na krzese≈Çko pod opiekƒÖ osoby doros≈Çej.
+- Osoba doros≈Ça mo≈ºe opiekowaƒá siƒô jednocze≈õnie co najwy≈ºej dwoma dzieƒámi w wieku od 4 do 8 lat.
+- Ka≈ºde przej≈õcie przez bramki (u≈ºycie danego karnetu) jest rejestrowane (id karnetu - godzina) ‚Äì na koniec dnia jest generowany raport/podsumowanie ilo≈õci wykonanych zjazd√≥w przez poszczeg√≥lne osoby/karnety.
+- Osoby uprawnione VIP wchodzƒÖ na peron dolnej stacji bez kolejki (u≈ºywajƒÖc karnetu).
+
+Zgodnie z mojƒÖ interpretacjƒÖ, zrealizowa≈Çem symulacjƒô, w kt√≥rej jest:
+
+- **Stacja narciarska** (w niej jest kasjer, tury≈õci przychodzƒÖ i mogƒÖ zakupiƒá bilet, aby zostaƒá narciarzem, oraz narciarze przechodzƒÖ przez bramki).
+- **Peron dolny/Kolejka do krzese≈Çek** (w nim znajdujƒÖ siƒô narciarze po przej≈õciu przez bramki i ma maksymalnƒÖ pojemno≈õƒá, obs≈Çuguje go pracownik dol i jest to kolejka FIFO, z kt√≥rej narciarze ‚Äûpakowani‚Äù sƒÖ do krzese≈Çka, a ono jest nastƒôpnie wysy≈Çane w drogƒô).
+- **Krzese≈Çka** (osobne byty ‚Äì jest ich 80 i podr√≥≈ºujƒÖ miƒôdzy peronem dolnym a g√≥rnym).
+- **Peron g√≥rny** (zarzƒÖdza nim pracownik g√≥ra, ‚Äûwypakowuje‚Äù narciarzy i odsy≈Ça krzese≈Çka, z niego narciarze wyje≈ºd≈ºajƒÖ w trasy).
+- **Trasy zjazdu** (narciarze jƒÖ wybierajƒÖ z peronu g√≥rnego i po przejechaniu jej wracajƒÖ na stacjƒô narciarskƒÖ).
+
+Taka interpretacja pozwala zachowaƒá mi odpowiedniƒÖ modularyzacjƒô oraz decentralizacjƒô projektu, przy zachowaniu jak najwiƒôkszego realizmu funkcjonowania stacji.
+
+---
+
+## II. Komponenty
+
+### 1. Podmioty
+
+- **Init**: Inicjalizuje zasoby i odpowiada za uruchomienie proces√≥w, bierze udzia≈Ç w zamykaniu stacji, usuwa zasoby.
+- **Zegar**: Sygnalizuje rozpoczƒôcie i zako≈Ñczenie pracy stacji, mierzy czas wewnƒôtrzny symulacji.
+- **Kasjer**: Obs≈Çuguje sprzeda≈º bilet√≥w.
+- **Turysta**: Zwiedza stacjƒô, mo≈ºe kupiƒá karnety od kasjera i zostaƒá narciarzem.
+- **Narciarz**: Przechodzi przez bramki, u≈ºywa kolei narciarskiej i korzysta z tras.
+- **Pracownik D√≥≈Ç**: ≈Åaduje narciarzy na krzese≈Çka i wysy≈Ça je w drogƒô na g√≥rƒô.
+- **Pracownik G√≥ra**: Czeka na krzese≈Çka, roz≈Çadowuje narciarzy i odsy≈Ça je na d√≥≈Ç.
+- **Krzese≈Çka**: PokonujƒÖ trasy g√≥ra-d√≥≈Ç przewo≈ºƒÖc narciarzy.
+- **Generator Turyst√≥w**: Prosta pƒôtla tworzƒÖca turyst√≥w co losowy przedzia≈Ç czasu (max warto≈õƒá co jakƒÖ pojawia siƒô turysta mo≈ºe byƒá dostosowana w ustawieniach).
+
+### 2. Funkcjonalno≈õƒá
+
+- **Kolej linowa**: Symulacja dzia≈Çania 80 krzese≈Çek (ka≈ºde ma 3 miejsca) z maksymalnie 40 w ruchu jednocze≈õnie (zak≈Çadam, ≈ºe w ruchu oznacza 40 krzese≈Çek jedzie w g√≥rƒô, 40 w d√≥≈Ç, aby zapewniƒá system zamkniƒôty w pracy krzese≈Çek).
+- **System biletowy**: Mo≈ºliwo≈õƒá wyboru jednego z 5 bilet√≥w.
+- **Kontrola wej≈õcia**: Cztery bramki weryfikujƒÖce wa≈ºno≈õƒá karnet√≥w z uwzglƒôdnieniem VIP wchodzƒÖcego bez kolejki.
+- **Trasy**: Trzy zjazdy o r√≥≈ºnych poziomach trudno≈õci, co przek≈Çada siƒô na czas zjazdu.
+
+### 3. Obs≈Çuga b≈Çƒôd√≥w
+
+- Korzystanie z funkcji `perror()` i zmiennej `errno` w przypadku b≈Çƒôd√≥w systemowych.
+
+### 4. Komunikacja
+
+- Wykorzystanie pamiƒôci wsp√≥≈Çdzielonej, semafor√≥w oraz kolejek komunikat√≥w do komunikacji miƒôdzy procesami.
+
+---
+
+## III. Struktura projektu
+
+### 1. Dokumentacja/raport projektu
+
+- [readme.md](README.md)
+
+### 2. Pliki ≈∫r√≥d≈Çowe oraz deklaracje
+
+- [common.h](common.h) : Plik zawierajƒÖcy ustawienia oraz deklaracje.
+- [init.cpp](init.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu init oraz zegara.
+- [kasjer.cpp](kasjer.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu kasjer.
+- [turysta.cpp](turysta.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu turysta.
+- [narciarz.cpp](narciarz.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu narciarz.
+- [pracownik_dol.cpp](pracownik_dol.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu pracownik\_dol.
+- [pracownik_gora.cpp](pracownik_gora.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu pracownik\_gora.
+- [krzeslo.cpp](krzeslo.cpp) : Plik zawierajƒÖcy implementacjƒô podmiotu krzese≈Çko.
+
+---
+
+## IV. Podstawowe dzia≈Çanie systemu
+
+1.Kompilacja komendƒÖ make oraz uruchomienie symulacji ./start
+
+2.Inicjalizacja zasob√≥w
+
+3.Uruchomienie proces√≥w kasjer, pracownik_dol i pracownik_gora, krzese≈Çek, turystow, generatora turystow oraz wƒÖtku zegar
+
+4.Procesy inicjalizujƒÖ zasoby oraz wykonujƒÖ swoje zadania opisane w II.Komponenty->1.Podmioty
+
+5.WƒÖtek g≈Ç√≥wny oczekuje na zako≈Ñczenie zegara po kt√≥rym nastƒôpuje oznaczenie flagi koniec symulacji dla turyst√≥w i narciarzy(zamkniecie bramek)
+
+6.Wys≈Çanie komunikat√≥w do kasjera i pracownika_dol o zamkniƒôciu stacji (pracownik_dol oczekuje na opr√≥≈ºnienie peronu i krzese≈Çek z narciarzy po czym wysy≈Ça komunikat do pracownika_gora kt√≥ry ko≈Ñczy dzia≈Çanie i sam ko≈Ñczy dzia≈Çanie)
+
+7.Oczekiwanie na zako≈Ñczenie pracownika_gora
+
+8.Wy≈ÇƒÖczenie krzese≈Çek 
+
+9.Wyproszenie pozosta≈Çych turyst√≥w
+
+10.Wypisanie informacji o karnetach z bramek
+
+11.Zwolnienie zasob√≥w i rozpoczƒôcie kolejnego dnia / zako≈Ñczenie programu
+
+---
+
+## V. Implementacja jednolitego systemu b≈Çƒôd√≥w programu i obs≈Çuga errno 
+
+### 1.B≈Çƒôdy programu
+Gdy wystƒÖpi b≈ÇƒÖd wystarczy skorzystaƒá z blad(‚Äûkomuniakt‚Äù), wtedy program ko≈Ñczy dzia≈Çanie i wy≈õwietlany jest stosowny komunikat
+
+a)[Definicja](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/common.h#L72)
+
+b)[Przyk≈Çad u≈ºycia](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/krzeslo.cpp#L72)
+
+### 2.B≈Çƒôdy errno
+
+a)[Przyk≈Çad obs≈Çugi](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_gora.cpp#L42)
+
+---
+
+## VI. Implementacja zarzƒÖdzania zasobami, komunikacji oraz synchronizacji proces√≥w 
+
+### 1.Klucze IPC
+
+a)[Definicje](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/common.h#L55)
+
+b)[Tworzenie niezbƒôdnych plik√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L99)
+
+c)[Tworzenie kluczy ipc](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L135)
+
+### 2.Pamiƒôƒá dzielona
+
+Elementy symulacji operujƒÖ na  4 pamiƒôciach dzielonych: StacjaInfo, WyciagInfo, BramkiInfo i ZegarInfo
+
+a)[Definicje pamiƒôci dzielonych](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/common.h#L79) (wraz z definicjƒÖ kolejki fifo potrzebnej do zarzƒÖdzania narciarzami na peronie)
+
+b)[Utworzenie pamiƒôci dzielonych](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L152)
+
+c)[Przyk≈Çadowe do≈ÇƒÖczenie do pamiƒôci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L165)
+
+d)[Inicjalizacja pamiƒôci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L178)
+
+e)[Przyk≈Çadowe od≈ÇƒÖczanie pamiƒôci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/turysta.cpp#L141)
+
+f)[Zwolnienie pamiƒôci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L394)
+
+### 3.Semafory
+
+W projekcie operuje na 6 semaforach(z prefixem semId), Stacja,Brami i WyciƒÖg OdpowiadajƒÖ za dostƒôp do pamiƒôci o tej samej nazwie BramkiWejscie odpowiada za istnienie 4 bramek, Kasjer odpowiada za dostep do kasjera, a PeronWyjaz za kontolƒô 2 wyj≈õƒá z peronu g√≥rnego
+
+a)[Uniwersalna implementacja systemu semafor√≥w V i P](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/common.h#L172)
+
+b)[Tworzenie i inicjalizacja semafor√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L194)
+
+c)[Przyk≈Çadowe pod≈ÇƒÖczenie do semafor√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/pracownik_gora.cpp#L18)
+
+d)[Przyk≈Çadowe u≈ºycie semafor√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/narciarz.cpp#L163)
+
+e)[Usuwanie semafor√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L399)
+
+### 4.Kolejki komunikat√≥w
+
+Procesy komunikujƒÖ siƒô ze sobƒÖ przy pomocy kolejek: msgIdKasjer(Kasjer-Turysta), msgIdWyciag(Pracownicy-Krzese≈Çka), msgIdNarciarz(Pracownicy-Narciarze)
+
+a)[Definicje](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/common.h#L151) 
+
+b)[Tworzenie kolejek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L231)
+
+c)[Przyk≈Çad do≈ÇƒÖczania do kolejki komunikat√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/kasjer.cpp#L12)
+
+d)[Przyk≈Çad wys≈Çania i oczekiwania na komunikat](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/turysta.cpp#L102)
+
+e)[Usuniecie kolejek komunikat√≥w](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L406) 
+
+### 5.Plik
+
+W projekcie u≈ºywam jednego pliku jako bezpo≈õrednie ≈∫r√≥d≈Ço danych, logi.txt
+
+a)[Definicja ≈õcie≈ºki](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/common.h#L68)
+
+b)[Przyk≈Çad U≈ºycia- w funkcji odczytujƒÖcej logi bramek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L46)
+
+---
+
+## VII. Implementacja g≈Ç√≥wnych funkcji projektu
+
+Przebieg ka≈ºdej funkcji wiƒÖ≈ºe siƒô z wysy≈Çaniem odpowiednich komunikat√≥w na wyj≈õcie
+
+### 1.System biletowy
+
+a)Turysta po czasie zwiedzania stacji i decyzji o zostaniu narciarzem zajmuje kasjera i wysy≈Ça komunikat z biletem jaki chce otrzymaƒá - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/turysta.cpp#L60)
+
+b)Kasjer oczekujƒÖcy na komunikat odbiera jego wiadomo≈õƒá(mo≈ºe to byƒá te≈º komunikat o zamkniƒôciu stacji) i wysy≈Ça stosowny komunikat z biletem do turysty i oczekuje na kolejnego turyste - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/kasjer.cpp#L22)
+
+c)Turysta otrzymuje bilet, odchodzi od kasjera(zwalnia kasƒô dla kolejnego turysty) i po czasie zostaje turystƒÖ - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/turysta.cpp#L104)
+
+### 2.System bramek
+
+a)Narciarz wraz z dzieƒámi pod opiekƒÖ (je≈ºeli takie posiada) po czasie podchodzi do jednej z 4 bramek (zajmuje semafor z warto≈õciƒÖ 4 upewnia siƒô ≈ºe maksymalnie 4 narciarzy bƒôdzie przechodziƒá przez bramki naraz) - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L188)
+
+b)Bramki weryfikujƒÖ wa≈ºno≈õƒá jego biletu oraz miejsca na peronie, je≈ºeli warunki sƒÖ spe≈Çnione to przepuszczajƒÖ narciarza i rejestrujƒÖ u≈ºycie karnetu - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L192)
+
+c)Narciarz przechodzi przez bramki i do≈ÇƒÖcza do kolejki do krzese≈Çek (je≈ºeli posiada karnet VIP bƒôdzie pierwszy w kolejce do krzese≈Çka wraz z dzieƒámi) - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L220)
+
+### 3.System krzese≈Çek
+
+a)Pracownik dol sprawdza czy krzese≈Çka w trasie nie przekraczajƒÖ 40, szuka wolnego krzese≈Çka i ‚Äû≈Çaduje‚Äù na niego narciarzy(je≈ºeli narciarz posiada dzieci pod opiekƒÖ to zawsze pojedzie ze swoimi dzieƒámi nawet je≈ºeli wiƒÖ≈ºe siƒô to z wolnym miejscem) - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L59)
+
+b)Pracownik dol wysyla komunikat o starcie do krzese≈Çka kt√≥re wcze≈õniej ‚Äûza≈Çadowa≈Ç‚Äù narciarzami i wraca do punktu a) - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L117)
+
+c)Krzes≈Ço kt√≥re oczekuje na start odbiera komunikat i rozpoczyna drogƒô na g√≥rƒô, gdy tam dotrze wysy≈Ça stosowny komunikat do pracownika gora - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/krzeslo.cpp#L50)
+
+d)Pracownik gora oczekujƒÖcy na komunikat o dojechaniu krzese≈Çka otrzymuje go, ‚Äûroz≈Çadowywuje‚Äù narciarzy i wysy≈Ça do nich komunikat powiadamiajƒÖcy ich ≈ºe sƒÖ na g√≥rze, oraz wysy≈Ça komunikat do krzese≈Çka o powrocie na d√≥≈Ç  i oczekuje na kolejne krzese≈Çko - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_gora.cpp#L47)
+
+e)Krzese≈Çko po odebraniu komunikatu wraca na d√≥≈Ç i znowu staje siƒô wolne - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/krzeslo.cpp#L75)
+
+### 4.System zjazdu narciarza
+
+a)Narciarz po otrzymaniu komunikatu o wyj≈õciu z g√≥rnego peronu przez jedno z dw√≥ch wyj≈õƒá wybiera trasƒô, zje≈ºd≈ºa i je≈ºeli stacja siƒô nie zamyka wraca na niƒÖ i idzie do bramek - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L263)
+
+### 5.System zamykania stacji
+
+a)Po up≈Çywie czasu dzia≈Çania stacji zegar zamyka bramki zmienia flagƒô dla narciarzy i turyst√≥w koniecSymulacji ‚Äì link [zegar](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L18) / [zamkniecie bramek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L192)
+
+b)Po zako≈Ñczeniu pracy zegara init wysy≈Ça komunikat do kasjera i pracownika dol o zako≈Ñczeniu pracy stacji oraz oczekuje na zamkniecie pracownika gora - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L358)
+
+c)Pracownik dol po otrzymaniu komunikatu o zamknieciu stacji wypuszcza tyle krzese≈Çek a≈º peron bƒôdzie pusty i wszyscy narciarze bƒôdƒÖ na g√≥rnym peronie ‚Äì link [odebranie komunikatu](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L50) / [wyslanie komunikatu do pracownika gora](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L101)
+
+d)Pracownik gora otrzymuje komunikat i ko≈Ñczy pracƒô - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_gora.cpp#L36)
+
+e)Po zako≈Ñczeniu pracy krzese≈Çek nastƒôpuje wyproszenie pozosta≈Çych turyst√≥w, zamkniecie i wy≈õwietlenie raportu z bramek - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L372)
+
+---
+
+## VIII. Implementacja pobocznych funkcji projektu
+
+### 1.Implementacja wyboru karnet√≥w
+
+Zaimplementowa≈Çem 8 rodzaj√≥w karnet√≥w, na 3, 5, 10 zjazd√≥w, dzienny, na 2, 4, 6  godzin oraz vip kt√≥ry jest biletem dziennym z przywilejem wchodzenia na krzese≈Çka bez kolejki na peronie 
+
+a)[Definicja](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/82d5bfd9eda8118fba82b21a9d4a523f4106ec9f/common.h#L51) 
+
+b)[Wyb√≥r karnetu](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/turysta.cpp#L64) z osobnƒÖ szansƒÖ na wyb√≥r karnetu vip (aby mo≈ºna by≈Ço regulowaƒá czƒôstotliwo≈õƒá vip√≥w)
+
+### 2.Implementacja zni≈ºki
+
+a)Turysta losuje i podaje wiek podczas pro≈õby o bilet(za≈Ço≈ºy≈Çem ≈ºe na narty chodzƒÖ ludzie do 75 roku ≈ºycia) - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/turysta.cpp#L66)
+
+b)Kasjer wysy≈Ça stosowny komunikat je≈ºeli zni≈ºka zostanie przyznana - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/kasjer.cpp#L66)
+
+### 3.Implementacja dzieci pod opiekƒÖ 
+
+a)[Losowanie czy narciarz posiada dzieci pod opiekƒÖ](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L173)
+
+b)[Przechodzenie z dzieƒámi przez bramki](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L213) 
+
+c)[Wsiadanie do krzese≈Çka z dzieƒámi](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L71)
+
+### 4.Implementacja sygna≈Çu o awarii oraz zatrzymanie krzese≈Çek
+
+a)Pracownik dol zg≈Çasza wystƒÖpienie awarii, zatrzymanie krzese≈Çek oraz komunikat o awarii do pracownika gora - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L129)
+
+b)Reakcja pracownika gora, naprawa awarii oraz potwierdzenie o naprawie do pracownika dol - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_gora.cpp#L54)
+
+c)Oczekiwanie na potwierdzenie o naprawie od pracownika gora oraz wznowienie dzia≈Çania krzese≈Çek - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L148)
+
+### 5.Implementacja r√≥≈ºnych tras zjazdu
+
+a)Definicja 3 tras o r√≥≈ºnym czasie zjadu - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/82d5bfd9eda8118fba82b21a9d4a523f4106ec9f/common.h#L49)
+
+b)Wyb√≥r trasy zajdu przez narciarza - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L267)
+
+### 6.Zapisywanie informacji o godzinie narciarzu i karnecie przez bramki i wy≈õwietlenie ich na koniec
+
+Po ka≈ºdorazowym przej≈õciu przez bramki, dane zapisywane sƒÖ do pliku logi z kt√≥rego na koniec sƒÖ odczytywane 
+
+a)Zapis do pliku logi ‚Äì [link rejestracja przej≈õcia](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L255) / [funkcja zapisujaca](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L6)
+
+b)Odczyt z pliku logi ‚Äì [moment wypisania](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L389) / [funkcja wypisujaca](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L43)
+
+---
+
+## IX. Elementy specjalne
+
+### 1.Kolorowe komunikaty, podzielone kolorami wed≈Çug czƒô≈õci systemu kt√≥ry go wysy≈Ça:
+
+-[Systemu Kasowego ‚Äì niebieski](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/kasjer.cpp#L55)
+ 
+-[Systemu Krzese≈Çek ‚Äì zielony](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_dol.cpp#L114)
+
+-[Systemu Bramek ‚Äì szary](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/narciarz.cpp#L208)
+
+-[Systemu Zjazdu ‚Äì Magenta](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/narciarz.cpp#L250)
+
+-[Zegara  ‚Äì Czerwony](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L21)
+
+-Wszystkie komunikaty zwiƒÖzane z vipem majƒÖ ≈º√≥≈Çty tag [V.I.P](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/kasjer.cpp#L58)
+
+-Komunikaty o awarii majƒÖ czerwony tag [AWARIA](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L137)
+
+### 2.Dodanie komunikat√≥w o bie≈ºƒÖcej godzinie 
+[link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L32)
+
+### 3.Obs≈Çuga sygna≈Çu ctrl + C 
+[link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L8)
+
+### 4.Implementacja ustawien stacji kt√≥re pozwalajƒÖ na dostosowanie symulacji do swoich potrzeb
+
+a)[Definicje](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/82d5bfd9eda8118fba82b21a9d4a523f4106ec9f/common.h#L27)
+
+b)[Walidacja](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L64)
+
+---
+
+## X. Przyk≈Çady u≈ºycia funkcji systemowych
+
+1.Tworzenie i obs≈Çuga plik√≥w ([open()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L90), [close()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/narciarz.cpp#L71), [read()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L57), [write()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/narciarz.cpp#L67))
+
+2.Tworzenie proces√≥w ([fork()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L258()), [exit()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/common.h#L76), [wait()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L371))
+
+3.Ob≈Çuga sygna≈Ç√≥w ([kill()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L375), [signal()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L244))
+
+4.Synchronizacja proces√≥w ([ftok()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L140), [semget()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/narciarz.cpp#L121), [semctl()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L397), [semop()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/common.h#L185))
+
+5.Segmenty pamiƒôci dzielonej ([ftok()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_dol.cpp#L13), [shmget()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_dol.cpp#L22), [shmat()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_dol.cpp#L24), [shmdt()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_dol.cpp#L24), [shmctl()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L395)) 
+
+6.Kolejki komunikat√≥w ([ftok()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/pracownik_dol.cpp#L10), [msgget()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/kasjer.cpp#L12), [msgsnd()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/kasjer.cpp#L51), [msgrcv()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/kasjer.cpp#L24), [msgctl()](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L405))
+
+
+
+
