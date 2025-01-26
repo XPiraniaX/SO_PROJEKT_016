@@ -55,7 +55,7 @@ int main()
             cout << "\033[32m[Pracownik Gorna Stacja] Awaria krzeselek, przerwa techniczna \033[31m[AWARIA]\033[0m"<< endl;
 
             //naprawa awarii
-            sleep(2);
+            sleep(20);
 
             //komunikat o naprawie do pracownika dol
             msgWyciag naprawaPracownikDol;

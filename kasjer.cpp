@@ -54,6 +54,9 @@ int main()
             if (resp.liczbaZjazdow == 100){
                 cout << "\033[34m[Kasjer] Sprzedano bilet calodniowy\033[0m" << endl;
             }
+            else if (resp.liczbaZjazdow > 100 && resp.liczbaZjazdow <= 106){
+                cout << "\033[34m[Kasjer] Sprzedano bilet czasowy z liczba "<< resp.liczbaZjazdow-100 <<" godzin\033[0m" << endl;
+            }
             else if (resp.liczbaZjazdow == 1000){
                 cout << "\033[34m[Kasjer] Sprzedano bilet VIP\033[33m [V.I.P]\033[0m" << endl;
             }

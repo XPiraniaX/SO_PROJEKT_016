@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
     msgKasjer req;
     req.mtype = 1;
     req.turystaId = 100+tId;
-    int losowyIndeks = rand() % 4;
+    int losowyIndeks = rand() % 7;
     req.liczbaZjazdow = wyborBiletu[losowyIndeks];
     req.wiek=(rand()%68+8); // wiek turystow (od 8 do 75, ponizej 8 za darmo)
     if ((rand()%100)+1<=SZANSA_NA_ZAKUP_BILETU_VIP){
@@ -108,6 +108,9 @@ int main(int argc, char* argv[])
     if (resp.liczbaZjazdow == 100){
         cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet calodniowy\033[0m" << endl;
     }
+    else if (resp.liczbaZjazdow >100 && resp.liczbaZjazdow <= 106){
+        cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet czasowy z liczba" << resp.liczbaZjazdow-100 <<" godzin\033[0m" << endl;
+    }
     else if (resp.liczbaZjazdow == 1000){
         cout << "\033[34m[Turysta #"<< (tId+1) <<"] Otrzymano karnet VIP\033[33m [V.I.P]\033[0m" << endl;
     }
@@ -131,6 +134,12 @@ int main(int argc, char* argv[])
     } else if (pn > 0) {
         if (resp.liczbaZjazdow == 100){
             cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z biletem calodniowym" << endl;
+        }
+        else if (resp.liczbaZjazdow >100 && resp.liczbaZjazdow <= 106){
+            cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z biletem czasowy z liczba " << resp.liczbaZjazdow-100 <<" godzin" << endl;
+        }
+        else if (resp.liczbaZjazdow == 1000){
+            cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z biletem VIP\033[33m [V.I.P]\033[0m" << endl;
         }
         else{
             cout << "[Turysta #"<< (tId+1) <<"] Zostaje narciarzem z " << resp.liczbaZjazdow << " zjazdami" << endl;

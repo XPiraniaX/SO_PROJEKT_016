@@ -1,5 +1,8 @@
 #include "common.h"
 
+int godzinakarnetu=0;
+int minutakarnetu=0;
+
 //funkcja zapisujaca
 void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
 
@@ -15,8 +18,11 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
         else if (typKarnetu==2){
             log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
         }
-        else{
+        else if (typKarnetu==3){
             log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+        else{
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu godzinnego\n";
         }
     }
     else if (godzina>10 && minuta<10){
@@ -26,8 +32,11 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
         else if (typKarnetu==2){
             log = "[Bramki] " + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
         }
-        else{
+        else if (typKarnetu==3){
             log = "[Bramki] " + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+        else{
+            log = "[Bramki] " + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu godzinnego\n";
         }
     }
     else if (godzina<10 && minuta<10){
@@ -37,8 +46,11 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
         else if (typKarnetu==2){
             log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
         }
-        else{
+        else if (typKarnetu==3){
             log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+        else{
+            log = "[Bramki] 0" + to_string(godzina) + ":0" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu godzinnego\n";
         }
     }
     else if (godzina<10 && minuta==10){
@@ -48,8 +60,11 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
         else if (typKarnetu==2){
             log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
         }
-        else{
+        else if (typKarnetu==3){
             log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+        else{
+            log = "[Bramki] 0" + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu godzinnego\n";
         }
     }
     else{
@@ -59,8 +74,11 @@ void zapiszLog(int godzina,int minuta,int narciarzId,int typKarnetu){
         else if (typKarnetu==2){
             log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu dziennego\n";
         }
-        else{
+        else if (typKarnetu==3){
             log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu VIP [V.I.P]\n";
+        }
+        else{
+            log = "[Bramki] " + to_string(godzina) + ":" + to_string(minuta) + " Narciarz #"+ to_string(narciarzId)+ " przeszedl przez bramki uzywajac karnetu godzinnego\n";
         }
     }
 
@@ -139,6 +157,10 @@ int main(int argc, char* argv[])
         cout << "[Narciarz #" << (nId+1) << "] START z biletem calodniowym" << endl;
         typKarnetu = 2;
     }
+    else if(zjazdy >100 && zjazdy<=106){
+        cout << "[Narciarz #" << (nId+1) << "] START z czasowym na " << zjazdy-100 << " godziny" << endl;
+        typKarnetu = 4;
+    }
     else if(zjazdy == 1000){
         cout << "[Narciarz #" << (nId+1) << "] START z biletem VIP\033[33m [V.I.P]\033[0m" << endl;
         typKarnetu = 3;
@@ -157,14 +179,18 @@ int main(int argc, char* argv[])
     //symulacja czasu dojscia do bramek
     sleep(rand() %2);
 
+    godzinakarnetu=infoZegar->godzina;
+    minutakarnetu=infoZegar->minuta;
+
     //narciarz sprawdza czy ma wazny karnet
     while(zjazdy > 0) {
         //zajmowanie bramki
         sem_P(semIdBramkiWejscie);
         sem_P(semIdBramki);
         //logika bramek
+
         if (infoStacja->koniecSymulacji)
-            {
+        {
             cout << "\033[37m[Narciarz #" << (nId+1) << "] Bramki nie dzialaja, ide do domu KONIEC\033[0m" << endl;
             sem_V(semIdBramki);
             sem_V(semIdBramkiWejscie);
@@ -172,7 +198,18 @@ int main(int argc, char* argv[])
             shmdt(infoBramki);
             shmdt(infoZegar);
             return 0;
-            }
+        }
+        else if (godzinakarnetu+zjazdy-100 >= infoZegar->godzina && minutakarnetu > infoZegar->minuta)
+        {
+            cout << "\033[37m[Narciarz #" << (nId+1) << "] Skonczyl mi sie bilet, ide do domu KONIEC\033[0m" << endl;
+            sem_V(semIdBramki);
+            sem_V(semIdBramkiWejscie);
+            shmdt(infoStacja);
+            shmdt(infoBramki);
+            shmdt(infoZegar);
+            return 0;
+        }
+
         if (iloscMiejscKolejki(infoBramki)<narciarz.liczbadzieci+1){
             sem_V(semIdBramki);
             sem_V(semIdBramkiWejscie);
@@ -180,7 +217,7 @@ int main(int argc, char* argv[])
             sleep(5);
             continue;
         }
-        if (typKarnetu==2){
+        if (typKarnetu==2 || typKarnetu==4){
             pushNarciarz(infoBramki,narciarz);
             if (ileDzieci>0){
                 cout << "\033[37m[Narciarz #" << (nId+1) << "] Przeszedlem przez bramke do kolejki z dziecmi w liczbie: "<< ileDzieci <<"\033[0m" << endl;
