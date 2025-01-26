@@ -48,7 +48,7 @@ static const int SZANSA_NA_AWARIE_KOLEJKI = 1;// w % od 0.1 do 100%
 
 int mozliweTrasy[3]={10,15,20}; //10,15,20 sekund, 3 rozne trasy
 
-static const int wyborBiletu[7]={3,5,10,100,102,104,106}; //3,5,10 zjazdow i na caly dzien (karnet vip osobno)
+static const int wyborBiletu[7]={3,5,10,100,102,104,106}; //3,5,10 zjazdow, na caly dzien i na 2, 4, 6 godzin (karnet vip osobno)
 
 //                                  DEFINICJE ZASOBOW
 
