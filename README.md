@@ -16,7 +16,7 @@ VI. [Implementacja zarządzania zasobami, komunikacji oraz synchronizacji proces
 VII. [Implementacja głównych funkcji projektu]
 VIII. [Implementacja pobocznych funkcji projektu]
 IX. [Elementy specjalne]
-X. [Przykłady użycia funkcji systemowych](##X._przykłady_użycia_funkcji_systemowych) 
+X. [Przykłady użycia funkcji systemowych](##x._przykłady_użycia_funkcji_systemowych) 
 
 ---
 
