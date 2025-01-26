@@ -7,15 +7,24 @@ Kamil Gębala 151868
 
 ## Spis treści
 
-I. [Ogólne założenia projektu](##I.)
-II. [Komponenty]
-III. [Struktura projektu] 
-IV. [Podstawowe działanie systemu]
-V. [Implementacja jednolitego systemu błędów programu i obsługa errno]
-VI. [Implementacja zarządzania zasobami, komunikacji oraz synchronizacji procesów] 
-VII. [Implementacja głównych funkcji projektu]
-VIII. [Implementacja pobocznych funkcji projektu]
-IX. [Elementy specjalne]
+I. [Ogólne założenia projektu](#i-ogólne-założenia-projektu)
+
+II. [Komponenty](#ii-komponenty)
+
+III. [Struktura projektu](#iii-truktura-projektu)
+
+IV. [Podstawowe działanie systemu](#iv-odstawowe-działanie-systemu)
+
+V. [Implementacja jednolitego systemu błędów programu i obsługa errno](#v-implementacja-jednolitego-systemu-błędów-programu-i-obsługa-errno)
+
+VI. [Implementacja zarządzania zasobami, komunikacji oraz synchronizacji procesów](#vi-implementacja-zarządzania-zasobami-komunikacji-oraz-synchronizacji-procesów)
+
+VII. [Implementacja głównych funkcji projektu](#vii-Implementacja-głównych-funkcji-projektu)
+
+VIII. [Implementacja pobocznych funkcji projektu](#viii-implementacja-pobocznych-funkcji-projektu)
+
+IX. [Elementy specjalne](#ix-elementy-specjalne) 
+
 X. [Przykłady użycia funkcji systemowych](#x-przykłady-użycia-funkcji-systemowych) 
 
 ---
