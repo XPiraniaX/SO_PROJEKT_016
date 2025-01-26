@@ -11,9 +11,9 @@ I. [Ogólne założenia projektu](#i-ogólne-założenia-projektu)
 
 II. [Komponenty](#ii-komponenty)
 
-III. [Struktura projektu](#iii-truktura-projektu)
+III. [Struktura projektu](#iii-struktura-projektu)
 
-IV. [Podstawowe działanie systemu](#iv-odstawowe-działanie-systemu)
+IV. [Podstawowe działanie systemu](#iv-podstawowe-działanie-systemu)
 
 V. [Implementacja jednolitego systemu błędów programu i obsługa errno](#v-implementacja-jednolitego-systemu-błędów-programu-i-obsługa-errno)
 
