@@ -82,7 +82,7 @@ Taka interpretacja pozwala zachować mi odpowiednią modularyzację oraz decentr
 ### 2. Funkcjonalność
 
 - **Kolej linowa**: Symulacja działania 80 krzesełek (każde ma 3 miejsca) z maksymalnie 40 w ruchu jednocześnie (zakładam, że w ruchu oznacza 40 krzesełek jedzie w górę, 40 w dół, aby zapewnić system zamknięty w pracy krzesełek).
-- **System biletowy**: Możliwość wyboru jednego z 5 biletów.
+- **System biletowy**: Możliwość wyboru jednego z 8 biletów.
 - **Kontrola wejścia**: Cztery bramki weryfikujące ważność karnetów z uwzględnieniem VIP wchodzącego bez kolejki.
 - **Trasy**: Trzy zjazdy o różnych poziomach trudności, co przekłada się na czas zjazdu.
 
@@ -100,7 +100,7 @@ Taka interpretacja pozwala zachować mi odpowiednią modularyzację oraz decentr
 
 ### 1. Dokumentacja/raport projektu
 
-- [readme.md](README.md)
+- [README.md](README.md)
 
 ### 2. Pliki źródłowe oraz deklaracje
 
@@ -162,9 +162,9 @@ a)[Przykład obsługi](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99c
 
 a)[Definicje](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/common.h#L55)
 
-b)[Tworzenie niezbędnych plików](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L99)
+b)[Tworzenie niezbędnych plików](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L99)
 
-c)[Tworzenie kluczy ipc](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L135)
+c)[Tworzenie kluczy ipc](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L135)
 
 ### 2.Pamięć dzielona
 
@@ -172,15 +172,15 @@ Elementy symulacji operują na  4 pamięciach dzielonych: StacjaInfo, WyciagInfo
 
 a)[Definicje pamięci dzielonych](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/common.h#L79) (wraz z definicją kolejki fifo potrzebnej do zarządzania narciarzami na peronie)
 
-b)[Utworzenie pamięci dzielonych](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L152)
+b)[Utworzenie pamięci dzielonych](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L152)
 
-c)[Przykładowe dołączenie do pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L165)
+c)[Przykładowe dołączenie do pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L165)
 
-d)[Inicjalizacja pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L178)
+d)[Inicjalizacja pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L178)
 
-e)[Przykładowe odłączanie pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/turysta.cpp#L141)
+e)[Przykładowe odłączanie pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L416)
 
-f)[Zwolnienie pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L394)
+f)[Zwolnienie pamięci](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L400)
 
 ### 3.Semafory
 
@@ -194,7 +194,7 @@ c)[Przykładowe podłączenie do semaforów](https://github.com/XPiraniaX/SO_PRO
 
 d)[Przykładowe użycie semaforów](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/narciarz.cpp#L163)
 
-e)[Usuwanie semaforów](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L399)
+e)[Usuwanie semaforów](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L405)
 
 ### 4.Kolejki komunikatów
 
@@ -202,13 +202,13 @@ Procesy komunikują się ze sobą przy pomocy kolejek: msgIdKasjer(Kasjer-Turyst
 
 a)[Definicje](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/common.h#L151) 
 
-b)[Tworzenie kolejek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L231)
+b)[Tworzenie kolejek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L231)
 
 c)[Przykład dołączania do kolejki komunikatów](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/kasjer.cpp#L12)
 
 d)[Przykład wysłania i oczekiwania na komunikat](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/turysta.cpp#L102)
 
-e)[Usuniecie kolejek komunikatów](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L406) 
+e)[Usuniecie kolejek komunikatów](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L412)
 
 ### 5.Plik
 
@@ -216,7 +216,7 @@ W projekcie używam jednego pliku jako bezpośrednie źródło danych, logi.txt
 
 a)[Definicja ścieżki](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/07bc999c439075ee1b72a361f514779e367a0b69/common.h#L68)
 
-b)[Przykład Użycia- w funkcji odczytującej logi bramek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/b984c3b2960265b29e8ca6f41251044407038352/init.cpp#L46)
+b)[Przykład Użycia- w funkcji odczytującej logi bramek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L46)
 
 ---
 
@@ -258,15 +258,15 @@ a)Narciarz po otrzymaniu komunikatu o wyjściu z górnego peronu przez jedno z d
 
 ### 5.System zamykania stacji
 
-a)Po upływie czasu działania stacji zegar zamyka bramki zmienia flagę dla narciarzy i turystów koniecSymulacji – link [zegar](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L18) / [zamkniecie bramek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L192)
+a)Po upływie czasu działania stacji zegar zamyka bramki zmienia flagę dla narciarzy i turystów koniecSymulacji – link [zegar](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L18)/ [zamkniecie bramek](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L192)
 
-b)Po zakończeniu pracy zegara init wysyła komunikat do kasjera i pracownika dol o zakończeniu pracy stacji oraz oczekuje na zamkniecie pracownika gora - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L358)
+b)Po zakończeniu pracy zegara init wysyła komunikat do kasjera i pracownika dol o zakończeniu pracy stacji oraz oczekuje na zamkniecie pracownika gora - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L361)
 
 c)Pracownik dol po otrzymaniu komunikatu o zamknieciu stacji wypuszcza tyle krzesełek aż peron będzie pusty i wszyscy narciarze będą na górnym peronie – link [odebranie komunikatu](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L50) / [wyslanie komunikatu do pracownika gora](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L101)
 
 d)Pracownik gora otrzymuje komunikat i kończy pracę - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_gora.cpp#L36)
 
-e)Po zakończeniu pracy krzesełek następuje wyproszenie pozostałych turystów, zamkniecie i wyświetlenie raportu z bramek - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L372)
+e)Po zakończeniu pracy krzesełek następuje wyproszenie pozostałych turystów, zamkniecie i wyświetlenie raportu z bramek - [link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L378)
 
 ---
 
@@ -314,7 +314,7 @@ Po każdorazowym przejściu przez bramki, dane zapisywane są do pliku logi z kt
 
 a)Zapis do pliku logi – [link rejestracja przejścia](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L255) / [funkcja zapisujaca](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/narciarz.cpp#L6)
 
-b)Odczyt z pliku logi – [moment wypisania](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L389) / [funkcja wypisujaca](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L43)
+b)Odczyt z pliku logi – [moment wypisania](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L396) / [funkcja wypisujaca](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L43)
 
 ---
 
@@ -330,23 +330,23 @@ b)Odczyt z pliku logi – [moment wypisania](https://github.com/XPiraniaX/SO_PRO
 
 -[Systemu Zjazdu – Magenta](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/narciarz.cpp#L250)
 
--[Zegara  – Czerwony](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/init.cpp#L21)
+-[Zegara  – Czerwony](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L21)
 
 -Wszystkie komunikaty związane z vipem mają żółty tag [V.I.P](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/e79bc99caf6dd04f61a220203908e180d4f1d670/kasjer.cpp#L58)
 
 -Komunikaty o awarii mają czerwony tag [AWARIA](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/pracownik_dol.cpp#L137)
 
 ### 2.Dodanie komunikatów o bieżącej godzinie 
-[link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L32)
+[link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L32)
 
 ### 3.Obsługa sygnału ctrl + C 
-[link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L8)
+[link](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L8)
 
 ### 4.Implementacja ustawien stacji które pozwalają na dostosowanie symulacji do swoich potrzeb
 
 a)[Definicje](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/82d5bfd9eda8118fba82b21a9d4a523f4106ec9f/common.h#L27)
 
-b)[Walidacja](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/bb11266bd46ccb7a539af80e6828eb36268741df/init.cpp#L64)
+b)[Walidacja](https://github.com/XPiraniaX/SO_PROJEKT_016/blob/6cc18593cffaa04b6cf6ae6c7c3c97615e50d6c9/init.cpp#L64)
 
 ---
 
