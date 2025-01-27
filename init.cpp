@@ -245,6 +245,12 @@ int main()
         g_semIdStacja = semIdStacja;
         signal(SIGINT, sigintObsluga);
 
+        //pozbycie się zombie
+        struct sigaction sa;
+        sa.sa_handler = SIG_IGN;
+        sa.sa_flags   = SA_NOCLDWAIT;
+        sigaction(SIGCHLD, &sa, NULL);
+
         srand(time(NULL));
 
         //                                  START SYMULACJI
