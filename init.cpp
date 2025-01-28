@@ -83,6 +83,8 @@ int main()
         //                                  INICJALIZACJA ZASOBOW
 
         //tworzenie plikow
+        mkdir("./tmp", 0755);
+
         int fd = open(SCIEZKA_PLIKU_LOGI, O_WRONLY | O_CREAT | O_TRUNC, 0666);
         if (fd==-1)blad("init stworzenie  logi");
         close(fd);
@@ -246,10 +248,10 @@ int main()
         signal(SIGINT, sigintObsluga);
 
         //pozbycie się zombie
-        struct sigaction sa;
-        sa.sa_handler = SIG_IGN;
-        sa.sa_flags   = SA_NOCLDWAIT;
-        sigaction(SIGCHLD, &sa, NULL);
+        struct sigaction bez_zombie;
+        bez_zombie.sa_handler = SIG_IGN;
+        bez_zombie.sa_flags   = SA_NOCLDWAIT;
+        sigaction(SIGCHLD, &bez_zombie, NULL);
 
         srand(time(NULL));
 

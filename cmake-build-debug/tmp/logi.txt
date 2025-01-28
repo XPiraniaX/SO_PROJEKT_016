@@ -1,163 +1,51 @@
-[Bramki] 06:00 Narciarz #97 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:00 Narciarz #140 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:01 Narciarz #115 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:01 Narciarz #4 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:01 Narciarz #82 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:01 Narciarz #105 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:01 Narciarz #6 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:02 Narciarz #14 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:02 Narciarz #103 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:02 Narciarz #171 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:02 Narciarz #126 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:02 Narciarz #134 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:02 Narciarz #98 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:03 Narciarz #153 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:03 Narciarz #165 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:03 Narciarz #1 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:03 Narciarz #48 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:03 Narciarz #184 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:03 Narciarz #166 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:04 Narciarz #129 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:04 Narciarz #65 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:04 Narciarz #54 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:04 Narciarz #2 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:04 Narciarz #84 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:04 Narciarz #32 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:05 Narciarz #145 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:05 Narciarz #161 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:05 Narciarz #37 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:05 Narciarz #111 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:06 Narciarz #160 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:06 Narciarz #49 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:06 Narciarz #150 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:06 Narciarz #12 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:06 Narciarz #50 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:06 Narciarz #89 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:07 Narciarz #70 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:07 Narciarz #87 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:07 Narciarz #181 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:07 Narciarz #186 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:07 Narciarz #31 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:08 Narciarz #201 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:08 Narciarz #120 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:08 Narciarz #44 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:08 Narciarz #24 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:08 Narciarz #73 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:08 Narciarz #8 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:08 Narciarz #79 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:08 Narciarz #93 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:09 Narciarz #109 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:09 Narciarz #40 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:09 Narciarz #30 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:09 Narciarz #167 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:09 Narciarz #198 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:10 Narciarz #38 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:10 Narciarz #100 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:10 Narciarz #106 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:10 Narciarz #41 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:10 Narciarz #90 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:11 Narciarz #45 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:11 Narciarz #205 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:11 Narciarz #26 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:11 Narciarz #33 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:11 Narciarz #141 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:11 Narciarz #197 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:11 Narciarz #185 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:12 Narciarz #203 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:12 Narciarz #152 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:12 Narciarz #62 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:12 Narciarz #175 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:12 Narciarz #179 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:13 Narciarz #107 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:13 Narciarz #55 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:13 Narciarz #95 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:14 Narciarz #10 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:14 Narciarz #86 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:14 Narciarz #72 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:14 Narciarz #23 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:14 Narciarz #29 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:14 Narciarz #123 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:15 Narciarz #139 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:15 Narciarz #176 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:15 Narciarz #133 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:15 Narciarz #162 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:16 Narciarz #92 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:16 Narciarz #88 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:16 Narciarz #142 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:16 Narciarz #195 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:16 Narciarz #53 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:17 Narciarz #75 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:17 Narciarz #151 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:17 Narciarz #104 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:17 Narciarz #119 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:18 Narciarz #58 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:18 Narciarz #96 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:18 Narciarz #156 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:18 Narciarz #46 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:18 Narciarz #172 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:18 Narciarz #16 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:19 Narciarz #130 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:19 Narciarz #125 przeszedl przez bramki uzywajac karnetu VIP [V.I.P]
-[Bramki] 06:19 Narciarz #66 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:19 Narciarz #43 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:19 Narciarz #187 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:20 Narciarz #34 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:20 Narciarz #28 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:20 Narciarz #147 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:20 Narciarz #196 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:20 Narciarz #116 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:20 Narciarz #157 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:20 Narciarz #19 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:20 Narciarz #124 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:20 Narciarz #193 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:21 Narciarz #131 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:21 Narciarz #94 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:21 Narciarz #64 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:21 Narciarz #20 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:21 Narciarz #173 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:22 Narciarz #3 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:22 Narciarz #143 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:22 Narciarz #148 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:22 Narciarz #117 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:23 Narciarz #102 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:23 Narciarz #22 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:23 Narciarz #83 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:24 Narciarz #182 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:24 Narciarz #213 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:24 Narciarz #85 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:24 Narciarz #42 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:24 Narciarz #112 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:24 Narciarz #194 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:24 Narciarz #57 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:24 Narciarz #47 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:24 Narciarz #80 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:24 Narciarz #5 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:24 Narciarz #91 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:24 Narciarz #77 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:25 Narciarz #199 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:25 Narciarz #192 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:25 Narciarz #169 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:25 Narciarz #188 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:25 Narciarz #71 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:25 Narciarz #149 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:25 Narciarz #136 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:25 Narciarz #138 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:26 Narciarz #215 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:26 Narciarz #35 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:27 Narciarz #208 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:27 Narciarz #209 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:28 Narciarz #216 przeszedl przez bramki uzywajac karnetu VIP [V.I.P]
-[Bramki] 06:31 Narciarz #211 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:31 Narciarz #11 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:31 Narciarz #177 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:31 Narciarz #56 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:31 Narciarz #39 przeszedl przez bramki uzywajac karnetu dziennego
-[Bramki] 06:32 Narciarz #67 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:32 Narciarz #214 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:33 Narciarz #207 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:36 Narciarz #220 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:37 Narciarz #219 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:39 Narciarz #222 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:40 Narciarz #212 przeszedl przez bramki uzywajac karnetu z liczba zjadow
-[Bramki] 06:40 Narciarz #221 przeszedl przez bramki uzywajac karnetu godzinnego
-[Bramki] 06:46 Narciarz #218 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:00 Narciarz #36 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:01 Narciarz #43 przeszedl przez bramki uzywajac karnetu VIP [V.I.P]
+[Bramki] 06:01 Narciarz #151 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:02 Narciarz #168 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:02 Narciarz #99 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:02 Narciarz #89 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:02 Narciarz #22 przeszedl przez bramki uzywajac karnetu dziennego
+[Bramki] 06:03 Narciarz #125 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:03 Narciarz #135 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:03 Narciarz #160 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:03 Narciarz #63 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:03 Narciarz #12 przeszedl przez bramki uzywajac karnetu dziennego
+[Bramki] 06:04 Narciarz #123 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:04 Narciarz #40 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:04 Narciarz #73 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:04 Narciarz #130 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:04 Narciarz #23 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:05 Narciarz #189 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:05 Narciarz #132 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:05 Narciarz #122 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:05 Narciarz #44 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:05 Narciarz #97 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:06 Narciarz #129 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:06 Narciarz #87 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:06 Narciarz #68 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:07 Narciarz #145 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:07 Narciarz #152 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:07 Narciarz #109 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:07 Narciarz #80 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:07 Narciarz #164 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:08 Narciarz #142 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:08 Narciarz #84 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:09 Narciarz #103 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:09 Narciarz #54 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:09 Narciarz #48 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:09 Narciarz #28 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:10 Narciarz #201 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:10 Narciarz #46 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:10 Narciarz #195 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:10 Narciarz #170 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #150 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:11 Narciarz #153 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #187 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #5 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #77 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #35 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #21 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #176 przeszedl przez bramki uzywajac karnetu z liczba zjadow
+[Bramki] 06:11 Narciarz #169 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:11 Narciarz #167 przeszedl przez bramki uzywajac karnetu godzinnego
+[Bramki] 06:11 Narciarz #186 przeszedl przez bramki uzywajac karnetu godzinnego
